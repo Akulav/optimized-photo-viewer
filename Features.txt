@@ -1,0 +1,9 @@
+rotate
+delete
+file info
+favorite (per folder)
+fullscreen
+zoom
+photo list (folder)
+slideshow
+less than 100mb ram
