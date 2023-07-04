@@ -1,7 +1,9 @@
-using System;
-using System.Drawing;
-using System.Windows.Forms;
 using optimizedPhotoViewer.Extensions;
+using System.Runtime.InteropServices;
+using System.Windows.Forms;
+using Microsoft.Win32;
+using System.Drawing;
+using System;
 
 namespace optimizedPhotoViewer
 {
@@ -20,6 +22,10 @@ namespace optimizedPhotoViewer
                 imagePaths = FileHandler.LoadImagePaths(args);
                 currentIndex = Array.IndexOf(imagePaths, args);
             }
+            string fullPath = System.Diagnostics.Process.GetCurrentProcess().MainModule.FileName;
+          
+            FileAssociations.SetAssociation(".png", "optimizedViewer", "Image File", fullPath);
+            FileAssociations.SetAssociation(".jpeg", "optimizedViewer", "Image File", fullPath);
         }
 
         private void delete_button_Click(object sender, EventArgs e)
