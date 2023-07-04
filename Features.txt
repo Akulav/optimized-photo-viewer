@@ -1,9 +1,12 @@
-rotate
-delete
-file info
-favorite (per folder)
-fullscreen
-zoom
-photo list (folder)
-slideshow
-less than 100mb ram
+rotate [map3x]
+delete [map3x]
+compress [akulav]
+file info [X]
+favorite [map3x]
+fullscreen [map3x]
+zoom [akulav]
+photo list [map3x]
+slideshow [map3x]
+open with [akulav]
+installer [akulav]
+dark mode [X]
