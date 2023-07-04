@@ -2,14 +2,18 @@ namespace optimizedPhotoViewer
 {
     internal static class Program
     {
-        /// <summary>
-        ///  The main entry point for the application.
-        /// </summary>
         [STAThread]
-        static void Main()
+        static void Main(string[] args)
         {
             ApplicationConfiguration.Initialize();
-            Application.Run(new MainForm());
+            if (args.Length == 0)
+            {
+                Application.Run(new MainForm(null));
+            }
+            else
+            {
+                Application.Run(new MainForm(args[0]));
+            }
         }
     }
 }

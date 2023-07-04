@@ -28,7 +28,6 @@
         /// </summary>
         private void InitializeComponent()
         {
-            System.ComponentModel.ComponentResourceManager resources = new System.ComponentModel.ComponentResourceManager(typeof(MainForm));
             MainTable = new TableLayoutPanel();
             pictureBox = new PictureBox();
             MainTable.SuspendLayout();
@@ -53,7 +52,7 @@
             // pictureBox
             // 
             pictureBox.Dock = DockStyle.Fill;
-            pictureBox.Image = (Image)resources.GetObject("pictureBox.Image");
+            pictureBox.Image = Properties.Resources.Hentai1;
             pictureBox.InitialImage = null;
             pictureBox.Location = new Point(3, 55);
             pictureBox.Name = "pictureBox";
