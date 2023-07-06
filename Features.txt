@@ -19,7 +19,6 @@ Delete does not work properly when done in succession [map3X]
 Maximize button hides the taskbar? [akulav]
 
 Optimization:
-Dont lookup all images when deleting [akulav]
-Dont keep in memory all paths of image (keep only current one) [akulav]
-Internal Resources compression? [akulav]
+Dont keep in memory all paths of image (keep only current one) [akulav] [DONE]
+Internal Resources compression [akulav]
 Dont make all functions static [akulav]

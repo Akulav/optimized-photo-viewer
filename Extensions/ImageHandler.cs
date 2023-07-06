@@ -28,19 +28,9 @@
             string[] images = getImages(path);
             int index = getCurrentIndex(path);
             int imagesLength = images.Length;
-            string newPath;
+            string newPath = images[(index + 1) % imagesLength];
 
-            if (index + 1 == imagesLength)
-            {
-                loadImage(images[0], pictureBox, info);
-                newPath = images[0];
-            }
-
-            else
-            {
-                loadImage(images[index + 1], pictureBox, info);
-                newPath = images[index + 1];
-            }
+            loadImage(newPath, pictureBox, info);
 
             if (imagesLength == 1)
             {
