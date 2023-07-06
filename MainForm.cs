@@ -1,4 +1,5 @@
 using optimizedPhotoViewer.Extensions;
+using System.Runtime.InteropServices;
 
 namespace optimizedPhotoViewer
 {
@@ -8,6 +9,11 @@ namespace optimizedPhotoViewer
         private int currentIndex;
         private bool isFullscreen;
 
+        [DllImport("user32.DLL", EntryPoint = "ReleaseCapture")]
+        private extern static void ReleaseCapture();
+        [DllImport("user32.DLL", EntryPoint = "SendMessage")]
+        private extern static void SendMessage(IntPtr hWnd, int wMsg, int wParam, int lParam);
+
         public MainForm(string args)
         {
             InitializeComponent();
@@ -15,8 +21,8 @@ namespace optimizedPhotoViewer
             if (args != null && File.Exists(args))
             {
                 pictureBox.Image = new Bitmap(args);
-                imagePaths = FileHandler.LoadImagePaths(args);
-                currentIndex = Array.IndexOf(imagePaths, args);
+                imagePaths = ImageHandler.getImages(args);
+                currentIndex = ImageHandler.getCurrentIndex(args);
             }
             string fullPath = System.Diagnostics.Process.GetCurrentProcess().MainModule.FileName;
 
@@ -30,94 +36,41 @@ namespace optimizedPhotoViewer
 
         private void delete_button_Click(object sender, EventArgs e)
         {
-            FileHandler.DeleteCurrentImage(imagePaths, currentIndex, pictureBox);
-
-            if (imagePaths.Length > 0)
-            {
-                if (currentIndex + 1 >= imagePaths.Length)
-                {
-                    currentIndex = 0;
-                }
-                else
-                {
-                    currentIndex = currentIndex + 1;
-                }
-                pictureBox.Image = new Bitmap(imagePaths[currentIndex]);
-            }
-            else
-            {
-                pictureBox.Image = null;
-            }
+            currentIndex = ImageHandler.deleteImages(imagePaths[currentIndex], pictureBox);
         }
 
         private void rotateButton_Click(object sender, EventArgs e)
         {
-            FileHandler.RotateImageClockwise(pictureBox);
-        }
-
-        private void MainForm_Load(object sender, EventArgs e)
-        {
-            deleteButton.FlatStyle = FlatStyle.Flat;
-            deleteButton.FlatAppearance.BorderSize = 0;
-
-            rotateButton.FlatStyle = FlatStyle.Flat;
-            rotateButton.FlatAppearance.BorderSize = 0;
-
-            previousImage.FlatStyle = FlatStyle.Flat;
-            previousImage.FlatAppearance.BorderSize = 0;
-
-            nextImage.FlatStyle = FlatStyle.Flat;
-            nextImage.FlatAppearance.BorderSize = 0;
-        }
-
-        private void previousImage_MouseEnter(object sender, EventArgs e)
-        {
-            previousImage.Size = new Size(235, 73);
-            previousImage.BackgroundImage = Properties.Resources.Megumin_LeftUP;
-        }
-
-        private void previousImage_MouseLeave(object sender, EventArgs e)
-        {
-            previousImage.Size = new Size(139, 49);
-            previousImage.BackgroundImage = Properties.Resources.Megumin_Left;
-        }
-
-        private void nextImage_MouseEnter(object sender, EventArgs e)
-        {
-            nextImage.Size = new Size(235, 73);
-            nextImage.BackgroundImage = Properties.Resources.Megumin_RightUP;
-        }
-
-        private void nextImage_MouseLeave(object sender, EventArgs e)
-        {
-            nextImage.Size = new Size(139, 49);
-            nextImage.BackgroundImage = Properties.Resources.Megumin_RIght;
-        }
-
-        private void previousImage_Click(object sender, EventArgs e)
-        {
-            FileHandler.LoadPreviousImage(imagePaths, ref currentIndex, LoadImage, pictureBox);
-        }
-
-        private void nextImage_Click(object sender, EventArgs e)
-        {
-            FileHandler.LoadNextImage(imagePaths, ref currentIndex, LoadImage, pictureBox);
-        }
-
-        private void LoadImage(string imagePath)
-        {
-            pictureBox.Image?.Dispose();
-            pictureBox.Image = new Bitmap(imagePath);
+            ImageHandler.RotateImageClockwise(pictureBox);
         }
 
         protected override bool ProcessCmdKey(ref Message msg, Keys keyData)
         {
-            if (keyData == Keys.F11)
+            switch (keyData)
             {
-                isFullscreen = UICommands.toggleFullscreen(this, isFullscreen);
-                return true;
+                case Keys.F11:
+                    isFullscreen = UICommands.toggleFullscreen(this, isFullscreen);
+                    break;
+                case Keys.D:
+                    currentIndex = ImageHandler.LoadNextImage(currentIndex, pictureBox, imagePaths[0]);
+                    break;
+                case Keys.Right:
+                    currentIndex = ImageHandler.LoadNextImage(currentIndex, pictureBox, imagePaths[0]);
+                    break;
+                case Keys.A:
+                    currentIndex = ImageHandler.LoadPreviousImage(currentIndex, pictureBox, imagePaths[0]);
+                    break;
+                case Keys.Left:
+                    currentIndex = ImageHandler.LoadPreviousImage(currentIndex, pictureBox, imagePaths[0]);
+                    break;
             }
             return base.ProcessCmdKey(ref msg, keyData);
+        }
+
+        private void MainTable_MouseDown(object sender, MouseEventArgs e)
+        {
+            ReleaseCapture();
+            SendMessage(Handle, 0x112, 0xf012, 0);
         }
     }
 }

@@ -11,11 +11,10 @@
                 .ToArray();
         }
 
-        public static string deleteImages(string path)
+        public static int getCurrentIndex(string path)
         {
-            string[] images = getImages(path);
             int index = 0;
-            int next;
+            string[] images = getImages(path);
             foreach (string image in images)
             {
                 if (path == image)
@@ -29,22 +28,84 @@
                 }
             }
 
-            if (images.Length == 1)
-            {
-                return "";
-            }
+            return index;
+        }
 
-            if (index+1 >= images.Length)
+        public static int deleteImages(string path, PictureBox pictureBox)
+        {
+            string[] images = getImages(path);
+            int index = getCurrentIndex(path);
+            string newPath;
+
+            pictureBox.Image.Dispose();
+
+            if (index + 1 >= images.Length)
             {
-                next = 0;
+                pictureBox.Image.Dispose();
+                pictureBox.Image = new Bitmap(images[0]);
+                newPath = images[0];
             }
 
             else
             {
-                next = index+1;
+                pictureBox.Image.Dispose();
+                pictureBox.Image = new Bitmap(images[index + 1]);
+                newPath = images[index + 1];
             }
 
-            return images[next];
+            if (images.Length == 1)
+            {
+                pictureBox.Image.Dispose();
+                File.Delete(path);
+                Application.Exit();
+            }
+
+            File.Delete(path);
+            return getCurrentIndex(newPath);
         }
+
+        public static int LoadNextImage(int index, PictureBox pictureBox, string path)
+        {
+            string[] allPaths = getImages(path);
+            if (index + 1 >= allPaths.Length)
+            {
+                pictureBox.Image.Dispose();
+                pictureBox.Image = new Bitmap(allPaths[0]);
+                return getCurrentIndex(allPaths[0]);
+            }
+
+            else
+            {
+                pictureBox.Image.Dispose();
+                pictureBox.Image = new Bitmap(allPaths[index + 1]);
+                return getCurrentIndex(allPaths[index + 1]);
+            }
+        }
+
+        public static int LoadPreviousImage(int index, PictureBox pictureBox, string path)
+        {
+            string[] allPaths = getImages(path);
+            if (index - 1 < 0)
+            {
+                pictureBox.Image.Dispose();
+                pictureBox.Image = new Bitmap(allPaths[allPaths.Length-1]);
+                return getCurrentIndex(allPaths[allPaths.Length-1]);
+            }
+
+            else
+            {
+                pictureBox.Image.Dispose();
+                pictureBox.Image = new Bitmap(allPaths[index - 1]);
+                return getCurrentIndex(allPaths[index - 1]);
+            }
+        }
+
+        public static void RotateImageClockwise(PictureBox pictureBox)
+        {
+            pictureBox.Image.RotateFlip(RotateFlipType.Rotate90FlipNone);
+            pictureBox.Refresh();
+        }
+
     }
 }
+

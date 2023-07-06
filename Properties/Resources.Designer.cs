@@ -63,49 +63,9 @@ namespace optimizedPhotoViewer.Properties {
         /// <summary>
         ///   Looks up a localized resource of type System.Drawing.Bitmap.
         /// </summary>
-        internal static System.Drawing.Bitmap Hentai1 {
+        internal static System.Drawing.Bitmap hentai_default_bg {
             get {
-                object obj = ResourceManager.GetObject("Hentai1", resourceCulture);
-                return ((System.Drawing.Bitmap)(obj));
-            }
-        }
-        
-        /// <summary>
-        ///   Looks up a localized resource of type System.Drawing.Bitmap.
-        /// </summary>
-        internal static System.Drawing.Bitmap Megumin_Left {
-            get {
-                object obj = ResourceManager.GetObject("Megumin_Left", resourceCulture);
-                return ((System.Drawing.Bitmap)(obj));
-            }
-        }
-        
-        /// <summary>
-        ///   Looks up a localized resource of type System.Drawing.Bitmap.
-        /// </summary>
-        internal static System.Drawing.Bitmap Megumin_LeftUP {
-            get {
-                object obj = ResourceManager.GetObject("Megumin_LeftUP", resourceCulture);
-                return ((System.Drawing.Bitmap)(obj));
-            }
-        }
-        
-        /// <summary>
-        ///   Looks up a localized resource of type System.Drawing.Bitmap.
-        /// </summary>
-        internal static System.Drawing.Bitmap Megumin_RIght {
-            get {
-                object obj = ResourceManager.GetObject("Megumin_RIght", resourceCulture);
-                return ((System.Drawing.Bitmap)(obj));
-            }
-        }
-        
-        /// <summary>
-        ///   Looks up a localized resource of type System.Drawing.Bitmap.
-        /// </summary>
-        internal static System.Drawing.Bitmap Megumin_RightUP {
-            get {
-                object obj = ResourceManager.GetObject("Megumin_RightUP", resourceCulture);
+                object obj = ResourceManager.GetObject("hentai-default-bg", resourceCulture);
                 return ((System.Drawing.Bitmap)(obj));
             }
         }
