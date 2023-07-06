@@ -1,5 +1,7 @@
 using optimizedPhotoViewer.Extensions;
+using System.Runtime.CompilerServices;
 using System.Runtime.InteropServices;
+using System.Drawing.Imaging;
 using System.Windows.Forms;
 using Microsoft.Win32;
 using System.Drawing;
@@ -11,11 +13,12 @@ namespace optimizedPhotoViewer
     {
         private string[] imagePaths;
         private int currentIndex;
+        private bool isFullscreen;
 
         public MainForm(string args)
         {
             InitializeComponent();
-
+            DoubleBuffered = true;
             if (args != null && System.IO.File.Exists(args))
             {
                 pictureBox.Image = new Bitmap(args);
@@ -23,9 +26,12 @@ namespace optimizedPhotoViewer
                 currentIndex = Array.IndexOf(imagePaths, args);
             }
             string fullPath = System.Diagnostics.Process.GetCurrentProcess().MainModule.FileName;
-          
+
             FileAssociations.SetAssociation(".png", "optimizedViewer", "Image File", fullPath);
+            FileAssociations.SetAssociation(".jpg", "optimizedViewer", "Image File", fullPath);
             FileAssociations.SetAssociation(".jpeg", "optimizedViewer", "Image File", fullPath);
+            FileAssociations.SetAssociation(".gif", "optimizedViewer", "Image File", fullPath);
+            FileAssociations.SetAssociation(".ico", "optimizedViewer", "Image File", fullPath);
         }
 
         private void delete_button_Click(object sender, EventArgs e)
@@ -34,7 +40,7 @@ namespace optimizedPhotoViewer
 
             if (imagePaths.Length > 0)
             {
-                if(currentIndex+1 >= imagePaths.Length)
+                if (currentIndex + 1 >= imagePaths.Length)
                 {
                     currentIndex = 0;
                 }
@@ -50,9 +56,90 @@ namespace optimizedPhotoViewer
             }
         }
 
+        private void rotateButton_Click(object sender, EventArgs e)
+        {
+            FileHandler.RotateImageClockwise(pictureBox);
+        }
+
         private void MainForm_Load(object sender, EventArgs e)
         {
+            deleteButton.FlatStyle = FlatStyle.Flat;
+            deleteButton.FlatAppearance.BorderSize = 0;
 
+            rotateButton.FlatStyle = FlatStyle.Flat;
+            rotateButton.FlatAppearance.BorderSize = 0;
+
+            previousImage.FlatStyle = FlatStyle.Flat;
+            previousImage.FlatAppearance.BorderSize = 0;
+
+            nextImage.FlatStyle = FlatStyle.Flat;
+            nextImage.FlatAppearance.BorderSize = 0;
+        }
+
+        private void previousImage_MouseEnter(object sender, EventArgs e)
+        {
+            previousImage.Size = new Size(235, 73);
+            previousImage.BackgroundImage = Properties.Resources.Megumin_LeftUP;
+        }
+
+        private void previousImage_MouseLeave(object sender, EventArgs e)
+        {
+            previousImage.Size = new Size(139, 49);
+            previousImage.BackgroundImage = Properties.Resources.Megumin_Left;
+        }
+
+        private void nextImage_MouseEnter(object sender, EventArgs e)
+        {
+            nextImage.Size = new Size(235, 73);
+            nextImage.BackgroundImage = Properties.Resources.Megumin_RightUP;
+        }
+
+        private void nextImage_MouseLeave(object sender, EventArgs e)
+        {
+            nextImage.Size = new Size(139, 49);
+            nextImage.BackgroundImage = Properties.Resources.Megumin_RIght;
+        }
+
+        private void previousImage_Click(object sender, EventArgs e)
+        {
+            FileHandler.LoadPreviousImage(imagePaths, ref currentIndex, LoadImage, pictureBox);
+        }
+
+        private void nextImage_Click(object sender, EventArgs e)
+        {
+            FileHandler.LoadNextImage(imagePaths, ref currentIndex, LoadImage, pictureBox);
+        }
+
+        private void LoadImage(string imagePath)
+        {
+            pictureBox.Image?.Dispose();
+            pictureBox.Image = new Bitmap(imagePath);
+        }
+
+        private void ToggleFullscreen()
+        {
+            if (isFullscreen)
+            {
+                FormBorderStyle = FormBorderStyle.Sizable;
+                WindowState = FormWindowState.Normal;
+                isFullscreen = false;
+            }
+            else
+            {
+                FormBorderStyle = FormBorderStyle.None;
+                WindowState = FormWindowState.Maximized;
+                isFullscreen = true;
+            }
+        }
+
+        protected override bool ProcessCmdKey(ref Message msg, Keys keyData)
+        {
+            if (keyData == Keys.F11)
+            {
+                ToggleFullscreen();
+                return true;
+            }
+            return base.ProcessCmdKey(ref msg, keyData);
         }
     }
 }

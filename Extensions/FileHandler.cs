@@ -1,8 +1,10 @@
-﻿using System;
-using System.Drawing;
-using System.IO;
-using System.Linq;
+﻿
+using System.Drawing.Imaging;
 using System.Windows.Forms;
+using System.Drawing;
+using System.Linq;
+using System.IO;
+using System;
 
 namespace optimizedPhotoViewer.Extensions
 {
@@ -45,9 +47,44 @@ namespace optimizedPhotoViewer.Extensions
             string[] output = Directory.GetFiles(directoryPath, "*.jpeg")
                 .Concat(Directory.GetFiles(directoryPath, "*.png"))
                 .Concat(Directory.GetFiles(directoryPath, "*.jpg"))
+                .Concat(Directory.GetFiles(directoryPath, "*.gif"))
+                .Concat(Directory.GetFiles(directoryPath, "*.ico"))
                 .ToArray();
             Array.Sort(output);
             return output;
+        }
+
+        public static void RotateImageClockwise(PictureBox pictureBox)
+        {
+            pictureBox.Image.RotateFlip(RotateFlipType.Rotate90FlipNone);
+            pictureBox.Refresh();
+        }
+
+        public static void LoadNextImage(string[] imagePaths, ref int currentIndex, Action<string> loadImage, PictureBox pictureBox)
+        {
+            if (imagePaths == null || imagePaths.Length == 0)
+                return;
+            currentIndex++;
+            currentIndex %= imagePaths.Length;
+            loadImage(imagePaths[currentIndex]);
+            UpdatePictureBox(imagePaths[currentIndex], pictureBox);
+        }
+
+        public static void LoadPreviousImage(string[] imagePaths, ref int currentIndex, Action<string> loadImage, PictureBox pictureBox)
+        {
+            if (imagePaths == null || imagePaths.Length == 0)
+                return;
+            currentIndex--;
+            if (currentIndex < 0)
+                currentIndex = imagePaths.Length - 1;
+            loadImage(imagePaths[currentIndex]);
+            UpdatePictureBox(imagePaths[currentIndex], pictureBox);
+        }
+
+        private static void UpdatePictureBox(string imagePath, PictureBox pictureBox)
+        {
+            pictureBox.Image?.Dispose();
+            pictureBox.Image = new Bitmap(imagePath);
         }
     }
 }
