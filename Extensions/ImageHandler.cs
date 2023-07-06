@@ -5,55 +5,34 @@
         public static string[] getImages(string path)
         {
             string directoryPath = Path.GetDirectoryName(path);
-            string[] imageExtensions = { ".png", ".jpg" };
-            return Directory.GetFiles(directoryPath)
-                .Where(file => imageExtensions.Contains(Path.GetExtension(file), StringComparer.OrdinalIgnoreCase))
-                .ToArray();
+            string[] imageExtensions = { ".png", ".jpg", ".webp", "jpeg", ".bmp", ".ico", ".tiff", ".gif" };
+
+            HashSet<string> imageExtensionsSet = new HashSet<string>(imageExtensions, StringComparer.OrdinalIgnoreCase);
+            string[] sorted = Directory.GetFiles(directoryPath)
+                            .Where(file => imageExtensionsSet.Contains(Path.GetExtension(file)))
+                            .ToArray();
+            Array.Sort(sorted);
+
+            return sorted;
         }
 
         public static int getCurrentIndex(string path)
         {
-            int index = 0;
             string[] images = getImages(path);
-            foreach (string image in images)
-            {
-                if (path == image)
-                {
-                    break;
-                }
-
-                else
-                {
-                    index++;
-                }
-            }
-
+            int index = Array.IndexOf(images, path);
             return index;
         }
 
-        public static int deleteImages(string path, PictureBox pictureBox)
+        public static string deleteImages(string path, PictureBox pictureBox, Label info)
         {
             string[] images = getImages(path);
             int index = getCurrentIndex(path);
-            string newPath;
+            int imagesLength = images.Length;
+            string newPath = images[(index + 1) % imagesLength];
 
-            pictureBox.Image.Dispose();
+            loadImage(newPath, pictureBox, info);
 
-            if (index + 1 >= images.Length)
-            {
-                pictureBox.Image.Dispose();
-                pictureBox.Image = new Bitmap(images[0]);
-                newPath = images[0];
-            }
-
-            else
-            {
-                pictureBox.Image.Dispose();
-                pictureBox.Image = new Bitmap(images[index + 1]);
-                newPath = images[index + 1];
-            }
-
-            if (images.Length == 1)
+            if (imagesLength == 1)
             {
                 pictureBox.Image.Dispose();
                 File.Delete(path);
@@ -61,49 +40,31 @@
             }
 
             File.Delete(path);
-            return getCurrentIndex(newPath);
+            return newPath;
         }
 
-        public static int LoadNextImage(int index, PictureBox pictureBox, string path)
+        public static string scrollImage(PictureBox pictureBox, string path, Label info, bool next)
         {
             string[] allPaths = getImages(path);
-            if (index + 1 >= allPaths.Length)
-            {
-                pictureBox.Image.Dispose();
-                pictureBox.Image = new Bitmap(allPaths[0]);
-                return getCurrentIndex(allPaths[0]);
-            }
+            int index = getCurrentIndex(path);
+            int imagesLength = allPaths.Length;
+            int newIndex = next ? (index + 1) % imagesLength : (index - 1 + imagesLength) % imagesLength;
 
-            else
-            {
-                pictureBox.Image.Dispose();
-                pictureBox.Image = new Bitmap(allPaths[index + 1]);
-                return getCurrentIndex(allPaths[index + 1]);
-            }
+            loadImage(allPaths[newIndex], pictureBox, info);
+            return allPaths[newIndex];
         }
 
-        public static int LoadPreviousImage(int index, PictureBox pictureBox, string path)
+        public static void loadImage(string path, PictureBox pictureBox, Label info)
         {
-            string[] allPaths = getImages(path);
-            if (index - 1 < 0)
-            {
-                pictureBox.Image.Dispose();
-                pictureBox.Image = new Bitmap(allPaths[allPaths.Length-1]);
-                return getCurrentIndex(allPaths[allPaths.Length-1]);
-            }
-
-            else
-            {
-                pictureBox.Image.Dispose();
-                pictureBox.Image = new Bitmap(allPaths[index - 1]);
-                return getCurrentIndex(allPaths[index - 1]);
-            }
+            pictureBox.Image.Dispose();
+            pictureBox.Image = new Bitmap(path);
+            info.Text = Path.GetFileName(path);
         }
 
-        public static void RotateImageClockwise(PictureBox pictureBox, int index, string path)
+        public static void RotateImageClockwise(PictureBox pictureBox, string path)
         {
             pictureBox.Image.RotateFlip(RotateFlipType.Rotate90FlipNone);
-            pictureBox.Image.Save(getImages(path)[index]);
+            pictureBox.Image.Save(path);
             pictureBox.Refresh();
         }
     }
