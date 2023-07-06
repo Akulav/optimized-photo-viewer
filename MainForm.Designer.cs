@@ -61,6 +61,7 @@
             // 
             // pictureBox
             // 
+            pictureBox.BackgroundImageLayout = ImageLayout.Stretch;
             pictureBox.Dock = DockStyle.Fill;
             pictureBox.Image = Properties.Resources.hentai_default_bg;
             pictureBox.InitialImage = null;

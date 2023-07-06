@@ -41,7 +41,7 @@ namespace optimizedPhotoViewer
 
         private void rotateButton_Click(object sender, EventArgs e)
         {
-            ImageHandler.RotateImageClockwise(pictureBox);
+            ImageHandler.RotateImageClockwise(pictureBox, currentIndex, imagePaths[0]);
         }
 
         protected override bool ProcessCmdKey(ref Message msg, Keys keyData)
@@ -49,7 +49,7 @@ namespace optimizedPhotoViewer
             switch (keyData)
             {
                 case Keys.F11:
-                    isFullscreen = UICommands.toggleFullscreen(this, isFullscreen);
+                    isFullscreen = UICommands.toggleFullscreen(this, isFullscreen, MainTable);
                     break;
                 case Keys.D:
                     currentIndex = ImageHandler.LoadNextImage(currentIndex, pictureBox, imagePaths[0]);

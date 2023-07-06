@@ -100,12 +100,12 @@
             }
         }
 
-        public static void RotateImageClockwise(PictureBox pictureBox)
+        public static void RotateImageClockwise(PictureBox pictureBox, int index, string path)
         {
             pictureBox.Image.RotateFlip(RotateFlipType.Rotate90FlipNone);
+            pictureBox.Image.Save(getImages(path)[index]);
             pictureBox.Refresh();
         }
-
     }
 }
 
