@@ -5,10 +5,9 @@ namespace optimizedPhotoViewer
 {
     public partial class MainForm : Form
     {
-        private string[] imagePaths;
-        private int currentIndex;
         private bool isFullscreen;
-        private bool maximized = false;
+        private bool maximized;
+        private string currentImage;
 
         [DllImport("user32.DLL", EntryPoint = "ReleaseCapture")]
         private extern static void ReleaseCapture();
@@ -22,9 +21,8 @@ namespace optimizedPhotoViewer
             if (args != null && File.Exists(args))
             {
                 ImageHandler.loadImage(args, pictureBox, infoLabel);
-                imagePaths = ImageHandler.getImages(args);
-                currentIndex = ImageHandler.getCurrentIndex(args);
-
+                int currentIndex = ImageHandler.getCurrentIndex(args);
+                currentImage = ImageHandler.getImages(args)[currentIndex];
 
                 //
                 /*
@@ -84,16 +82,16 @@ namespace optimizedPhotoViewer
                     isFullscreen = UICommands.toggleFullscreen(this, isFullscreen, MainTable);
                     break;
                 case Keys.D:
-                    currentIndex = ImageHandler.LoadNextImage(currentIndex, pictureBox, imagePaths[0], infoLabel);
+                    currentImage = ImageHandler.LoadNextImage(pictureBox, currentImage, infoLabel);
                     break;
                 case Keys.Right:
-                    currentIndex = ImageHandler.LoadNextImage(currentIndex, pictureBox, imagePaths[0], infoLabel);
+                    currentImage = ImageHandler.LoadNextImage(pictureBox, currentImage, infoLabel);
                     break;
                 case Keys.A:
-                    currentIndex = ImageHandler.LoadPreviousImage(currentIndex, pictureBox, imagePaths[0], infoLabel);
+                    currentImage = ImageHandler.LoadPreviousImage(pictureBox, currentImage, infoLabel);
                     break;
                 case Keys.Left:
-                    currentIndex = ImageHandler.LoadPreviousImage(currentIndex, pictureBox, imagePaths[0], infoLabel);
+                    currentImage = ImageHandler.LoadPreviousImage(pictureBox, currentImage, infoLabel);
                     break;
             }
             return base.ProcessCmdKey(ref msg, keyData);
@@ -127,12 +125,12 @@ namespace optimizedPhotoViewer
 
         private void deleteBox_Click(object sender, EventArgs e)
         {
-            currentIndex = ImageHandler.deleteImages(imagePaths[currentIndex], pictureBox, infoLabel);
+            currentImage = ImageHandler.deleteImages(currentImage, pictureBox, infoLabel);
         }
 
         private void rotateBox_Click(object sender, EventArgs e)
         {
-            ImageHandler.RotateImageClockwise(pictureBox, currentIndex, imagePaths[0]);
+            ImageHandler.RotateImageClockwise(pictureBox, currentImage);
         }
 
         private void favBox_Click(object sender, EventArgs e)
