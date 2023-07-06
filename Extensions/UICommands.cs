@@ -9,7 +9,7 @@
             {
                 form.WindowState = FormWindowState.Normal;
 
-                float[] percentage = new float[] { 0.05f, 0.85f, 0.10f };
+                float[] percentage = new float[] { 0.1f, 0.8f, 0.10f };
 
                 for (int i = 0; i < rowCount; i++)
                 {
@@ -22,7 +22,7 @@
             {
                 form.WindowState = FormWindowState.Maximized;
 
-                float[] percentage = new float[] { 0.03f, 0.97f, 0.0f };
+                float[] percentage = new float[] { 0.1f, 0.9f, 0.0f };
 
                 for (int i = 0; i < rowCount; i++)
                 {

@@ -8,6 +8,7 @@ namespace optimizedPhotoViewer
         private string[] imagePaths;
         private int currentIndex;
         private bool isFullscreen;
+        private bool maximized = false;
 
         [DllImport("user32.DLL", EntryPoint = "ReleaseCapture")]
         private extern static void ReleaseCapture();
@@ -20,9 +21,49 @@ namespace optimizedPhotoViewer
             DoubleBuffered = true;
             if (args != null && File.Exists(args))
             {
-                pictureBox.Image = new Bitmap(args);
+                ImageHandler.loadImage(args, pictureBox, infoLabel);
                 imagePaths = ImageHandler.getImages(args);
                 currentIndex = ImageHandler.getCurrentIndex(args);
+
+
+                //
+                /*
+                List<Bitmap> images = new List<Bitmap>();
+
+                foreach (string filePath in imagePaths)
+                {
+                    Bitmap image = new Bitmap(filePath);
+                    images.Add(image);
+                }
+
+                int pictureBoxWidth = 100;
+                int pictureBoxHeight = 100;
+                int pictureBoxSpacing = 10;
+
+                int x = 0;
+                int y = 0;
+
+                foreach (Bitmap image in images)
+                {
+                    PictureBox pictureBox = new PictureBox();
+                    pictureBox.Image = image;
+                    pictureBox.SizeMode = PictureBoxSizeMode.Zoom;
+                    pictureBox.Size = new Size(pictureBoxWidth, pictureBoxHeight);
+                    pictureBox.Location = new Point(x, y);
+
+                    imageList.Controls.Add(pictureBox);
+
+                    x += pictureBoxWidth + pictureBoxSpacing;
+
+                    // If the PictureBox exceeds the Panel's width, move to the next row
+                    if (x + pictureBoxWidth > imageList.Width)
+                    {
+                        x = 0;
+                        y += pictureBoxHeight + pictureBoxSpacing;
+                    }
+                }
+                */
+
             }
             string fullPath = System.Diagnostics.Process.GetCurrentProcess().MainModule.FileName;
 
@@ -32,16 +73,7 @@ namespace optimizedPhotoViewer
             FileAssociations.SetAssociation(".gif", "optimizedViewer", "Image File", fullPath);
             FileAssociations.SetAssociation(".ico", "optimizedViewer", "Image File", fullPath);
             FileAssociations.SetAssociation(".webp", "optimizedViewer", "Image File", fullPath);
-        }
-
-        private void delete_button_Click(object sender, EventArgs e)
-        {
-            currentIndex = ImageHandler.deleteImages(imagePaths[currentIndex], pictureBox);
-        }
-
-        private void rotateButton_Click(object sender, EventArgs e)
-        {
-            ImageHandler.RotateImageClockwise(pictureBox, currentIndex, imagePaths[0]);
+            FileAssociations.SetAssociation(".tiff", "optimizedViewer", "Image File", fullPath);
         }
 
         protected override bool ProcessCmdKey(ref Message msg, Keys keyData)
@@ -52,25 +84,70 @@ namespace optimizedPhotoViewer
                     isFullscreen = UICommands.toggleFullscreen(this, isFullscreen, MainTable);
                     break;
                 case Keys.D:
-                    currentIndex = ImageHandler.LoadNextImage(currentIndex, pictureBox, imagePaths[0]);
+                    currentIndex = ImageHandler.LoadNextImage(currentIndex, pictureBox, imagePaths[0], infoLabel);
                     break;
                 case Keys.Right:
-                    currentIndex = ImageHandler.LoadNextImage(currentIndex, pictureBox, imagePaths[0]);
+                    currentIndex = ImageHandler.LoadNextImage(currentIndex, pictureBox, imagePaths[0], infoLabel);
                     break;
                 case Keys.A:
-                    currentIndex = ImageHandler.LoadPreviousImage(currentIndex, pictureBox, imagePaths[0]);
+                    currentIndex = ImageHandler.LoadPreviousImage(currentIndex, pictureBox, imagePaths[0], infoLabel);
                     break;
                 case Keys.Left:
-                    currentIndex = ImageHandler.LoadPreviousImage(currentIndex, pictureBox, imagePaths[0]);
+                    currentIndex = ImageHandler.LoadPreviousImage(currentIndex, pictureBox, imagePaths[0], infoLabel);
                     break;
             }
             return base.ProcessCmdKey(ref msg, keyData);
         }
 
-        private void MainTable_MouseDown(object sender, MouseEventArgs e)
+        private void topPanel_MouseDown(object sender, MouseEventArgs e)
         {
             ReleaseCapture();
             SendMessage(Handle, 0x112, 0xf012, 0);
+        }
+
+        private void exitBox_MouseHover(object sender, EventArgs e)
+        {
+            exitBox.BorderStyle = BorderStyle.FixedSingle;
+        }
+
+        private void exitBox_Click(object sender, EventArgs e)
+        {
+            Application.Exit();
+        }
+
+        private void exitBox_MouseLeave(object sender, EventArgs e)
+        {
+            exitBox.BorderStyle = BorderStyle.None;
+        }
+
+        private void maximizeBox_Click(object sender, EventArgs e)
+        {
+            if (!maximized)
+            {
+                maximized = true;
+                WindowState = FormWindowState.Maximized;
+            }
+
+            else
+            {
+                maximized = false;
+                WindowState = FormWindowState.Normal;
+            }
+        }
+
+        private void deleteBox_Click(object sender, EventArgs e)
+        {
+            currentIndex = ImageHandler.deleteImages(imagePaths[currentIndex], pictureBox, infoLabel);
+        }
+
+        private void rotateBox_Click(object sender, EventArgs e)
+        {
+            ImageHandler.RotateImageClockwise(pictureBox, currentIndex, imagePaths[0]);
+        }
+
+        private void favBox_Click(object sender, EventArgs e)
+        {
+
         }
     }
 }
