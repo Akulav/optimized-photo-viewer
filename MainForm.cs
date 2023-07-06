@@ -43,11 +43,11 @@ namespace optimizedPhotoViewer
                     break;
                 case Keys.D:
                 case Keys.Right:
-                    currentImage = ImageHandler.LoadNextImage(pictureBox, currentImage, infoLabel);
+                    currentImage = ImageHandler.scrollImage(pictureBox, currentImage, infoLabel, true);
                     break;
                 case Keys.A:
                 case Keys.Left:
-                    currentImage = ImageHandler.LoadPreviousImage(pictureBox, currentImage, infoLabel);
+                    currentImage = ImageHandler.scrollImage(pictureBox, currentImage, infoLabel, false);
                     break;
             }
             return base.ProcessCmdKey(ref msg, keyData);

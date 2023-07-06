@@ -43,26 +43,15 @@
             return newPath;
         }
 
-        public static string LoadNextImage(PictureBox pictureBox, string path, Label info)
+        public static string scrollImage(PictureBox pictureBox, string path, Label info, bool next)
         {
             string[] allPaths = getImages(path);
             int index = getCurrentIndex(path);
             int imagesLength = allPaths.Length;
-            int nextIndex = (index + 1) % imagesLength;
+            int newIndex = next ? (index + 1) % imagesLength : (index - 1 + imagesLength) % imagesLength;
 
-            loadImage(allPaths[nextIndex], pictureBox, info);
-            return allPaths[nextIndex];
-        }
-
-        public static string LoadPreviousImage(PictureBox pictureBox, string path, Label info)
-        {
-            string[] allPaths = getImages(path);
-            int index = getCurrentIndex(path);
-            int imagesLength = allPaths.Length;
-            int previousIndex = (index - 1 + imagesLength) % imagesLength;
-
-            loadImage(allPaths[previousIndex], pictureBox, info);
-            return allPaths[previousIndex];
+            loadImage(allPaths[newIndex], pictureBox, info);
+            return allPaths[newIndex];
         }
 
         public static void loadImage(string path, PictureBox pictureBox, Label info)

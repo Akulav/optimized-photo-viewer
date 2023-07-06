@@ -15,7 +15,7 @@ Favorite UI 2(Button to show a list of all favorite images (to be shown like on 
 
 
 Bugs:
-Delete does not work properly when done in succession [map3X]
+Delete does not work properly when done in succession [akulav] [DONE]
 Maximize button hides the taskbar? [akulav]
 
 Optimization:
