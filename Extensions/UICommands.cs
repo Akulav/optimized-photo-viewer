@@ -17,5 +17,11 @@
                 return true;
             }
         }
+
+        public static void LoadImage(PictureBox pictureBox, string path) 
+        {
+            pictureBox.Image?.Dispose();
+            pictureBox.Image = new Bitmap(path);
+        }
     }
 }

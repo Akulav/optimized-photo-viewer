@@ -31,7 +31,6 @@
 
             if (images.Length == 1)
             {
-                MessageBox.Show("Here");
                 return "";
             }
 

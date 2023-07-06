@@ -12,7 +12,7 @@ namespace optimizedPhotoViewer
         {
             InitializeComponent();
             DoubleBuffered = true;
-            if (args != null && System.IO.File.Exists(args))
+            if (args != null && File.Exists(args))
             {
                 pictureBox.Image = new Bitmap(args);
                 imagePaths = FileHandler.LoadImagePaths(args);
@@ -114,7 +114,7 @@ namespace optimizedPhotoViewer
         {
             if (keyData == Keys.F11)
             {
-                isFullscreen = UICommands.toggleFullscreen(this,isFullscreen);
+                isFullscreen = UICommands.toggleFullscreen(this, isFullscreen);
                 return true;
             }
             return base.ProcessCmdKey(ref msg, keyData);

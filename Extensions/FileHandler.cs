@@ -20,7 +20,6 @@ namespace optimizedPhotoViewer.Extensions
             pictureBox.Image?.Dispose();
             pictureBox.Image = null;
 
-            GC.Collect();
             GC.WaitForPendingFinalizers();
 
             try

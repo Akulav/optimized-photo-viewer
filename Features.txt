@@ -1,6 +1,5 @@
 rotate [map3x]  ez
 delete [map3x]  ez
-compress [akulav]
 file info [X]
 favorite [map3x]
 fullscreen [map3x]
