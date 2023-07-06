@@ -39,6 +39,7 @@
             maximizeBox = new PictureBox();
             exitBox = new PictureBox();
             infoLabel = new Label();
+            minimizeBox = new PictureBox();
             MainTable.SuspendLayout();
             ((System.ComponentModel.ISupportInitialize)pictureBox).BeginInit();
             topPanel.SuspendLayout();
@@ -47,6 +48,7 @@
             ((System.ComponentModel.ISupportInitialize)favBox).BeginInit();
             ((System.ComponentModel.ISupportInitialize)maximizeBox).BeginInit();
             ((System.ComponentModel.ISupportInitialize)exitBox).BeginInit();
+            ((System.ComponentModel.ISupportInitialize)minimizeBox).BeginInit();
             SuspendLayout();
             // 
             // MainTable
@@ -91,6 +93,7 @@
             // 
             // topPanel
             // 
+            topPanel.Controls.Add(minimizeBox);
             topPanel.Controls.Add(rotateBox);
             topPanel.Controls.Add(deleteBox);
             topPanel.Controls.Add(favBox);
@@ -163,8 +166,8 @@
             exitBox.TabIndex = 2;
             exitBox.TabStop = false;
             exitBox.Click += exitBox_Click;
+            exitBox.MouseEnter += exitBox_MouseEnter;
             exitBox.MouseLeave += exitBox_MouseLeave;
-            exitBox.MouseHover += exitBox_MouseHover;
             // 
             // infoLabel
             // 
@@ -177,6 +180,18 @@
             infoLabel.TabIndex = 0;
             infoLabel.Text = "IMAGE_NAME_PLACEHOLDER";
             // 
+            // minimizeBox
+            // 
+            minimizeBox.Anchor = AnchorStyles.Top | AnchorStyles.Right;
+            minimizeBox.Image = Properties.Resources.minimize;
+            minimizeBox.Location = new Point(1118, 0);
+            minimizeBox.Name = "minimizeBox";
+            minimizeBox.Size = new Size(40, 49);
+            minimizeBox.SizeMode = PictureBoxSizeMode.Zoom;
+            minimizeBox.TabIndex = 7;
+            minimizeBox.TabStop = false;
+            minimizeBox.Click += minimizeBox_Click;
+            // 
             // MainForm
             // 
             AutoScaleDimensions = new SizeF(7F, 15F);
@@ -188,7 +203,10 @@
             DoubleBuffered = true;
             FormBorderStyle = FormBorderStyle.None;
             Icon = (Icon)resources.GetObject("$this.Icon");
+            MaximizeBox = false;
+            MinimizeBox = false;
             Name = "MainForm";
+            StartPosition = FormStartPosition.CenterScreen;
             Text = "PhotoViewer - By Akulav & map3x";
             MainTable.ResumeLayout(false);
             ((System.ComponentModel.ISupportInitialize)pictureBox).EndInit();
@@ -199,6 +217,7 @@
             ((System.ComponentModel.ISupportInitialize)favBox).EndInit();
             ((System.ComponentModel.ISupportInitialize)maximizeBox).EndInit();
             ((System.ComponentModel.ISupportInitialize)exitBox).EndInit();
+            ((System.ComponentModel.ISupportInitialize)minimizeBox).EndInit();
             ResumeLayout(false);
         }
 
@@ -214,5 +233,6 @@
         private PictureBox rotateBox;
         private PictureBox deleteBox;
         private PictureBox favBox;
+        private PictureBox minimizeBox;
     }
 }

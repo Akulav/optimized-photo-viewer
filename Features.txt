@@ -1,7 +1,25 @@
-file info [X]
-favorite [map3x]
-zoom [akulav]
-photo list [map3x]
-slideshow [map3x]
-dark mode + UI [X]
-ppm format [X]
+Extensions:
+Add webp format support (no libraries) [map3X]
+
+Functional:
+Slideshow timer for pictures [map3X]
+Load photolist of the current image + its neighbours. UPDATE at any deletion or scrolling [map3X]
+Mouse zoom (Default - 1000%) [map3X]
+Favorite database [map3X]
+
+UI:
+Add slideshow timer UI [map3X]
+Add photolist UI [akulav]
+Favorite UI 1(if image is favorite -> the heart icon is full, no if not.) [akulav]
+Favorite UI 2(Button to show a list of all favorite images (to be shown like on the phone)) [map3X]
+
+
+Bugs:
+Delete does not work properly when done in succession [map3X]
+Maximize button hides the taskbar? [akulav]
+
+Optimization:
+Dont lookup all images when deleting [akulav]
+Dont keep in memory all paths of image (keep only current one) [akulav]
+Internal Resources compression? [akulav]
+Dont make all functions static [akulav]

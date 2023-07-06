@@ -105,19 +105,9 @@ namespace optimizedPhotoViewer
             SendMessage(Handle, 0x112, 0xf012, 0);
         }
 
-        private void exitBox_MouseHover(object sender, EventArgs e)
-        {
-            exitBox.BorderStyle = BorderStyle.FixedSingle;
-        }
-
         private void exitBox_Click(object sender, EventArgs e)
         {
             Application.Exit();
-        }
-
-        private void exitBox_MouseLeave(object sender, EventArgs e)
-        {
-            exitBox.BorderStyle = BorderStyle.None;
         }
 
         private void maximizeBox_Click(object sender, EventArgs e)
@@ -148,6 +138,21 @@ namespace optimizedPhotoViewer
         private void favBox_Click(object sender, EventArgs e)
         {
 
+        }
+
+        private void exitBox_MouseEnter(object sender, EventArgs e)
+        {
+            exitBox.BorderStyle = BorderStyle.FixedSingle;
+        }
+
+        private void exitBox_MouseLeave(object sender, EventArgs e)
+        {
+            exitBox.BorderStyle = BorderStyle.None;
+        }
+
+        private void minimizeBox_Click(object sender, EventArgs e)
+        {
+            WindowState = FormWindowState.Minimized;
         }
     }
 }

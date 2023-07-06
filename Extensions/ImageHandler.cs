@@ -37,7 +37,7 @@
             int index = getCurrentIndex(path);
             string newPath;
 
-            if (index + 1 >= images.Length)
+            if (index + 1 == images.Length)
             {
                 loadImage(images[0],pictureBox, info);
                 newPath = images[0];
