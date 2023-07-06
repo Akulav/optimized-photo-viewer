@@ -1,11 +1,4 @@
 using optimizedPhotoViewer.Extensions;
-using System.Runtime.CompilerServices;
-using System.Runtime.InteropServices;
-using System.Drawing.Imaging;
-using System.Windows.Forms;
-using Microsoft.Win32;
-using System.Drawing;
-using System;
 
 namespace optimizedPhotoViewer
 {
@@ -32,6 +25,7 @@ namespace optimizedPhotoViewer
             FileAssociations.SetAssociation(".jpeg", "optimizedViewer", "Image File", fullPath);
             FileAssociations.SetAssociation(".gif", "optimizedViewer", "Image File", fullPath);
             FileAssociations.SetAssociation(".ico", "optimizedViewer", "Image File", fullPath);
+            FileAssociations.SetAssociation(".webp", "optimizedViewer", "Image File", fullPath);
         }
 
         private void delete_button_Click(object sender, EventArgs e)
@@ -116,27 +110,11 @@ namespace optimizedPhotoViewer
             pictureBox.Image = new Bitmap(imagePath);
         }
 
-        private void ToggleFullscreen()
-        {
-            if (isFullscreen)
-            {
-                FormBorderStyle = FormBorderStyle.Sizable;
-                WindowState = FormWindowState.Normal;
-                isFullscreen = false;
-            }
-            else
-            {
-                FormBorderStyle = FormBorderStyle.None;
-                WindowState = FormWindowState.Maximized;
-                isFullscreen = true;
-            }
-        }
-
         protected override bool ProcessCmdKey(ref Message msg, Keys keyData)
         {
             if (keyData == Keys.F11)
             {
-                ToggleFullscreen();
+                isFullscreen = UICommands.toggleFullscreen(this,isFullscreen);
                 return true;
             }
             return base.ProcessCmdKey(ref msg, keyData);
