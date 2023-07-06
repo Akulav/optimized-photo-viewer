@@ -18,21 +18,8 @@
 
         public static int getCurrentIndex(string path)
         {
-            int index = 0;
             string[] images = getImages(path);
-            foreach (string image in images)
-            {
-                if (path == image)
-                {
-                    break;
-                }
-
-                else
-                {
-                    index++;
-                }
-            }
-
+            int index = Array.IndexOf(images, path);
             return index;
         }
 
@@ -71,18 +58,10 @@
             string[] allPaths = getImages(path);
             int index = getCurrentIndex(path);
             int imagesLength = allPaths.Length;
+            int nextIndex = (index + 1) % imagesLength;
 
-            if (index + 1 >= imagesLength)
-            {
-                loadImage(allPaths[0], pictureBox, info);
-                return allPaths[0];
-            }
-
-            else
-            {
-                loadImage(allPaths[index + 1], pictureBox, info);
-                return allPaths[index + 1];
-            }
+            loadImage(allPaths[nextIndex], pictureBox, info);
+            return allPaths[nextIndex];
         }
 
         public static string LoadPreviousImage(PictureBox pictureBox, string path, Label info)
@@ -90,18 +69,10 @@
             string[] allPaths = getImages(path);
             int index = getCurrentIndex(path);
             int imagesLength = allPaths.Length;
+            int previousIndex = (index - 1 + imagesLength) % imagesLength;
 
-            if (index - 1 < 0)
-            {
-                loadImage(allPaths[imagesLength - 1], pictureBox, info);
-                return allPaths[imagesLength - 1];
-            }
-
-            else
-            {
-                loadImage(allPaths[index - 1], pictureBox, info);
-                return allPaths[index - 1];
-            }
+            loadImage(allPaths[previousIndex], pictureBox, info);
+            return allPaths[previousIndex];
         }
 
         public static void loadImage(string path, PictureBox pictureBox, Label info)
