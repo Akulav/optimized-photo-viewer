@@ -28,63 +28,105 @@
         /// </summary>
         private void InitializeComponent()
         {
-            this.MainTable = new System.Windows.Forms.TableLayoutPanel();
-            this.pictureBox = new System.Windows.Forms.PictureBox();
-            this.deleteButton = new System.Windows.Forms.Button();
-            this.MainTable.SuspendLayout();
-            ((System.ComponentModel.ISupportInitialize)(this.pictureBox)).BeginInit();
-            this.SuspendLayout();
+            System.ComponentModel.ComponentResourceManager resources = new System.ComponentModel.ComponentResourceManager(typeof(MainForm));
+            MainTable = new TableLayoutPanel();
+            pictureBox = new PictureBox();
+            splitContainer1 = new SplitContainer();
+            rotateButton = new Button();
+            deleteButton = new Button();
+            MainTable.SuspendLayout();
+            ((System.ComponentModel.ISupportInitialize)pictureBox).BeginInit();
+            ((System.ComponentModel.ISupportInitialize)splitContainer1).BeginInit();
+            splitContainer1.Panel1.SuspendLayout();
+            splitContainer1.Panel2.SuspendLayout();
+            splitContainer1.SuspendLayout();
+            SuspendLayout();
             // 
             // MainTable
             // 
-            this.MainTable.ColumnCount = 1;
-            this.MainTable.ColumnStyles.Add(new System.Windows.Forms.ColumnStyle(System.Windows.Forms.SizeType.Percent, 100F));
-            this.MainTable.Controls.Add(this.pictureBox, 0, 1);
-            this.MainTable.Controls.Add(this.deleteButton, 0, 0);
-            this.MainTable.Dock = System.Windows.Forms.DockStyle.Fill;
-            this.MainTable.Location = new System.Drawing.Point(0, 0);
-            this.MainTable.Name = "MainTable";
-            this.MainTable.RowCount = 3;
-            this.MainTable.RowStyles.Add(new System.Windows.Forms.RowStyle(System.Windows.Forms.SizeType.Percent, 9.523809F));
-            this.MainTable.RowStyles.Add(new System.Windows.Forms.RowStyle(System.Windows.Forms.SizeType.Percent, 76.19048F));
-            this.MainTable.RowStyles.Add(new System.Windows.Forms.RowStyle(System.Windows.Forms.SizeType.Percent, 14.28571F));
-            this.MainTable.Size = new System.Drawing.Size(1256, 550);
-            this.MainTable.TabIndex = 0;
+            MainTable.ColumnCount = 1;
+            MainTable.ColumnStyles.Add(new ColumnStyle(SizeType.Percent, 100F));
+            MainTable.Controls.Add(pictureBox, 0, 1);
+            MainTable.Controls.Add(splitContainer1, 0, 0);
+            MainTable.Dock = DockStyle.Fill;
+            MainTable.Location = new Point(0, 0);
+            MainTable.Name = "MainTable";
+            MainTable.RowCount = 3;
+            MainTable.RowStyles.Add(new RowStyle(SizeType.Percent, 5F));
+            MainTable.RowStyles.Add(new RowStyle(SizeType.Percent, 85F));
+            MainTable.RowStyles.Add(new RowStyle(SizeType.Percent, 10F));
+            MainTable.Size = new Size(1256, 550);
+            MainTable.TabIndex = 0;
+            MainTable.MouseDown += MainTable_MouseDown;
             // 
             // pictureBox
             // 
-            this.pictureBox.Dock = System.Windows.Forms.DockStyle.Fill;
-            this.pictureBox.Image = global::optimizedPhotoViewer.Properties.Resources.Hentai1;
-            this.pictureBox.InitialImage = null;
-            this.pictureBox.Location = new System.Drawing.Point(3, 55);
-            this.pictureBox.Name = "pictureBox";
-            this.pictureBox.Size = new System.Drawing.Size(1250, 413);
-            this.pictureBox.SizeMode = System.Windows.Forms.PictureBoxSizeMode.Zoom;
-            this.pictureBox.TabIndex = 0;
-            this.pictureBox.TabStop = false;
+            pictureBox.BackgroundImageLayout = ImageLayout.Stretch;
+            pictureBox.Dock = DockStyle.Fill;
+            pictureBox.Image = Properties.Resources.hentai_default_bg;
+            pictureBox.InitialImage = null;
+            pictureBox.Location = new Point(3, 30);
+            pictureBox.Name = "pictureBox";
+            pictureBox.Size = new Size(1250, 461);
+            pictureBox.SizeMode = PictureBoxSizeMode.Zoom;
+            pictureBox.TabIndex = 0;
+            pictureBox.TabStop = false;
+            // 
+            // splitContainer1
+            // 
+            splitContainer1.Location = new Point(3, 3);
+            splitContainer1.Name = "splitContainer1";
+            // 
+            // splitContainer1.Panel1
+            // 
+            splitContainer1.Panel1.Controls.Add(rotateButton);
+            // 
+            // splitContainer1.Panel2
+            // 
+            splitContainer1.Panel2.Controls.Add(deleteButton);
+            splitContainer1.Size = new Size(486, 21);
+            splitContainer1.SplitterDistance = 216;
+            splitContainer1.TabIndex = 2;
+            // 
+            // rotateButton
+            // 
+            rotateButton.Location = new Point(0, 0);
+            rotateButton.Name = "rotateButton";
+            rotateButton.Size = new Size(213, 21);
+            rotateButton.TabIndex = 0;
+            rotateButton.Text = "Rotate";
+            rotateButton.UseVisualStyleBackColor = true;
+            rotateButton.Click += rotateButton_Click;
             // 
             // deleteButton
             // 
-            this.deleteButton.Location = new System.Drawing.Point(3, 3);
-            this.deleteButton.Name = "deleteButton";
-            this.deleteButton.Size = new System.Drawing.Size(42, 36);
-            this.deleteButton.TabIndex = 1;
-            this.deleteButton.UseVisualStyleBackColor = true;
-            this.deleteButton.Click += new System.EventHandler(this.delete_button_Click);
+            deleteButton.BackgroundImage = (Image)resources.GetObject("deleteButton.BackgroundImage");
+            deleteButton.Location = new Point(62, 0);
+            deleteButton.Name = "deleteButton";
+            deleteButton.Size = new Size(120, 21);
+            deleteButton.TabIndex = 1;
+            deleteButton.UseVisualStyleBackColor = true;
+            deleteButton.Click += delete_button_Click;
             // 
             // MainForm
             // 
-            this.AutoScaleDimensions = new System.Drawing.SizeF(7F, 15F);
-            this.AutoScaleMode = System.Windows.Forms.AutoScaleMode.Font;
-            this.ClientSize = new System.Drawing.Size(1256, 550);
-            this.Controls.Add(this.MainTable);
-            this.Name = "MainForm";
-            this.Text = "PhotoViewer - By Akulav & map3x";
-            this.Load += new System.EventHandler(this.MainForm_Load);
-            this.MainTable.ResumeLayout(false);
-            ((System.ComponentModel.ISupportInitialize)(this.pictureBox)).EndInit();
-            this.ResumeLayout(false);
-
+            AutoScaleDimensions = new SizeF(7F, 15F);
+            AutoScaleMode = AutoScaleMode.Font;
+            ClientSize = new Size(1256, 550);
+            ControlBox = false;
+            Controls.Add(MainTable);
+            DoubleBuffered = true;
+            FormBorderStyle = FormBorderStyle.None;
+            Icon = (Icon)resources.GetObject("$this.Icon");
+            Name = "MainForm";
+            Text = "PhotoViewer - By Akulav & map3x";
+            MainTable.ResumeLayout(false);
+            ((System.ComponentModel.ISupportInitialize)pictureBox).EndInit();
+            splitContainer1.Panel1.ResumeLayout(false);
+            splitContainer1.Panel2.ResumeLayout(false);
+            ((System.ComponentModel.ISupportInitialize)splitContainer1).EndInit();
+            splitContainer1.ResumeLayout(false);
+            ResumeLayout(false);
         }
 
         #endregion
@@ -92,5 +134,7 @@
         private TableLayoutPanel MainTable;
         private PictureBox pictureBox;
         private Button deleteButton;
+        private SplitContainer splitContainer1;
+        private Button rotateButton;
     }
 }

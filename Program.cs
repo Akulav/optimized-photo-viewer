@@ -8,7 +8,7 @@ namespace optimizedPhotoViewer
             ApplicationConfiguration.Initialize();
             if (args.Length == 0)
             {
-                Application.Run(new MainForm(null));
+                Application.Run(new MainForm("C:\\Users\\akula\\Pictures\\Screenshots\\Screenshot 2023-06-12 210638.png"));
             }
             else
             {
