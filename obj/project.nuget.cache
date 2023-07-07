@@ -1,8 +1,10 @@
 {
   "version": 2,
-  "dgSpecHash": "LqRcs7kKsjkqtCfsLFjPEJ1jT2NIoyjVMWsVspeG2RUpmSi9YqnsmT3oMYweCt0pDmU1tycqxHBGSVlUpEfNxQ==",
+  "dgSpecHash": "a0F5rwV5p964m9TBXYG44R3ZgzESHsR7KQl2rwoWhWWskxpbavcKyB7ongtDIm5zRNEZeZnFKkW5JZSxUyakTg==",
   "success": true,
   "projectFilePath": "C:\\Users\\akula\\Desktop\\optimized-photo-viewer\\optimizedPhotoViewer.csproj",
-  "expectedPackageFiles": [],
+  "expectedPackageFiles": [
+    "C:\\Users\\akula\\.nuget\\packages\\sqphoto\\1.0.2\\sqphoto.1.0.2.nupkg.sha512"
+  ],
   "logs": []
 }

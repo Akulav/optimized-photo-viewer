@@ -34,6 +34,7 @@ namespace optimizedPhotoViewer
             }
         }
 
+
         protected override bool ProcessCmdKey(ref Message msg, Keys keyData)
         {
             switch (keyData)

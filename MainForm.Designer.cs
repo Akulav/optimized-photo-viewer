@@ -30,34 +30,37 @@
         {
             System.ComponentModel.ComponentResourceManager resources = new System.ComponentModel.ComponentResourceManager(typeof(MainForm));
             MainTable = new TableLayoutPanel();
-            pictureBox = new PictureBox();
             imageList = new Panel();
             topPanel = new Panel();
+            zoomIn = new PictureBox();
+            zoomOut = new PictureBox();
+            minimizeBox = new PictureBox();
             rotateBox = new PictureBox();
             deleteBox = new PictureBox();
             favBox = new PictureBox();
             maximizeBox = new PictureBox();
             exitBox = new PictureBox();
             infoLabel = new Label();
-            minimizeBox = new PictureBox();
+            pictureBox = new SQPhoto.SQPhoto();
             MainTable.SuspendLayout();
-            ((System.ComponentModel.ISupportInitialize)pictureBox).BeginInit();
             topPanel.SuspendLayout();
+            ((System.ComponentModel.ISupportInitialize)zoomIn).BeginInit();
+            ((System.ComponentModel.ISupportInitialize)zoomOut).BeginInit();
+            ((System.ComponentModel.ISupportInitialize)minimizeBox).BeginInit();
             ((System.ComponentModel.ISupportInitialize)rotateBox).BeginInit();
             ((System.ComponentModel.ISupportInitialize)deleteBox).BeginInit();
             ((System.ComponentModel.ISupportInitialize)favBox).BeginInit();
             ((System.ComponentModel.ISupportInitialize)maximizeBox).BeginInit();
             ((System.ComponentModel.ISupportInitialize)exitBox).BeginInit();
-            ((System.ComponentModel.ISupportInitialize)minimizeBox).BeginInit();
             SuspendLayout();
             // 
             // MainTable
             // 
             MainTable.ColumnCount = 1;
             MainTable.ColumnStyles.Add(new ColumnStyle(SizeType.Percent, 100F));
-            MainTable.Controls.Add(pictureBox, 0, 1);
             MainTable.Controls.Add(imageList, 0, 2);
             MainTable.Controls.Add(topPanel, 0, 0);
+            MainTable.Controls.Add(pictureBox, 0, 1);
             MainTable.Dock = DockStyle.Fill;
             MainTable.Location = new Point(0, 0);
             MainTable.Name = "MainTable";
@@ -67,20 +70,6 @@
             MainTable.RowStyles.Add(new RowStyle(SizeType.Percent, 10F));
             MainTable.Size = new Size(1256, 550);
             MainTable.TabIndex = 0;
-            // 
-            // pictureBox
-            // 
-            pictureBox.BackColor = SystemColors.Desktop;
-            pictureBox.BackgroundImageLayout = ImageLayout.Stretch;
-            pictureBox.Dock = DockStyle.Fill;
-            pictureBox.Image = Properties.Resources.hentai_default_bg;
-            pictureBox.InitialImage = null;
-            pictureBox.Location = new Point(3, 58);
-            pictureBox.Name = "pictureBox";
-            pictureBox.Size = new Size(1250, 434);
-            pictureBox.SizeMode = PictureBoxSizeMode.Zoom;
-            pictureBox.TabIndex = 0;
-            pictureBox.TabStop = false;
             // 
             // imageList
             // 
@@ -93,6 +82,8 @@
             // 
             // topPanel
             // 
+            topPanel.Controls.Add(zoomIn);
+            topPanel.Controls.Add(zoomOut);
             topPanel.Controls.Add(minimizeBox);
             topPanel.Controls.Add(rotateBox);
             topPanel.Controls.Add(deleteBox);
@@ -106,6 +97,40 @@
             topPanel.Size = new Size(1250, 49);
             topPanel.TabIndex = 4;
             topPanel.MouseDown += topPanel_MouseDown;
+            // 
+            // zoomIn
+            // 
+            zoomIn.Anchor = AnchorStyles.Top;
+            zoomIn.Image = Properties.Resources.zoomin;
+            zoomIn.Location = new Point(697, 0);
+            zoomIn.Name = "zoomIn";
+            zoomIn.Size = new Size(40, 49);
+            zoomIn.SizeMode = PictureBoxSizeMode.Zoom;
+            zoomIn.TabIndex = 9;
+            zoomIn.TabStop = false;
+            // 
+            // zoomOut
+            // 
+            zoomOut.Anchor = AnchorStyles.Top;
+            zoomOut.Image = Properties.Resources.zoomout;
+            zoomOut.Location = new Point(651, 0);
+            zoomOut.Name = "zoomOut";
+            zoomOut.Size = new Size(40, 49);
+            zoomOut.SizeMode = PictureBoxSizeMode.Zoom;
+            zoomOut.TabIndex = 8;
+            zoomOut.TabStop = false;
+            // 
+            // minimizeBox
+            // 
+            minimizeBox.Anchor = AnchorStyles.Top | AnchorStyles.Right;
+            minimizeBox.Image = Properties.Resources.minimize;
+            minimizeBox.Location = new Point(1118, 0);
+            minimizeBox.Name = "minimizeBox";
+            minimizeBox.Size = new Size(40, 49);
+            minimizeBox.SizeMode = PictureBoxSizeMode.Zoom;
+            minimizeBox.TabIndex = 7;
+            minimizeBox.TabStop = false;
+            minimizeBox.Click += minimizeBox_Click;
             // 
             // rotateBox
             // 
@@ -123,7 +148,7 @@
             // 
             deleteBox.Anchor = AnchorStyles.Top;
             deleteBox.Image = Properties.Resources.trashimg;
-            deleteBox.Location = new Point(651, 0);
+            deleteBox.Location = new Point(513, 0);
             deleteBox.Name = "deleteBox";
             deleteBox.Size = new Size(40, 49);
             deleteBox.SizeMode = PictureBoxSizeMode.Zoom;
@@ -180,17 +205,23 @@
             infoLabel.TabIndex = 0;
             infoLabel.Text = "IMAGE_NAME_PLACEHOLDER";
             // 
-            // minimizeBox
+            // pictureBox
             // 
-            minimizeBox.Anchor = AnchorStyles.Top | AnchorStyles.Right;
-            minimizeBox.Image = Properties.Resources.minimize;
-            minimizeBox.Location = new Point(1118, 0);
-            minimizeBox.Name = "minimizeBox";
-            minimizeBox.Size = new Size(40, 49);
-            minimizeBox.SizeMode = PictureBoxSizeMode.Zoom;
-            minimizeBox.TabIndex = 7;
-            minimizeBox.TabStop = false;
-            minimizeBox.Click += minimizeBox_Click;
+            pictureBox.AutoReSize = true;
+            pictureBox.BackColor = SystemColors.Desktop;
+            pictureBox.CanMove = true;
+            pictureBox.CanReSize = true;
+            pictureBox.CanZoom = true;
+            pictureBox.Dock = DockStyle.Fill;
+            pictureBox.Image = Properties.Resources.hentai_default_bg;
+            pictureBox.Location = new Point(4, 59);
+            pictureBox.Margin = new Padding(4, 4, 4, 4);
+            pictureBox.Name = "pictureBox";
+            pictureBox.Size = new Size(1248, 432);
+            pictureBox.SizeMode = PictureBoxSizeMode.Zoom;
+            pictureBox.TabIndex = 5;
+            pictureBox.ZoomCenter = true;
+            pictureBox.ZoomMin = 100;
             // 
             // MainForm
             // 
@@ -209,22 +240,22 @@
             StartPosition = FormStartPosition.CenterScreen;
             Text = "PhotoViewer - By Akulav & map3x";
             MainTable.ResumeLayout(false);
-            ((System.ComponentModel.ISupportInitialize)pictureBox).EndInit();
             topPanel.ResumeLayout(false);
             topPanel.PerformLayout();
+            ((System.ComponentModel.ISupportInitialize)zoomIn).EndInit();
+            ((System.ComponentModel.ISupportInitialize)zoomOut).EndInit();
+            ((System.ComponentModel.ISupportInitialize)minimizeBox).EndInit();
             ((System.ComponentModel.ISupportInitialize)rotateBox).EndInit();
             ((System.ComponentModel.ISupportInitialize)deleteBox).EndInit();
             ((System.ComponentModel.ISupportInitialize)favBox).EndInit();
             ((System.ComponentModel.ISupportInitialize)maximizeBox).EndInit();
             ((System.ComponentModel.ISupportInitialize)exitBox).EndInit();
-            ((System.ComponentModel.ISupportInitialize)minimizeBox).EndInit();
             ResumeLayout(false);
         }
 
         #endregion
 
         private TableLayoutPanel MainTable;
-        private PictureBox pictureBox;
         private Panel imageList;
         private Panel topPanel;
         private Label infoLabel;
@@ -234,5 +265,8 @@
         private PictureBox deleteBox;
         private PictureBox favBox;
         private PictureBox minimizeBox;
+        private SQPhoto.SQPhoto pictureBox;
+        private PictureBox zoomIn;
+        private PictureBox zoomOut;
     }
 }

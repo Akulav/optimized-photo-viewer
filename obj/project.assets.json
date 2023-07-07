@@ -1,11 +1,43 @@
 {
   "version": 3,
   "targets": {
-    "net6.0-windows7.0": {}
+    "net6.0-windows7.0": {
+      "SQPhoto/1.0.2": {
+        "type": "package",
+        "compile": {
+          "lib/net6.0-windows7.0/SQPhoto.dll": {}
+        },
+        "runtime": {
+          "lib/net6.0-windows7.0/SQPhoto.dll": {}
+        },
+        "frameworkReferences": [
+          "Microsoft.WindowsDesktop.App.WindowsForms"
+        ]
+      }
+    }
   },
-  "libraries": {},
+  "libraries": {
+    "SQPhoto/1.0.2": {
+      "sha512": "YZwPbkYjJXqKZuZZQf17kMl4Qf3m1qEbZd7EjANRHH5YyJ4XAslXafPW+oLAqUkcUZMx2e0gOBYkY1/d7P07rg==",
+      "type": "package",
+      "path": "sqphoto/1.0.2",
+      "files": [
+        ".nupkg.metadata",
+        ".signature.p7s",
+        "LICENSE.txt",
+        "README.md",
+        "ico.png",
+        "lib/net46/SQPhoto.dll",
+        "lib/net6.0-windows7.0/SQPhoto.dll",
+        "sqphoto.1.0.2.nupkg.sha512",
+        "sqphoto.nuspec"
+      ]
+    }
+  },
   "projectFileDependencyGroups": {
-    "net6.0-windows7.0": []
+    "net6.0-windows7.0": [
+      "SQPhoto >= 1.0.2"
+    ]
   },
   "packageFolders": {
     "C:\\Users\\akula\\.nuget\\packages\\": {}
@@ -45,6 +77,12 @@
     "frameworks": {
       "net6.0-windows7.0": {
         "targetAlias": "net6.0-windows",
+        "dependencies": {
+          "SQPhoto": {
+            "target": "Package",
+            "version": "[1.0.2, )"
+          }
+        },
         "imports": [
           "net461",
           "net462",

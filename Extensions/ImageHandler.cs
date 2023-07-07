@@ -1,4 +1,5 @@
-﻿namespace optimizedPhotoViewer.Extensions
+﻿using SQPhoto;
+namespace optimizedPhotoViewer.Extensions
 {
     public static class ImageHandler
     {
@@ -23,7 +24,7 @@
             return index;
         }
 
-        public static string deleteImages(string path, PictureBox pictureBox, Label info)
+        public static string deleteImages(string path, SQPhoto.SQPhoto pictureBox, Label info)
         {
             string[] images = getImages(path);
             int index = getCurrentIndex(path);
@@ -43,7 +44,7 @@
             return newPath;
         }
 
-        public static string scrollImage(PictureBox pictureBox, string path, Label info, bool next)
+        public static string scrollImage(SQPhoto.SQPhoto pictureBox, string path, Label info, bool next)
         {
             string[] allPaths = getImages(path);
             int index = getCurrentIndex(path);
@@ -54,14 +55,14 @@
             return allPaths[newIndex];
         }
 
-        public static void loadImage(string path, PictureBox pictureBox, Label info)
+        public static void loadImage(string path, SQPhoto.SQPhoto pictureBox, Label info)
         {
             pictureBox.Image.Dispose();
             pictureBox.Image = new Bitmap(path);
             info.Text = Path.GetFileName(path);
         }
 
-        public static void RotateImageClockwise(PictureBox pictureBox, string path)
+        public static void RotateImageClockwise(SQPhoto.SQPhoto pictureBox, string path)
         {
             pictureBox.Image.RotateFlip(RotateFlipType.Rotate90FlipNone);
             pictureBox.Image.Save(path);
@@ -69,4 +70,3 @@
         }
     }
 }
-
