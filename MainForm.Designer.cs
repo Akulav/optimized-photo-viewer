@@ -31,9 +31,10 @@
             System.ComponentModel.ComponentResourceManager resources = new System.ComponentModel.ComponentResourceManager(typeof(MainForm));
             MainTable = new TableLayoutPanel();
             imageList = new Panel();
+            lowerPanel = new Panel();
             topPanel = new Panel();
             zoomIn = new PictureBox();
-            zoomOut = new PictureBox();
+            focusBox = new PictureBox();
             minimizeBox = new PictureBox();
             rotateBox = new PictureBox();
             deleteBox = new PictureBox();
@@ -43,9 +44,10 @@
             infoLabel = new Label();
             pictureBox = new SQPhoto.SQPhoto();
             MainTable.SuspendLayout();
+            imageList.SuspendLayout();
             topPanel.SuspendLayout();
             ((System.ComponentModel.ISupportInitialize)zoomIn).BeginInit();
-            ((System.ComponentModel.ISupportInitialize)zoomOut).BeginInit();
+            ((System.ComponentModel.ISupportInitialize)focusBox).BeginInit();
             ((System.ComponentModel.ISupportInitialize)minimizeBox).BeginInit();
             ((System.ComponentModel.ISupportInitialize)rotateBox).BeginInit();
             ((System.ComponentModel.ISupportInitialize)deleteBox).BeginInit();
@@ -66,24 +68,34 @@
             MainTable.Name = "MainTable";
             MainTable.RowCount = 3;
             MainTable.RowStyles.Add(new RowStyle(SizeType.Percent, 10F));
-            MainTable.RowStyles.Add(new RowStyle(SizeType.Percent, 80F));
-            MainTable.RowStyles.Add(new RowStyle(SizeType.Percent, 10F));
+            MainTable.RowStyles.Add(new RowStyle(SizeType.Percent, 75F));
+            MainTable.RowStyles.Add(new RowStyle(SizeType.Percent, 15F));
             MainTable.Size = new Size(1256, 550);
             MainTable.TabIndex = 0;
             // 
             // imageList
             // 
             imageList.BackColor = SystemColors.Desktop;
+            imageList.Controls.Add(lowerPanel);
             imageList.Dock = DockStyle.Fill;
-            imageList.Location = new Point(3, 498);
+            imageList.Location = new Point(3, 470);
             imageList.Name = "imageList";
-            imageList.Size = new Size(1250, 49);
+            imageList.Size = new Size(1250, 77);
             imageList.TabIndex = 3;
+            // 
+            // lowerPanel
+            // 
+            lowerPanel.Dock = DockStyle.Fill;
+            lowerPanel.Location = new Point(0, 0);
+            lowerPanel.Name = "lowerPanel";
+            lowerPanel.Size = new Size(1250, 77);
+            lowerPanel.TabIndex = 0;
+            lowerPanel.SizeChanged += lowerPanel_SizeChanged;
             // 
             // topPanel
             // 
             topPanel.Controls.Add(zoomIn);
-            topPanel.Controls.Add(zoomOut);
+            topPanel.Controls.Add(focusBox);
             topPanel.Controls.Add(minimizeBox);
             topPanel.Controls.Add(rotateBox);
             topPanel.Controls.Add(deleteBox);
@@ -104,29 +116,30 @@
             zoomIn.Image = Properties.Resources.zoomin;
             zoomIn.Location = new Point(697, 0);
             zoomIn.Name = "zoomIn";
-            zoomIn.Size = new Size(40, 49);
+            zoomIn.Size = new Size(41, 49);
             zoomIn.SizeMode = PictureBoxSizeMode.Zoom;
             zoomIn.TabIndex = 9;
             zoomIn.TabStop = false;
             // 
-            // zoomOut
+            // focusBox
             // 
-            zoomOut.Anchor = AnchorStyles.Top;
-            zoomOut.Image = Properties.Resources.zoomout;
-            zoomOut.Location = new Point(651, 0);
-            zoomOut.Name = "zoomOut";
-            zoomOut.Size = new Size(40, 49);
-            zoomOut.SizeMode = PictureBoxSizeMode.Zoom;
-            zoomOut.TabIndex = 8;
-            zoomOut.TabStop = false;
+            focusBox.Anchor = AnchorStyles.Top;
+            focusBox.Image = Properties.Resources.focus;
+            focusBox.Location = new Point(651, 0);
+            focusBox.Name = "focusBox";
+            focusBox.Size = new Size(41, 49);
+            focusBox.SizeMode = PictureBoxSizeMode.Zoom;
+            focusBox.TabIndex = 8;
+            focusBox.TabStop = false;
+            focusBox.Click += focusBox_Click;
             // 
             // minimizeBox
             // 
             minimizeBox.Anchor = AnchorStyles.Top | AnchorStyles.Right;
             minimizeBox.Image = Properties.Resources.minimize;
-            minimizeBox.Location = new Point(1118, 0);
+            minimizeBox.Location = new Point(1119, 0);
             minimizeBox.Name = "minimizeBox";
-            minimizeBox.Size = new Size(40, 49);
+            minimizeBox.Size = new Size(41, 49);
             minimizeBox.SizeMode = PictureBoxSizeMode.Zoom;
             minimizeBox.TabIndex = 7;
             minimizeBox.TabStop = false;
@@ -138,7 +151,7 @@
             rotateBox.Image = Properties.Resources.rotate;
             rotateBox.Location = new Point(559, 0);
             rotateBox.Name = "rotateBox";
-            rotateBox.Size = new Size(40, 49);
+            rotateBox.Size = new Size(41, 49);
             rotateBox.SizeMode = PictureBoxSizeMode.Zoom;
             rotateBox.TabIndex = 6;
             rotateBox.TabStop = false;
@@ -148,9 +161,9 @@
             // 
             deleteBox.Anchor = AnchorStyles.Top;
             deleteBox.Image = Properties.Resources.trashimg;
-            deleteBox.Location = new Point(513, 0);
+            deleteBox.Location = new Point(512, 0);
             deleteBox.Name = "deleteBox";
-            deleteBox.Size = new Size(40, 49);
+            deleteBox.Size = new Size(41, 49);
             deleteBox.SizeMode = PictureBoxSizeMode.Zoom;
             deleteBox.TabIndex = 5;
             deleteBox.TabStop = false;
@@ -162,7 +175,7 @@
             favBox.Image = Properties.Resources.fav;
             favBox.Location = new Point(605, 0);
             favBox.Name = "favBox";
-            favBox.Size = new Size(40, 49);
+            favBox.Size = new Size(41, 49);
             favBox.SizeMode = PictureBoxSizeMode.Zoom;
             favBox.TabIndex = 4;
             favBox.TabStop = false;
@@ -172,9 +185,9 @@
             // 
             maximizeBox.Anchor = AnchorStyles.Top | AnchorStyles.Right;
             maximizeBox.Image = Properties.Resources.maximize;
-            maximizeBox.Location = new Point(1164, 0);
+            maximizeBox.Location = new Point(1163, 0);
             maximizeBox.Name = "maximizeBox";
-            maximizeBox.Size = new Size(40, 49);
+            maximizeBox.Size = new Size(41, 49);
             maximizeBox.SizeMode = PictureBoxSizeMode.Zoom;
             maximizeBox.TabIndex = 3;
             maximizeBox.TabStop = false;
@@ -186,7 +199,7 @@
             exitBox.Image = Properties.Resources.exit;
             exitBox.Location = new Point(1210, 0);
             exitBox.Name = "exitBox";
-            exitBox.Size = new Size(40, 49);
+            exitBox.Size = new Size(41, 49);
             exitBox.SizeMode = PictureBoxSizeMode.Zoom;
             exitBox.TabIndex = 2;
             exitBox.TabStop = false;
@@ -199,7 +212,7 @@
             infoLabel.AutoSize = true;
             infoLabel.Font = new Font("Yu Gothic", 12F, FontStyle.Regular, GraphicsUnit.Point);
             infoLabel.ForeColor = Color.Gainsboro;
-            infoLabel.Location = new Point(9, 15);
+            infoLabel.Location = new Point(8, 15);
             infoLabel.Name = "infoLabel";
             infoLabel.Size = new Size(244, 21);
             infoLabel.TabIndex = 0;
@@ -217,7 +230,7 @@
             pictureBox.Location = new Point(4, 59);
             pictureBox.Margin = new Padding(4, 4, 4, 4);
             pictureBox.Name = "pictureBox";
-            pictureBox.Size = new Size(1248, 432);
+            pictureBox.Size = new Size(1248, 404);
             pictureBox.SizeMode = PictureBoxSizeMode.Zoom;
             pictureBox.TabIndex = 5;
             pictureBox.ZoomCenter = true;
@@ -232,7 +245,6 @@
             ControlBox = false;
             Controls.Add(MainTable);
             DoubleBuffered = true;
-            FormBorderStyle = FormBorderStyle.None;
             Icon = (Icon)resources.GetObject("$this.Icon");
             MaximizeBox = false;
             MinimizeBox = false;
@@ -240,10 +252,11 @@
             StartPosition = FormStartPosition.CenterScreen;
             Text = "PhotoViewer - By Akulav & map3x";
             MainTable.ResumeLayout(false);
+            imageList.ResumeLayout(false);
             topPanel.ResumeLayout(false);
             topPanel.PerformLayout();
             ((System.ComponentModel.ISupportInitialize)zoomIn).EndInit();
-            ((System.ComponentModel.ISupportInitialize)zoomOut).EndInit();
+            ((System.ComponentModel.ISupportInitialize)focusBox).EndInit();
             ((System.ComponentModel.ISupportInitialize)minimizeBox).EndInit();
             ((System.ComponentModel.ISupportInitialize)rotateBox).EndInit();
             ((System.ComponentModel.ISupportInitialize)deleteBox).EndInit();
@@ -267,6 +280,7 @@
         private PictureBox minimizeBox;
         private SQPhoto.SQPhoto pictureBox;
         private PictureBox zoomIn;
-        private PictureBox zoomOut;
+        private PictureBox focusBox;
+        private Panel lowerPanel;
     }
 }

@@ -6,7 +6,6 @@ namespace optimizedPhotoViewer
     public partial class MainForm : Form
     {
         private bool isFullscreen;
-        private bool maximized;
         private string currentImage;
 
         [DllImport("user32.DLL", EntryPoint = "ReleaseCapture")]
@@ -18,7 +17,6 @@ namespace optimizedPhotoViewer
         public MainForm(string args)
         {
             InitializeComponent();
-            DoubleBuffered = true;
             if (args != null && File.Exists(args))
             {
                 ImageHandler.loadImage(args, pictureBox, infoLabel);
@@ -27,11 +25,14 @@ namespace optimizedPhotoViewer
             }
             string fullPath = System.Diagnostics.Process.GetCurrentProcess().MainModule.FileName;
 
-            string[] fileExtensions = { ".png", ".jpg", ".jpeg", ".gif", ".ico", ".webp", ".tiff" };
+            string[] fileExtensions = { ".png", ".jpg", ".jpeg", ".gif", ".ico", ".webp", ".tiff", ".bmp" };
             foreach (string extension in fileExtensions)
             {
                 FileAssociations.SetAssociation(extension, "optimizedViewer", "Image File", fullPath);
             }
+
+            UICommands.DisplayImages(ImageHandler.GetStringsInRange(currentImage), lowerPanel);
+
         }
 
 
@@ -45,10 +46,12 @@ namespace optimizedPhotoViewer
                 case Keys.D:
                 case Keys.Right:
                     currentImage = ImageHandler.scrollImage(pictureBox, currentImage, infoLabel, true);
+                    UICommands.DisplayImages(ImageHandler.GetStringsInRange(currentImage), lowerPanel);
                     break;
                 case Keys.A:
                 case Keys.Left:
                     currentImage = ImageHandler.scrollImage(pictureBox, currentImage, infoLabel, false);
+                    UICommands.DisplayImages(ImageHandler.GetStringsInRange(currentImage), lowerPanel);
                     break;
             }
             return base.ProcessCmdKey(ref msg, keyData);
@@ -67,27 +70,19 @@ namespace optimizedPhotoViewer
 
         private void maximizeBox_Click(object sender, EventArgs e)
         {
-            if (!maximized)
-            {
-                maximized = true;
-                WindowState = FormWindowState.Maximized;
-            }
-
-            else
-            {
-                maximized = false;
-                WindowState = FormWindowState.Normal;
-            }
+            isFullscreen = UICommands.toggleFullscreen(this, isFullscreen, MainTable);
         }
 
         private void deleteBox_Click(object sender, EventArgs e)
         {
             currentImage = ImageHandler.deleteImages(currentImage, pictureBox, infoLabel);
+            UICommands.DisplayImages(ImageHandler.GetStringsInRange(currentImage), lowerPanel);
         }
 
         private void rotateBox_Click(object sender, EventArgs e)
         {
             ImageHandler.RotateImageClockwise(pictureBox, currentImage);
+            UICommands.DisplayImages(ImageHandler.GetStringsInRange(currentImage), lowerPanel);
         }
 
         private void favBox_Click(object sender, EventArgs e)
@@ -109,5 +104,16 @@ namespace optimizedPhotoViewer
         {
             WindowState = FormWindowState.Minimized;
         }
+
+        private void focusBox_Click(object sender, EventArgs e)
+        {
+            ImageHandler.loadImage(currentImage, pictureBox, infoLabel);
+        }
+
+        private void lowerPanel_SizeChanged(object sender, EventArgs e)
+        {
+            UICommands.DisplayImages(ImageHandler.GetStringsInRange(currentImage), lowerPanel);
+        }
+
     }
 }

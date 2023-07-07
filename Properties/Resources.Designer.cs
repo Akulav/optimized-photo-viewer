@@ -83,6 +83,16 @@ namespace optimizedPhotoViewer.Properties {
         /// <summary>
         ///   Looks up a localized resource of type System.Drawing.Bitmap.
         /// </summary>
+        internal static System.Drawing.Bitmap focus {
+            get {
+                object obj = ResourceManager.GetObject("focus", resourceCulture);
+                return ((System.Drawing.Bitmap)(obj));
+            }
+        }
+        
+        /// <summary>
+        ///   Looks up a localized resource of type System.Drawing.Bitmap.
+        /// </summary>
         internal static System.Drawing.Bitmap hentai_default_bg {
             get {
                 object obj = ResourceManager.GetObject("hentai-default-bg", resourceCulture);
@@ -136,16 +146,6 @@ namespace optimizedPhotoViewer.Properties {
         internal static System.Drawing.Bitmap zoomin {
             get {
                 object obj = ResourceManager.GetObject("zoomin", resourceCulture);
-                return ((System.Drawing.Bitmap)(obj));
-            }
-        }
-        
-        /// <summary>
-        ///   Looks up a localized resource of type System.Drawing.Bitmap.
-        /// </summary>
-        internal static System.Drawing.Bitmap zoomout {
-            get {
-                object obj = ResourceManager.GetObject("zoomout", resourceCulture);
                 return ((System.Drawing.Bitmap)(obj));
             }
         }

@@ -1,5 +1,4 @@
-﻿using SQPhoto;
-namespace optimizedPhotoViewer.Extensions
+﻿namespace optimizedPhotoViewer.Extensions
 {
     public static class ImageHandler
     {
@@ -20,9 +19,28 @@ namespace optimizedPhotoViewer.Extensions
         public static int getCurrentIndex(string path)
         {
             string[] images = getImages(path);
-            int index = Array.IndexOf(images, path);
-            return index;
+            return Array.IndexOf(images, path);
         }
+
+        public static List<string> GetStringsInRange(string path)
+        {
+            string[] strings = getImages(path);
+            int currentIndex = getCurrentIndex(path);
+            List<string> result = new List<string>();
+            int count = strings.Length;
+            int numItems = Math.Min(count, 5);
+
+            int start = currentIndex - (numItems / 2) + ((numItems + 1) % 2);
+            for (int i = 0; i < numItems; i++)
+            {
+                int index = (start + i + count) % count;
+                result.Add(strings[index]);
+            }
+
+            return result;
+        }
+
+
 
         public static string deleteImages(string path, SQPhoto.SQPhoto pictureBox, Label info)
         {
@@ -32,15 +50,14 @@ namespace optimizedPhotoViewer.Extensions
             string newPath = images[(index + 1) % imagesLength];
 
             loadImage(newPath, pictureBox, info);
+            File.Delete(path);
 
             if (imagesLength == 1)
             {
                 pictureBox.Image.Dispose();
-                File.Delete(path);
                 Application.Exit();
             }
 
-            File.Delete(path);
             return newPath;
         }
 

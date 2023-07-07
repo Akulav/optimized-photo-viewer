@@ -4,7 +4,7 @@ Add webp format support (no libraries) [map3X]
 Functional:
 Slideshow timer for pictures [map3X]
 Load photolist of the current image + its neighbours. UPDATE at any deletion or scrolling [map3X]
-Mouse zoom (Default - 1000%) [map3X]
+Mouse zoom (Default - 1000%) [akulav] [DONE]
 Favorite database [map3X]
 
 UI:
@@ -12,13 +12,19 @@ Add slideshow timer UI [map3X]
 Add photolist UI [akulav]
 Favorite UI 1(if image is favorite -> the heart icon is full, no if not.) [akulav]
 Favorite UI 2(Button to show a list of all favorite images (to be shown like on the phone)) [map3X]
+Add focus button [akulav] [DONE]
 
 
 Bugs:
 Delete does not work properly when done in succession [akulav] [DONE]
-Maximize button hides the taskbar? [akulav]
+Maximize button hides the taskbar? [akulav] [DONE]
 
 Optimization:
 Dont keep in memory all paths of image (keep only current one) [akulav] [DONE]
 Internal Resources compression [akulav]
 Dont make all functions static [akulav]
+
+ToImprove:
+Zoomed Image is laggy
+Image can be unzoomed too much
+Add animations on hover (Minimize, Maximize, Exit)
