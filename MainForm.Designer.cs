@@ -70,7 +70,7 @@
             MainTable.RowStyles.Add(new RowStyle(SizeType.Percent, 10F));
             MainTable.RowStyles.Add(new RowStyle(SizeType.Percent, 75F));
             MainTable.RowStyles.Add(new RowStyle(SizeType.Percent, 15F));
-            MainTable.Size = new Size(1256, 550);
+            MainTable.Size = new Size(1256, 703);
             MainTable.TabIndex = 0;
             // 
             // imageList
@@ -78,9 +78,9 @@
             imageList.BackColor = SystemColors.Desktop;
             imageList.Controls.Add(lowerPanel);
             imageList.Dock = DockStyle.Fill;
-            imageList.Location = new Point(3, 470);
+            imageList.Location = new Point(3, 600);
             imageList.Name = "imageList";
-            imageList.Size = new Size(1250, 77);
+            imageList.Size = new Size(1250, 100);
             imageList.TabIndex = 3;
             // 
             // lowerPanel
@@ -88,9 +88,9 @@
             lowerPanel.Dock = DockStyle.Fill;
             lowerPanel.Location = new Point(0, 0);
             lowerPanel.Name = "lowerPanel";
-            lowerPanel.Size = new Size(1250, 77);
+            lowerPanel.Size = new Size(1250, 100);
             lowerPanel.TabIndex = 0;
-            lowerPanel.SizeChanged += lowerPanel_SizeChanged;
+            lowerPanel.Resize += lowerPanel_Resize;
             // 
             // topPanel
             // 
@@ -106,7 +106,7 @@
             topPanel.Dock = DockStyle.Fill;
             topPanel.Location = new Point(3, 3);
             topPanel.Name = "topPanel";
-            topPanel.Size = new Size(1250, 49);
+            topPanel.Size = new Size(1250, 64);
             topPanel.TabIndex = 4;
             topPanel.MouseDown += topPanel_MouseDown;
             // 
@@ -227,10 +227,10 @@
             pictureBox.CanZoom = true;
             pictureBox.Dock = DockStyle.Fill;
             pictureBox.Image = Properties.Resources.hentai_default_bg;
-            pictureBox.Location = new Point(4, 59);
+            pictureBox.Location = new Point(4, 74);
             pictureBox.Margin = new Padding(4, 4, 4, 4);
             pictureBox.Name = "pictureBox";
-            pictureBox.Size = new Size(1248, 404);
+            pictureBox.Size = new Size(1248, 519);
             pictureBox.SizeMode = PictureBoxSizeMode.Zoom;
             pictureBox.TabIndex = 5;
             pictureBox.ZoomCenter = true;
@@ -241,7 +241,7 @@
             AutoScaleDimensions = new SizeF(7F, 15F);
             AutoScaleMode = AutoScaleMode.Font;
             BackColor = SystemColors.WindowText;
-            ClientSize = new Size(1256, 550);
+            ClientSize = new Size(1256, 703);
             ControlBox = false;
             Controls.Add(MainTable);
             DoubleBuffered = true;

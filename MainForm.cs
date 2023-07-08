@@ -1,57 +1,60 @@
 using optimizedPhotoViewer.Extensions;
 using System.Runtime.InteropServices;
+using Timer = System.Windows.Forms.Timer;
 
 namespace optimizedPhotoViewer
 {
     public partial class MainForm : Form
     {
-        private bool isFullscreen;
-        private string currentImage;
-
         [DllImport("user32.DLL", EntryPoint = "ReleaseCapture")]
         private extern static void ReleaseCapture();
         [DllImport("user32.DLL", EntryPoint = "SendMessage")]
         private extern static void SendMessage(IntPtr hWnd, int wMsg, int wParam, int lParam);
-
+        private Timer resizeTimer;
 
         public MainForm(string args)
         {
             InitializeComponent();
             if (args != null && File.Exists(args))
             {
+                TempSettings.defaultPath = args;
                 ImageHandler.loadImage(args, pictureBox, infoLabel);
-                int currentIndex = ImageHandler.getCurrentIndex(args);
-                currentImage = ImageHandler.getImages(args)[currentIndex];
+                ImageHandler.getImages();
+                ImageHandler.getCurrentIndex();
             }
             string fullPath = System.Diagnostics.Process.GetCurrentProcess().MainModule.FileName;
 
-            string[] fileExtensions = { ".png", ".jpg", ".jpeg", ".gif", ".ico", ".webp", ".tiff", ".bmp" };
+            string[] fileExtensions = { ".png", ".jpg", ".jpeg", ".gif", ".ico", ".tiff", ".bmp" };
             foreach (string extension in fileExtensions)
             {
                 FileAssociations.SetAssociation(extension, "optimizedViewer", "Image File", fullPath);
             }
 
-            UICommands.DisplayImages(ImageHandler.GetStringsInRange(currentImage), lowerPanel);
+            UICommands.DisplayImages(lowerPanel, pictureBox, infoLabel);
+            BackgroundProcesser worker = new BackgroundProcesser();
+            worker.StartFunction();
 
+            resizeTimer = new Timer();
+            resizeTimer.Interval = 200; // Set the interval according to your needs
+            resizeTimer.Tick += ResizeTimer_Tick;
         }
-
 
         protected override bool ProcessCmdKey(ref Message msg, Keys keyData)
         {
             switch (keyData)
             {
                 case Keys.F11:
-                    isFullscreen = UICommands.toggleFullscreen(this, isFullscreen, MainTable);
+                    UICommands.ToggleFullscreen(this, MainTable, lowerPanel, pictureBox, infoLabel);
                     break;
                 case Keys.D:
                 case Keys.Right:
-                    currentImage = ImageHandler.scrollImage(pictureBox, currentImage, infoLabel, true);
-                    UICommands.DisplayImages(ImageHandler.GetStringsInRange(currentImage), lowerPanel);
+                    ImageHandler.scrollImage(pictureBox, infoLabel, true);
+                    UICommands.DisplayImages(lowerPanel, pictureBox, infoLabel);
                     break;
                 case Keys.A:
                 case Keys.Left:
-                    currentImage = ImageHandler.scrollImage(pictureBox, currentImage, infoLabel, false);
-                    UICommands.DisplayImages(ImageHandler.GetStringsInRange(currentImage), lowerPanel);
+                    ImageHandler.scrollImage(pictureBox, infoLabel, false);
+                    UICommands.DisplayImages(lowerPanel, pictureBox, infoLabel);
                     break;
             }
             return base.ProcessCmdKey(ref msg, keyData);
@@ -70,19 +73,19 @@ namespace optimizedPhotoViewer
 
         private void maximizeBox_Click(object sender, EventArgs e)
         {
-            isFullscreen = UICommands.toggleFullscreen(this, isFullscreen, MainTable);
+            UICommands.ToggleFullscreen(this, MainTable, lowerPanel, pictureBox, infoLabel);
         }
 
         private void deleteBox_Click(object sender, EventArgs e)
         {
-            currentImage = ImageHandler.deleteImages(currentImage, pictureBox, infoLabel);
-            UICommands.DisplayImages(ImageHandler.GetStringsInRange(currentImage), lowerPanel);
+            ImageHandler.deleteImages(pictureBox, infoLabel);
+            UICommands.DisplayImages(lowerPanel, pictureBox, infoLabel);
         }
 
         private void rotateBox_Click(object sender, EventArgs e)
         {
-            ImageHandler.RotateImageClockwise(pictureBox, currentImage);
-            UICommands.DisplayImages(ImageHandler.GetStringsInRange(currentImage), lowerPanel);
+            ImageHandler.RotateImageClockwise(pictureBox);
+            UICommands.DisplayImages(lowerPanel, pictureBox, infoLabel);
         }
 
         private void favBox_Click(object sender, EventArgs e)
@@ -107,12 +110,17 @@ namespace optimizedPhotoViewer
 
         private void focusBox_Click(object sender, EventArgs e)
         {
-            ImageHandler.loadImage(currentImage, pictureBox, infoLabel);
+            ImageHandler.loadImage(TempSettings.currentImage, pictureBox, infoLabel);
         }
 
-        private void lowerPanel_SizeChanged(object sender, EventArgs e)
+        private void lowerPanel_Resize(object sender, EventArgs e)
         {
-            UICommands.DisplayImages(ImageHandler.GetStringsInRange(currentImage), lowerPanel);
+            resizeTimer.Start();
+        }
+        private void ResizeTimer_Tick(object sender, EventArgs e)
+        {
+            resizeTimer.Stop(); // Stop the timer
+            UICommands.DisplayImages(lowerPanel, pictureBox, infoLabel);
         }
 
     }
