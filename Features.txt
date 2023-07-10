@@ -1,15 +1,19 @@
 Extensions:
 Add webp format support (no libraries) [map3X]
+Add .gif format support (no libraries) [map3X]
 
 Functional:
-Slideshow timer for pictures [map3X]
-Load photolist of the current image + its neighbours. UPDATE at any deletion or scrolling [map3X]
+Load photolist of the current image + its neighbours. UPDATE at any deletion or scrolling [akulav] [DONE]
 Mouse zoom (Default - 1000%) [akulav] [DONE]
 Favorite database [map3X]
+Load all liked images [map3X]
+Automatic database cleanup [map3X]
+Slideshow timer for pictures [map3X]
+Favorite liked images mode (enters the application in a special mode where it works like before but as if all liked images are in the default folder. The user can exit by simply clicking the button again [map3X]
 
 UI:
 Add slideshow timer UI [map3X]
-Add photolist UI [akulav]
+Add photolist UI [akulav] [DONE]
 Favorite UI 1(if image is favorite -> the heart icon is full, no if not.) [akulav]
 Favorite UI 2(Button to show a list of all favorite images (to be shown like on the phone)) [map3X]
 Add focus button [akulav] [DONE]
@@ -27,4 +31,4 @@ Dont make all functions static [akulav]
 ToImprove:
 Zoomed Image is laggy
 Image can be unzoomed too much
-Add animations on hover (Minimize, Maximize, Exit)
+Add animations on hover (Minimize, Maximize, Exit) [DONE]

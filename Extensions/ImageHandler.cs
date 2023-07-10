@@ -33,7 +33,7 @@ namespace optimizedPhotoViewer.Extensions
         {
             List<string> result = new();
             int count = TempSettings.AllPaths.Length;
-            int numItems = Math.Min(count, 6);
+            int numItems = Math.Min(count, 5);
 
             int start = TempSettings.CurrentIndex - (numItems / 2) + ((numItems + 1) % 2);
             for (int i = 0; i < numItems; i++)
