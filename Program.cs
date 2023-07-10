@@ -8,7 +8,7 @@ namespace optimizedPhotoViewer
             ApplicationConfiguration.Initialize();
             if (args.Length == 0)
             {
-                Application.Run(new MainForm("null"));
+                Application.Run(new MainForm(null));
             }
             else
             {

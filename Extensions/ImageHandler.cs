@@ -1,87 +1,86 @@
-﻿namespace optimizedPhotoViewer.Extensions
+﻿using System.Collections.Concurrent;
+
+namespace optimizedPhotoViewer.Extensions
 {
     public static class ImageHandler
     {
-        public static void getImages()
+        public static void GetImages()
         {
-            string directoryPath = Path.GetDirectoryName(TempSettings.defaultPath);
-            string[] imageExtensions = { ".png", ".jpg", ".jpeg", ".bmp", ".ico", ".tiff", ".gif" };
+            string directoryPath = Path.GetDirectoryName(TempSettings.DefaultPath);
+            string[] imageExtensions = { ".png", ".jpg", ".jpeg", ".bmp", ".ico", ".tiff" };
 
             HashSet<string> imageExtensionsSet = new(imageExtensions, StringComparer.OrdinalIgnoreCase);
-            string[] sorted = Directory.GetFiles(directoryPath)
-                            .Where(file => imageExtensionsSet.Contains(Path.GetExtension(file)))
-                            .ToArray();
-            Array.Sort(sorted);
-            TempSettings.allPaths = sorted;
+            ConcurrentBag<string> filesBag = new();
+
+            Parallel.ForEach(Directory.EnumerateFiles(directoryPath), file =>
+            {
+                if (imageExtensionsSet.Contains(Path.GetExtension(file)))
+                {
+                    filesBag.Add(file);
+                }
+            });
+            string[] sorted = filesBag.OrderBy(file => file).ToArray();
+            TempSettings.AllPaths = sorted;
         }
 
-        public static void getCurrentIndex()
+
+        public static void GetCurrentIndex()
         {
-            TempSettings.currentIndex = Array.IndexOf(TempSettings.allPaths, TempSettings.currentImage);
+            TempSettings.CurrentIndex = Array.IndexOf(TempSettings.AllPaths, TempSettings.CurrentImage);
         }
 
         public static List<string> GetStringsInRange()
         {
             List<string> result = new();
-            int count = TempSettings.allPaths.Length;
-            int numItems = Math.Min(count, 5);
+            int count = TempSettings.AllPaths.Length;
+            int numItems = Math.Min(count, 6);
 
-            int start = TempSettings.currentIndex - (numItems / 2) + ((numItems + 1) % 2);
+            int start = TempSettings.CurrentIndex - (numItems / 2) + ((numItems + 1) % 2);
             for (int i = 0; i < numItems; i++)
             {
                 int index = (start + i + count) % count;
-                result.Add(TempSettings.allPaths[index]);
+                result.Add(TempSettings.AllPaths[index]);
             }
 
             return result;
         }
 
-        public static void deleteImages(SQPhoto.SQPhoto pictureBox, Label info)
+        public static void DeleteImages(SQPhoto.SQPhoto pictureBox, Label info)
         {
-            int imagesLength = TempSettings.allPaths.Length;
-            string newPath = TempSettings.allPaths[(TempSettings.currentIndex + 1) % imagesLength];
+            int imagesLength = TempSettings.AllPaths.Length;
+            string newPath = TempSettings.AllPaths[(TempSettings.CurrentIndex + 1) % imagesLength];
 
-            File.Delete(TempSettings.currentImage);
-            loadImage(newPath, pictureBox, info);
+            File.Delete(TempSettings.CurrentImage);
+            LoadImage(newPath, pictureBox, info);
 
             if (imagesLength == 1)
             {
                 pictureBox.Image.Dispose();
                 Application.Exit();
             }
-            TempSettings.currentImage = newPath;
+            TempSettings.CurrentImage = newPath;
         }
 
-        public static void scrollImage(SQPhoto.SQPhoto pictureBox, Label info, bool next)
+        public static void LoadImage(string path, SQPhoto.SQPhoto pictureBox, Label info)
         {
-            int imagesLength = TempSettings.allPaths.Length;
-            TempSettings.currentIndex = next ? (TempSettings.currentIndex + 1) % imagesLength : (TempSettings.currentIndex - 1 + imagesLength) % imagesLength;
-            loadImage(TempSettings.allPaths[TempSettings.currentIndex], pictureBox, info);
-            TempSettings.currentImage = TempSettings.allPaths[TempSettings.currentIndex];
-        }
-
-        public static void loadImage(string path, SQPhoto.SQPhoto pictureBox, Label info)
-        {
-            using (FileStream fs = new FileStream(path, FileMode.Open, FileAccess.Read))
+            using (FileStream fs = new(path, FileMode.Open, FileAccess.Read))
             {
-                using (MemoryStream ms = new MemoryStream())
-                {
-                    fs.CopyTo(ms);
-                    Image image = Image.FromStream(ms);
-                    pictureBox.Image = image;
-                }
+                using MemoryStream ms = new();
+                fs.CopyTo(ms);
+                Image image = Image.FromStream(ms);
+                pictureBox.Image = image;
             }
-            info.Text = Path.GetFileName(path);
 
-            TempSettings.currentImage = path;
-            getImages();
-            getCurrentIndex();
+            info.Text = Path.GetFileName(path);
+            TempSettings.CurrentImage = path;
+            GetImages();
+            GetCurrentIndex();
         }
 
         public static void RotateImageClockwise(SQPhoto.SQPhoto pictureBox)
         {
             pictureBox.Image.RotateFlip(RotateFlipType.Rotate90FlipNone);
-            pictureBox.Image.Save(TempSettings.currentImage);
+            pictureBox.Image.Save(TempSettings.CurrentImage);
             pictureBox.Refresh();
         }
     }

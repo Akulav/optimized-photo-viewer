@@ -4,17 +4,16 @@
     {
         public BackgroundProcesser()
         {
-
         }
 
         public void StartFunction()
         {
-            System.Threading.Timer timer = new System.Threading.Timer(TimerCallback, null, 0, 100);
+            System.Threading.Timer timer = new(TimerCallback, null, 0, 200);
         }
 
         private void TimerCallback(object state)
         {
-           // ImageHandler.getImages();
+           ImageHandler.GetImages();
         }
     }
 }

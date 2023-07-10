@@ -33,7 +33,7 @@
             imageList = new Panel();
             lowerPanel = new Panel();
             topPanel = new Panel();
-            zoomIn = new PictureBox();
+            ListFavorites = new PictureBox();
             focusBox = new PictureBox();
             minimizeBox = new PictureBox();
             rotateBox = new PictureBox();
@@ -46,7 +46,7 @@
             MainTable.SuspendLayout();
             imageList.SuspendLayout();
             topPanel.SuspendLayout();
-            ((System.ComponentModel.ISupportInitialize)zoomIn).BeginInit();
+            ((System.ComponentModel.ISupportInitialize)ListFavorites).BeginInit();
             ((System.ComponentModel.ISupportInitialize)focusBox).BeginInit();
             ((System.ComponentModel.ISupportInitialize)minimizeBox).BeginInit();
             ((System.ComponentModel.ISupportInitialize)rotateBox).BeginInit();
@@ -67,9 +67,9 @@
             MainTable.Location = new Point(0, 0);
             MainTable.Name = "MainTable";
             MainTable.RowCount = 3;
-            MainTable.RowStyles.Add(new RowStyle(SizeType.Percent, 10F));
-            MainTable.RowStyles.Add(new RowStyle(SizeType.Percent, 75F));
-            MainTable.RowStyles.Add(new RowStyle(SizeType.Percent, 15F));
+            MainTable.RowStyles.Add(new RowStyle(SizeType.Absolute, 64F));
+            MainTable.RowStyles.Add(new RowStyle(SizeType.Percent, 83.3333359F));
+            MainTable.RowStyles.Add(new RowStyle(SizeType.Percent, 16.666666F));
             MainTable.Size = new Size(1256, 703);
             MainTable.TabIndex = 0;
             // 
@@ -78,9 +78,9 @@
             imageList.BackColor = SystemColors.Desktop;
             imageList.Controls.Add(lowerPanel);
             imageList.Dock = DockStyle.Fill;
-            imageList.Location = new Point(3, 600);
+            imageList.Location = new Point(3, 599);
             imageList.Name = "imageList";
-            imageList.Size = new Size(1250, 100);
+            imageList.Size = new Size(1250, 101);
             imageList.TabIndex = 3;
             // 
             // lowerPanel
@@ -88,13 +88,12 @@
             lowerPanel.Dock = DockStyle.Fill;
             lowerPanel.Location = new Point(0, 0);
             lowerPanel.Name = "lowerPanel";
-            lowerPanel.Size = new Size(1250, 100);
+            lowerPanel.Size = new Size(1250, 101);
             lowerPanel.TabIndex = 0;
-            lowerPanel.Resize += lowerPanel_Resize;
             // 
             // topPanel
             // 
-            topPanel.Controls.Add(zoomIn);
+            topPanel.Controls.Add(ListFavorites);
             topPanel.Controls.Add(focusBox);
             topPanel.Controls.Add(minimizeBox);
             topPanel.Controls.Add(rotateBox);
@@ -106,20 +105,23 @@
             topPanel.Dock = DockStyle.Fill;
             topPanel.Location = new Point(3, 3);
             topPanel.Name = "topPanel";
-            topPanel.Size = new Size(1250, 64);
+            topPanel.Size = new Size(1250, 58);
             topPanel.TabIndex = 4;
-            topPanel.MouseDown += topPanel_MouseDown;
+            topPanel.MouseDown += TopPanel_MouseDown;
             // 
-            // zoomIn
+            // ListFavorites
             // 
-            zoomIn.Anchor = AnchorStyles.Top;
-            zoomIn.Image = Properties.Resources.zoomin;
-            zoomIn.Location = new Point(697, 0);
-            zoomIn.Name = "zoomIn";
-            zoomIn.Size = new Size(41, 49);
-            zoomIn.SizeMode = PictureBoxSizeMode.Zoom;
-            zoomIn.TabIndex = 9;
-            zoomIn.TabStop = false;
+            ListFavorites.Anchor = AnchorStyles.Top;
+            ListFavorites.Image = Properties.Resources.list;
+            ListFavorites.Location = new Point(697, 0);
+            ListFavorites.Name = "ListFavorites";
+            ListFavorites.Size = new Size(41, 49);
+            ListFavorites.SizeMode = PictureBoxSizeMode.Zoom;
+            ListFavorites.TabIndex = 9;
+            ListFavorites.TabStop = false;
+            ListFavorites.Click += ListFavorites_Click;
+            ListFavorites.MouseLeave += ExitBox_MouseLeave;
+            ListFavorites.MouseHover += ExitBox_MouseEnter;
             // 
             // focusBox
             // 
@@ -131,7 +133,9 @@
             focusBox.SizeMode = PictureBoxSizeMode.Zoom;
             focusBox.TabIndex = 8;
             focusBox.TabStop = false;
-            focusBox.Click += focusBox_Click;
+            focusBox.Click += FocusBox_Click;
+            focusBox.MouseLeave += ExitBox_MouseLeave;
+            focusBox.MouseHover += ExitBox_MouseEnter;
             // 
             // minimizeBox
             // 
@@ -143,7 +147,9 @@
             minimizeBox.SizeMode = PictureBoxSizeMode.Zoom;
             minimizeBox.TabIndex = 7;
             minimizeBox.TabStop = false;
-            minimizeBox.Click += minimizeBox_Click;
+            minimizeBox.Click += MinimizeBox_Click;
+            minimizeBox.MouseLeave += ExitBox_MouseLeave;
+            minimizeBox.MouseHover += ExitBox_MouseEnter;
             // 
             // rotateBox
             // 
@@ -155,7 +161,9 @@
             rotateBox.SizeMode = PictureBoxSizeMode.Zoom;
             rotateBox.TabIndex = 6;
             rotateBox.TabStop = false;
-            rotateBox.Click += rotateBox_Click;
+            rotateBox.Click += RotateBox_Click;
+            rotateBox.MouseLeave += ExitBox_MouseLeave;
+            rotateBox.MouseHover += ExitBox_MouseEnter;
             // 
             // deleteBox
             // 
@@ -167,7 +175,9 @@
             deleteBox.SizeMode = PictureBoxSizeMode.Zoom;
             deleteBox.TabIndex = 5;
             deleteBox.TabStop = false;
-            deleteBox.Click += deleteBox_Click;
+            deleteBox.Click += DeleteBox_Click;
+            deleteBox.MouseLeave += ExitBox_MouseLeave;
+            deleteBox.MouseHover += ExitBox_MouseEnter;
             // 
             // favBox
             // 
@@ -179,7 +189,9 @@
             favBox.SizeMode = PictureBoxSizeMode.Zoom;
             favBox.TabIndex = 4;
             favBox.TabStop = false;
-            favBox.Click += favBox_Click;
+            favBox.Click += FavBox_Click;
+            favBox.MouseLeave += ExitBox_MouseLeave;
+            favBox.MouseHover += ExitBox_MouseEnter;
             // 
             // maximizeBox
             // 
@@ -191,7 +203,9 @@
             maximizeBox.SizeMode = PictureBoxSizeMode.Zoom;
             maximizeBox.TabIndex = 3;
             maximizeBox.TabStop = false;
-            maximizeBox.Click += maximizeBox_Click;
+            maximizeBox.Click += MaximizeBox_Click;
+            maximizeBox.MouseLeave += ExitBox_MouseLeave;
+            maximizeBox.MouseHover += ExitBox_MouseEnter;
             // 
             // exitBox
             // 
@@ -203,9 +217,9 @@
             exitBox.SizeMode = PictureBoxSizeMode.Zoom;
             exitBox.TabIndex = 2;
             exitBox.TabStop = false;
-            exitBox.Click += exitBox_Click;
-            exitBox.MouseEnter += exitBox_MouseEnter;
-            exitBox.MouseLeave += exitBox_MouseLeave;
+            exitBox.Click += ExitBox_Click;
+            exitBox.MouseLeave += ExitBox_MouseLeave;
+            exitBox.MouseHover += ExitBox_MouseEnter;
             // 
             // infoLabel
             // 
@@ -226,11 +240,11 @@
             pictureBox.CanReSize = true;
             pictureBox.CanZoom = true;
             pictureBox.Dock = DockStyle.Fill;
-            pictureBox.Image = Properties.Resources.hentai_default_bg;
-            pictureBox.Location = new Point(4, 74);
+            pictureBox.Image = Properties.Resources.default_bg;
+            pictureBox.Location = new Point(4, 68);
             pictureBox.Margin = new Padding(4, 4, 4, 4);
             pictureBox.Name = "pictureBox";
-            pictureBox.Size = new Size(1248, 519);
+            pictureBox.Size = new Size(1248, 524);
             pictureBox.SizeMode = PictureBoxSizeMode.Zoom;
             pictureBox.TabIndex = 5;
             pictureBox.ZoomCenter = true;
@@ -251,11 +265,12 @@
             Name = "MainForm";
             StartPosition = FormStartPosition.CenterScreen;
             Text = "PhotoViewer - By Akulav & map3x";
+            ResizeEnd += MainForm_ResizeEnd;
             MainTable.ResumeLayout(false);
             imageList.ResumeLayout(false);
             topPanel.ResumeLayout(false);
             topPanel.PerformLayout();
-            ((System.ComponentModel.ISupportInitialize)zoomIn).EndInit();
+            ((System.ComponentModel.ISupportInitialize)ListFavorites).EndInit();
             ((System.ComponentModel.ISupportInitialize)focusBox).EndInit();
             ((System.ComponentModel.ISupportInitialize)minimizeBox).EndInit();
             ((System.ComponentModel.ISupportInitialize)rotateBox).EndInit();
@@ -279,7 +294,7 @@
         private PictureBox favBox;
         private PictureBox minimizeBox;
         private SQPhoto.SQPhoto pictureBox;
-        private PictureBox zoomIn;
+        private PictureBox ListFavorites;
         private PictureBox focusBox;
         private Panel lowerPanel;
     }
