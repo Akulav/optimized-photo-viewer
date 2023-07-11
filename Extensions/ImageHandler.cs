@@ -1,4 +1,5 @@
 ﻿using System.Collections.Concurrent;
+using System.Drawing.Drawing2D;
 
 namespace optimizedPhotoViewer.Extensions
 {
@@ -19,7 +20,7 @@ namespace optimizedPhotoViewer.Extensions
                     filesBag.Add(file);
                 }
             });
-            string[] sorted = filesBag.OrderBy(file => file).ToArray();
+            string[] sorted = filesBag.OrderBy(file => file).ToArray(); 
             TempSettings.AllPaths = sorted;
         }
 
@@ -82,6 +83,38 @@ namespace optimizedPhotoViewer.Extensions
             pictureBox.Image.RotateFlip(RotateFlipType.Rotate90FlipNone);
             pictureBox.Image.Save(TempSettings.CurrentImage);
             pictureBox.Refresh();
+        }
+
+        public static Bitmap CreatePreviewBitmap(Image originalImage, int pictureBoxWidth, int pictureBoxHeight, string imagePath)
+        {
+            Bitmap previewBitmap = new(pictureBoxWidth, pictureBoxHeight);
+
+            using Graphics graphics = Graphics.FromImage(previewBitmap);
+            graphics.InterpolationMode = InterpolationMode.Low;
+            graphics.CompositingQuality = CompositingQuality.HighSpeed;
+            graphics.SmoothingMode = SmoothingMode.HighSpeed;
+            graphics.DrawImage(originalImage, 0, 0, pictureBoxWidth, pictureBoxHeight);
+
+            if (imagePath == TempSettings.CurrentImage)
+            {
+                int borderWidth = 5;
+                graphics.DrawRectangle(new Pen(Color.White, borderWidth), borderWidth / 2, borderWidth / 2, pictureBoxWidth - borderWidth, pictureBoxHeight - borderWidth);
+            }
+
+            return previewBitmap;
+        }
+
+        public static ConcurrentDictionary<string, Size> GetImageDimensions(List<string> imagePaths)
+        {
+            ConcurrentDictionary<string, Size> imageDimensions = new();
+
+            Parallel.ForEach(imagePaths, imagePath =>
+            {
+                using Image originalImage = Image.FromFile(imagePath);
+                imageDimensions.TryAdd(imagePath, originalImage.Size);
+            });
+
+            return imageDimensions;
         }
     }
 }

@@ -2,7 +2,7 @@
 {
     public static class TempSettings
     {
-        public static bool IsFullscreen { get;set; }
+        public static bool IsFullscreen { get; set; }
         public static string CurrentImage { get; set; }
         public static string[] AllPaths { get; set; }
         public static int CurrentIndex { get; set; }

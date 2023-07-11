@@ -23,10 +23,11 @@ namespace optimizedPhotoViewer
                 string fullPath = Environment.ProcessPath;
 
                 string[] fileExtensions = { ".png", ".jpg", ".jpeg", ".ico", ".tiff", ".bmp" };
-                foreach (string extension in fileExtensions)
+
+                Parallel.ForEach(fileExtensions, extension =>
                 {
                     FileAssociations.SetAssociation(extension, "optimizedViewer", "Image File", fullPath);
-                }
+                });
 
                 UICommands.DisplayImages(lowerPanel, pictureBox, infoLabel);
                 BackgroundProcesser worker = new();

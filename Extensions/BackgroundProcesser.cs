@@ -8,7 +8,7 @@
 
         public void StartFunction()
         {
-            System.Threading.Timer timer = new(TimerCallback, null, 0, 200);
+            System.Threading.Timer timer = new(TimerCallback, null, 0, 10);
         }
 
         private void TimerCallback(object state)
