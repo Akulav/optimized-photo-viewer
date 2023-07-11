@@ -13,11 +13,11 @@
   "project": {
     "version": "1.0.0",
     "restore": {
-      "projectUniqueName": "C:\\Users\\akula\\source\\repos\\OptimizedPhotoViewer\\OptimizedPhotoViewer.csproj",
+      "projectUniqueName": "C:\\Users\\akula\\Desktop\\optimized-photo-viewer\\OptimizedPhotoViewer.csproj",
       "projectName": "OptimizedPhotoViewer",
-      "projectPath": "C:\\Users\\akula\\source\\repos\\OptimizedPhotoViewer\\OptimizedPhotoViewer.csproj",
+      "projectPath": "C:\\Users\\akula\\Desktop\\optimized-photo-viewer\\OptimizedPhotoViewer.csproj",
       "packagesPath": "C:\\Users\\akula\\.nuget\\packages\\",
-      "outputPath": "C:\\Users\\akula\\source\\repos\\OptimizedPhotoViewer\\obj\\",
+      "outputPath": "C:\\Users\\akula\\Desktop\\optimized-photo-viewer\\obj\\",
       "projectStyle": "PackageReference",
       "configFilePaths": [
         "C:\\Users\\akula\\AppData\\Roaming\\NuGet\\NuGet.Config",

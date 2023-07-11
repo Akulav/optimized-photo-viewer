@@ -4,6 +4,7 @@ using System.IO;
 using System.Threading.Tasks;
 using System.Windows;
 using System.Windows.Input;
+using System.Windows.Media;
 
 namespace OptimizedPhotoViewer
 {
@@ -29,6 +30,12 @@ namespace OptimizedPhotoViewer
             UICommands.AddImagesToGrid(grid, 15, pictureBox, infoLabel);
             BackgroundProcesser worker = new();
             worker.StartFunction();
+
+        }
+
+        private void Image_MouseWheel(object sender, MouseWheelEventArgs e)
+        {
+           
         }
 
         private void Window_PreviewKeyDown(object sender, KeyEventArgs e)

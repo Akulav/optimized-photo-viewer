@@ -14,7 +14,7 @@
             <RowDefinition Height="85*"/>
             <RowDefinition Height="15*"/>
         </Grid.RowDefinitions>
-        <Image Grid.Row="1" VerticalAlignment="Stretch" HorizontalAlignment="Stretch" Name="pictureBox"/>
+        <Image Grid.Row="1" VerticalAlignment="Stretch" HorizontalAlignment="Stretch" Name="pictureBox" MouseWheel="Image_MouseWheel"/>
         <Label Content="PLACE_HOLDER" HorizontalAlignment="Left" Margin="30,0,0,0" VerticalAlignment="Center" Foreground="Gainsboro" FontSize="16" Name="infoLabel"/>
         
     </Grid>
