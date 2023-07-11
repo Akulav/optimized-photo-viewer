@@ -1,10 +1,10 @@
 ﻿using Microsoft.Win32;
+using System;
 
-namespace optimizedPhotoViewer.Extensions
+namespace OptimizedPhotoViewer.Extensions
 {
-    public class FileAssociations
+    public static class FileAssociations
     {
-        // needed so that Explorer windows get refreshed after the registry is updated
         [System.Runtime.InteropServices.DllImport("Shell32.dll")]
         private static extern int SHChangeNotify(int eventId, int flags, IntPtr item1, IntPtr item2);
 

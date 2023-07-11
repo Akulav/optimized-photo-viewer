@@ -1,49 +1,76 @@
-﻿using System.Collections.Concurrent;
+﻿using OptimizedPhotoViewer.DataStructures;
+using System;
+using System.Collections.Generic;
+using System.Windows;
+using System.Windows.Controls;
+using System.Windows.Interop;
+using System.Windows.Media;
+using System.Windows.Media.Imaging;
+using Image = System.Windows.Controls.Image;
 
-namespace optimizedPhotoViewer.Extensions
+namespace OptimizedPhotoViewer.Extensions
 {
     public static class UICommands
     {
-        public static void ToggleFullscreen(Form form, TableLayoutPanel panel, Panel lowerPanel, SQPhoto.SQPhoto pictureBox, Label info, bool f11)
+        public static void ToggleFullScreen(Window window, Grid grid, Image pictureBox, Label infoLabel)
         {
-            form.WindowState = TempSettings.IsFullscreen ? FormWindowState.Normal : FormWindowState.Maximized;
-
+            RowDefinitionCollection rowDefinitions = grid.RowDefinitions;
             if (TempSettings.IsFullscreen)
             {
-                panel.RowStyles.Clear();
-                panel.RowStyles.Add(new RowStyle(SizeType.Absolute, 60));
-                panel.RowStyles.Add(new RowStyle(SizeType.Percent, 85));
-                panel.RowStyles.Add(new RowStyle(SizeType.Percent, 15));
+                // Set the window state to Maximized
+                window.WindowState = WindowState.Maximized;
 
-                DisplayImages(lowerPanel, pictureBox, info);
+                // Remove the window style that includes the taskbar and top bar
+                var hwnd = new WindowInteropHelper(window).Handle;
+                var style = NativeMethods.GetWindowLong(hwnd, NativeMethods.GWL_STYLE);
+                style &= ~(NativeMethods.WS_CAPTION | NativeMethods.WS_SYSMENU);
+                NativeMethods.SetWindowLong(hwnd, NativeMethods.GWL_STYLE, style);
 
-                form.TopMost = false;
-                form.FormBorderStyle = FormBorderStyle.Sizable;
-                form.WindowState = FormWindowState.Normal;
+                // Make the window cover the entire screen
+                window.Topmost = true;
+                window.WindowState = WindowState.Normal;
+                window.WindowState = WindowState.Maximized;
 
+                rowDefinitions[0].Height = new GridLength(64);
+
+                // Modify the height of the second row to 100% (star sizing)
+                rowDefinitions[1].Height = new GridLength(1, GridUnitType.Star);
+
+                // Modify the height of the third row to 0
+                rowDefinitions[2].Height = new GridLength(0);
             }
             else
             {
-                panel.RowStyles.Clear();
-                panel.RowStyles.Add(new RowStyle(SizeType.Absolute, 60));
-                panel.RowStyles.Add(new RowStyle(SizeType.Percent, 100));
-                panel.RowStyles.Add(new RowStyle(SizeType.Percent, 0));
 
-                ClearPreview(lowerPanel);
+                // Restore the window state to Normal
+                window.WindowState = WindowState.Normal;
 
-                if (f11)
-                {
-                    form.TopMost = true;
-                    form.FormBorderStyle = FormBorderStyle.None;
-                    form.WindowState = FormWindowState.Maximized;
-                }
+                // Restore the window style with taskbar and top bar
+                var hwnd = new WindowInteropHelper(window).Handle;
+                var style = NativeMethods.GetWindowLong(hwnd, NativeMethods.GWL_STYLE);
+                style |= (NativeMethods.WS_CAPTION | NativeMethods.WS_SYSMENU);
+                NativeMethods.SetWindowLong(hwnd, NativeMethods.GWL_STYLE, style);
+
+                // Refresh the window to update the style
+                NativeMethods.SetWindowPos(hwnd, IntPtr.Zero, 0, 0, 0, 0,
+                                           NativeMethods.SWP_FRAMECHANGED | NativeMethods.SWP_NOZORDER |
+                                           NativeMethods.SWP_NOMOVE | NativeMethods.SWP_NOSIZE);
+
+
+
+                rowDefinitions[0].Height = new GridLength(50);
+
+                // Modify the height of the second row to 100% (star sizing)
+                rowDefinitions[1].Height = new GridLength(85, GridUnitType.Star);
+
+                // Modify the height of the third row to 0
+                rowDefinitions[2].Height = new GridLength(15, GridUnitType.Star);
             }
+
             TempSettings.IsFullscreen = !TempSettings.IsFullscreen;
         }
 
-
-
-        public static void ScrollImage(SQPhoto.SQPhoto pictureBox, Label info, bool next)
+        public static void ScrollImage(Image pictureBox, Label info, bool next)
         {
             ImageHandler.GetImages();
             int imagesLength = TempSettings.AllPaths.Length;
@@ -52,84 +79,110 @@ namespace optimizedPhotoViewer.Extensions
             TempSettings.CurrentImage = TempSettings.AllPaths[TempSettings.CurrentIndex];
         }
 
-        public static void ClearPreview(Panel panel)
+        public static void AddImagesToGrid(Grid grid, double spacing, Image mainPictureBox, Label infoLabel)
         {
-            panel.Controls.Clear();
-            GC.Collect();
-        }
-
-        public static void DisplayImages(Panel panel, SQPhoto.SQPhoto mainPicture, Label info)
-        {
+            //ClearPreview(grid);
             List<string> imagePaths = ImageHandler.GetStringsInRange();
-            ClearPreview(panel);
+            int imageCount = imagePaths.Count;
 
-            int panelWidth = panel.Width;
-            int panelHeight = panel.Height;
-            int spacing = 15;
-            int pictureBoxHeight = panelHeight;
-
-            ConcurrentDictionary<string, Size> imageDimensions = ImageHandler.GetImageDimensions(imagePaths);
-
-            int totalSpacing = spacing * (imagePaths.Count - 1);
-            int totalPictureBoxWidth = imageDimensions.Values.Sum(dimensions => dimensions.Width / (dimensions.Height / pictureBoxHeight));
-
-            int startX = (panelWidth - (totalPictureBoxWidth + totalSpacing)) / 2;
-
-            ConcurrentDictionary<int, PictureBox> pictureBoxes = CreatePictureBoxes(imagePaths, pictureBoxHeight, imageDimensions, mainPicture, info);
-
-            int totalWidth = totalPictureBoxWidth + totalSpacing;
-
-            IEnumerable<PictureBox> sortedPictureBoxes = pictureBoxes.OrderBy(kv => startX + kv.Key * (totalWidth / imagePaths.Count)).Select(kv => kv.Value);
-
-            foreach (PictureBox pictureBox in sortedPictureBoxes)
+            // Remove existing content in the third row
+            for (int i = grid.Children.Count - 1; i >= 0; i--)
             {
-                pictureBox.Location = new Point(startX, (panelHeight - pictureBox.Height) / 2);
-                panel.Controls.Add(pictureBox);
+                UIElement element = grid.Children[i];
+                if (Grid.GetRow(element) == 2)
+                {
+                    grid.Children.Remove(element);
+                }
+            }
 
-                startX += pictureBox.Width + spacing;
+            double availableHeight = grid.RowDefinitions[2].ActualHeight;
+
+            double totalImagesWidth = 0;
+            double maxHeight = 0;
+
+            // Calculate total width and maximum height
+            foreach (string imagePath in imagePaths)
+            {
+                BitmapImage bitmapImage = new BitmapImage(new Uri(imagePath));
+
+                double imageAspectRatio = bitmapImage.Width / bitmapImage.Height;
+
+                double imageHeight = availableHeight;
+                double imageWidth = bitmapImage.Width / (bitmapImage.Height / imageHeight);
+
+                totalImagesWidth += imageWidth;
+                maxHeight = Math.Max(maxHeight, imageHeight);
+            }
+
+            double totalSpacingWidth = spacing * (imageCount - 1);
+            double startX = (grid.ActualWidth - totalImagesWidth - totalSpacingWidth) / 2;
+
+            for (int i = 0; i < imageCount; i++)
+            {
+                string imagePath = imagePaths[i];
+
+                BitmapImage bitmapImage = new BitmapImage(new Uri(imagePath));
+
+                double imageAspectRatio = bitmapImage.Width / bitmapImage.Height;
+
+                double imageHeight = availableHeight;
+                double imageWidth = bitmapImage.Width / (bitmapImage.Height / imageHeight);
+
+                Image image = new()
+                {
+                    Stretch = Stretch.UniformToFill,
+                    Source = bitmapImage,
+                    VerticalAlignment = VerticalAlignment.Center,
+                    HorizontalAlignment = HorizontalAlignment.Left,
+                    Width = imageWidth,
+                    Height = imageHeight,
+                    Margin = new Thickness(startX, 0, 0, 0),
+                    Tag = imagePath
+                };
+
+                image.MouseUp += (sender, e) =>
+                {
+                    ImageHandler.LoadImage(image.Tag.ToString(), mainPictureBox, infoLabel);
+                    AddImagesToGrid(grid, 15, mainPictureBox, infoLabel);
+                };
+
+                if (image.Tag == TempSettings.CurrentImage)
+                {
+
+                }
+
+                Grid.SetRow(image, 2);
+                Grid.SetColumn(image, i);
+
+                // Set attached properties to anchor the image within the grid
+                Grid.SetColumnSpan(image, imageCount);
+                Grid.SetZIndex(image, int.MinValue);
+
+                grid.Children.Add(image);
+
+                startX += imageWidth + spacing;
             }
         }
 
-        private static ConcurrentDictionary<int, PictureBox> CreatePictureBoxes(List<string> imagePaths, int pictureBoxHeight, ConcurrentDictionary<string, Size> imageDimensions, SQPhoto.SQPhoto mainPicture, Label info)
-        {
-            ConcurrentDictionary<int, PictureBox> pictureBoxes = new();
+    }
+    internal static class NativeMethods
+    {
+        public const int GWL_STYLE = -16;
+        public const int WS_CAPTION = 0x00C00000;
+        public const int WS_SYSMENU = 0x00080000;
+        public const int SWP_FRAMECHANGED = 0x0020;
+        public const int SWP_NOZORDER = 0x0004;
+        public const int SWP_NOMOVE = 0x0002;
+        public const int SWP_NOSIZE = 0x0001;
 
-            Parallel.ForEach(imagePaths, (imagePath, state, index) =>
-            {
-                Size dimensions = imageDimensions[imagePath];
-                int pictureBoxWidth = dimensions.Width / (dimensions.Height / pictureBoxHeight);
+        [System.Runtime.InteropServices.DllImport("user32.dll")]
+        public static extern int GetWindowLong(IntPtr hwnd, int index);
 
-                PictureBox pictureBox = CreatePictureBox(imagePath, pictureBoxHeight, pictureBoxWidth, mainPicture, info);
+        [System.Runtime.InteropServices.DllImport("user32.dll")]
+        public static extern int SetWindowLong(IntPtr hwnd, int index, int newStyle);
 
-                pictureBoxes.TryAdd((int)index, pictureBox);
-            });
-
-            return pictureBoxes;
-        }
-
-        private static PictureBox CreatePictureBox(string imagePath, int pictureBoxHeight, int pictureBoxWidth, SQPhoto.SQPhoto mainPicture, Label info)
-        {
-            PictureBox pictureBox = new()
-            {
-                SizeMode = PictureBoxSizeMode.Zoom,
-                Name = imagePath,
-                Anchor = AnchorStyles.Bottom | AnchorStyles.Top
-            };
-
-            pictureBox.Click += (sender, e) =>
-            {
-                TempSettings.CurrentImage = pictureBox.Name;
-                ImageHandler.LoadImage(pictureBox.Name, mainPicture, info);
-                DisplayImages(pictureBox.Parent as Panel, mainPicture, info);
-            };
-
-            using Image originalImage = Image.FromFile(imagePath);
-            Bitmap previewBitmap = ImageHandler.CreatePreviewBitmap(originalImage, pictureBoxWidth, pictureBoxHeight, imagePath);
-
-            pictureBox.Size = new Size(pictureBoxWidth, pictureBoxHeight);
-            pictureBox.Image = previewBitmap;
-
-            return pictureBox;
-        }
+        [System.Runtime.InteropServices.DllImport("user32.dll")]
+        public static extern bool SetWindowPos(IntPtr hwnd, IntPtr hwndInsertAfter,
+                                               int x, int y, int width, int height, uint flags);
     }
 }

@@ -11,12 +11,12 @@
 using System;
 using System.Reflection;
 
-[assembly: System.Reflection.AssemblyCompanyAttribute("optimizedPhotoViewer")]
+[assembly: System.Reflection.AssemblyCompanyAttribute("OptimizedPhotoViewer")]
 [assembly: System.Reflection.AssemblyConfigurationAttribute("Debug")]
 [assembly: System.Reflection.AssemblyFileVersionAttribute("1.0.0.0")]
 [assembly: System.Reflection.AssemblyInformationalVersionAttribute("1.0.0")]
-[assembly: System.Reflection.AssemblyProductAttribute("optimizedPhotoViewer")]
-[assembly: System.Reflection.AssemblyTitleAttribute("optimizedPhotoViewer")]
+[assembly: System.Reflection.AssemblyProductAttribute("OptimizedPhotoViewer")]
+[assembly: System.Reflection.AssemblyTitleAttribute("OptimizedPhotoViewer")]
 [assembly: System.Reflection.AssemblyVersionAttribute("1.0.0.0")]
 [assembly: System.Runtime.Versioning.TargetPlatformAttribute("Windows7.0")]
 [assembly: System.Runtime.Versioning.SupportedOSPlatformAttribute("Windows7.0")]

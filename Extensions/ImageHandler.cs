@@ -1,10 +1,26 @@
-﻿using System.Collections.Concurrent;
-using System.Drawing.Drawing2D;
+﻿using OptimizedPhotoViewer.DataStructures;
+using System;
+using System.Collections.Concurrent;
+using System.Collections.Generic;
+using System.Drawing;
+using System.IO;
+using System.Linq;
+using System.Threading.Tasks;
+using System.Windows.Controls;
+using System.Windows.Media.Imaging;
 
-namespace optimizedPhotoViewer.Extensions
+namespace OptimizedPhotoViewer.Extensions
 {
     public static class ImageHandler
     {
+        public static void LoadImage(string path, Image pictureBox, Label info)
+        {
+            info.Content = Path.GetFileName(path);
+            TempSettings.CurrentImage = path;
+            pictureBox.Source = new BitmapImage(new Uri(path));
+            GetImages();
+            GetCurrentIndex();
+        }
         public static void GetImages()
         {
             string directoryPath = Path.GetDirectoryName(TempSettings.DefaultPath);
@@ -20,10 +36,9 @@ namespace optimizedPhotoViewer.Extensions
                     filesBag.Add(file);
                 }
             });
-            string[] sorted = filesBag.OrderBy(file => file).ToArray(); 
+            string[] sorted = filesBag.OrderBy(file => file).ToArray();
             TempSettings.AllPaths = sorted;
         }
-
 
         public static void GetCurrentIndex()
         {
@@ -46,73 +61,23 @@ namespace optimizedPhotoViewer.Extensions
             return result;
         }
 
-        public static void DeleteImages(SQPhoto.SQPhoto pictureBox, Label info)
+        public static ConcurrentDictionary<string, System.Drawing.Size> GetImageDimensions(List<string> imagePaths)
         {
-            int imagesLength = TempSettings.AllPaths.Length;
-            string newPath = TempSettings.AllPaths[(TempSettings.CurrentIndex + 1) % imagesLength];
-
-            File.Delete(TempSettings.CurrentImage);
-            LoadImage(newPath, pictureBox, info);
-
-            if (imagesLength == 1)
-            {
-                pictureBox.Image.Dispose();
-                Application.Exit();
-            }
-            TempSettings.CurrentImage = newPath;
-        }
-
-        public static void LoadImage(string path, SQPhoto.SQPhoto pictureBox, Label info)
-        {
-            using (FileStream fs = new(path, FileMode.Open, FileAccess.Read))
-            {
-                using MemoryStream ms = new();
-                fs.CopyTo(ms);
-                Image image = Image.FromStream(ms);
-                pictureBox.Image = image;
-            }
-
-            info.Text = Path.GetFileName(path);
-            TempSettings.CurrentImage = path;
-            GetImages();
-            GetCurrentIndex();
-        }
-
-        public static void RotateImageClockwise(SQPhoto.SQPhoto pictureBox)
-        {
-            pictureBox.Image.RotateFlip(RotateFlipType.Rotate90FlipNone);
-            pictureBox.Image.Save(TempSettings.CurrentImage);
-            pictureBox.Refresh();
-        }
-
-        public static Bitmap CreatePreviewBitmap(Image originalImage, int pictureBoxWidth, int pictureBoxHeight, string imagePath)
-        {
-            Bitmap previewBitmap = new(pictureBoxWidth, pictureBoxHeight);
-
-            using Graphics graphics = Graphics.FromImage(previewBitmap);
-            graphics.InterpolationMode = InterpolationMode.Low;
-            graphics.CompositingQuality = CompositingQuality.HighSpeed;
-            graphics.SmoothingMode = SmoothingMode.HighSpeed;
-            graphics.DrawImage(originalImage, 0, 0, pictureBoxWidth, pictureBoxHeight);
-
-            if (imagePath == TempSettings.CurrentImage)
-            {
-                int borderWidth = 5;
-                graphics.DrawRectangle(new Pen(Color.White, borderWidth), borderWidth / 2, borderWidth / 2, pictureBoxWidth - borderWidth, pictureBoxHeight - borderWidth);
-            }
-
-            return previewBitmap;
-        }
-
-        public static ConcurrentDictionary<string, Size> GetImageDimensions(List<string> imagePaths)
-        {
-            ConcurrentDictionary<string, Size> imageDimensions = new();
+            ConcurrentDictionary<string, Size> imageDimensions = new ConcurrentDictionary<string, System.Drawing.Size>();
 
             Parallel.ForEach(imagePaths, imagePath =>
             {
-                using Image originalImage = Image.FromFile(imagePath);
-                imageDimensions.TryAdd(imagePath, originalImage.Size);
+                BitmapImage originalImage = new BitmapImage();
+                originalImage.BeginInit();
+                originalImage.CacheOption = BitmapCacheOption.OnLoad;
+                originalImage.UriSource = new System.Uri(imagePath);
+                originalImage.EndInit();
+                originalImage.Freeze();
+
+                System.Drawing.Size imageSize = new System.Drawing.Size(originalImage.PixelWidth, originalImage.PixelHeight);
+                imageDimensions.TryAdd(imagePath, imageSize);
             });
+
 
             return imageDimensions;
         }

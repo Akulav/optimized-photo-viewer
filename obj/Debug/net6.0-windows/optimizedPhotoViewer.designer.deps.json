@@ -5,24 +5,7 @@
   },
   "compilationOptions": {},
   "targets": {
-    ".NETCoreApp,Version=v6.0": {
-      "SQPhoto/1.0.2": {
-        "runtime": {
-          "lib/net6.0-windows7.0/SQPhoto.dll": {
-            "assemblyVersion": "1.0.2.0",
-            "fileVersion": "1.0.2.0"
-          }
-        }
-      }
-    }
+    ".NETCoreApp,Version=v6.0": {}
   },
-  "libraries": {
-    "SQPhoto/1.0.2": {
-      "type": "package",
-      "serviceable": true,
-      "sha512": "sha512-YZwPbkYjJXqKZuZZQf17kMl4Qf3m1qEbZd7EjANRHH5YyJ4XAslXafPW+oLAqUkcUZMx2e0gOBYkY1/d7P07rg==",
-      "path": "sqphoto/1.0.2",
-      "hashPath": "sqphoto.1.0.2.nupkg.sha512"
-    }
-  }
+  "libraries": {}
 }

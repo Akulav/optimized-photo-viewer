@@ -1,17 +1,17 @@
 {
   "format": 1,
   "restore": {
-    "C:\\Users\\akula\\Desktop\\optimized-photo-viewer\\optimizedPhotoViewer.csproj": {}
+    "C:\\Users\\akula\\source\\repos\\optimizedPhotoViewer\\OptimizedPhotoViewer.csproj": {}
   },
   "projects": {
-    "C:\\Users\\akula\\Desktop\\optimized-photo-viewer\\optimizedPhotoViewer.csproj": {
+    "C:\\Users\\akula\\source\\repos\\optimizedPhotoViewer\\OptimizedPhotoViewer.csproj": {
       "version": "1.0.0",
       "restore": {
-        "projectUniqueName": "C:\\Users\\akula\\Desktop\\optimized-photo-viewer\\optimizedPhotoViewer.csproj",
-        "projectName": "optimizedPhotoViewer",
-        "projectPath": "C:\\Users\\akula\\Desktop\\optimized-photo-viewer\\optimizedPhotoViewer.csproj",
+        "projectUniqueName": "C:\\Users\\akula\\source\\repos\\optimizedPhotoViewer\\OptimizedPhotoViewer.csproj",
+        "projectName": "OptimizedPhotoViewer",
+        "projectPath": "C:\\Users\\akula\\source\\repos\\optimizedPhotoViewer\\OptimizedPhotoViewer.csproj",
         "packagesPath": "C:\\Users\\akula\\.nuget\\packages\\",
-        "outputPath": "C:\\Users\\akula\\Desktop\\optimized-photo-viewer\\obj\\",
+        "outputPath": "C:\\Users\\akula\\source\\repos\\optimizedPhotoViewer\\obj\\",
         "projectStyle": "PackageReference",
         "configFilePaths": [
           "C:\\Users\\akula\\AppData\\Roaming\\NuGet\\NuGet.Config",
@@ -39,12 +39,6 @@
       "frameworks": {
         "net6.0-windows7.0": {
           "targetAlias": "net6.0-windows",
-          "dependencies": {
-            "SQPhoto": {
-              "target": "Package",
-              "version": "[1.0.2, )"
-            }
-          },
           "imports": [
             "net461",
             "net462",
@@ -60,7 +54,7 @@
             "Microsoft.NETCore.App": {
               "privateAssets": "all"
             },
-            "Microsoft.WindowsDesktop.App.WindowsForms": {
+            "Microsoft.WindowsDesktop.App.WPF": {
               "privateAssets": "none"
             }
           },

@@ -4,14 +4,15 @@
     <OutputType>WinExe</OutputType>
     <TargetFramework>net6.0-windows</TargetFramework>
     <Nullable>enable</Nullable>
-    <UseWindowsForms>true</UseWindowsForms>
-    <ImplicitUsings>enable</ImplicitUsings>
-    <Platforms>AnyCPU;x64</Platforms>
-    <AllowUnsafeBlocks>true</AllowUnsafeBlocks>
+    <UseWPF>true</UseWPF>
   </PropertyGroup>
 
   <ItemGroup>
-    <PackageReference Include="SQPhoto" Version="1.0.2" />
+    <None Remove="Resources\defaultBg.jpg" />
+  </ItemGroup>
+
+  <ItemGroup>
+    <Resource Include="Resources\defaultBg.jpg" />
   </ItemGroup>
 
   <ItemGroup>

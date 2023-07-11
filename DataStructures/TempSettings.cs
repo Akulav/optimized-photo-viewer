@@ -1,4 +1,4 @@
-﻿namespace optimizedPhotoViewer.Extensions
+﻿namespace OptimizedPhotoViewer.DataStructures
 {
     public static class TempSettings
     {
