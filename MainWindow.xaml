@@ -10,12 +10,14 @@
         Title="OptimizedPhotoViewer" Height="450" Width="800" Background="Black" HorizontalContentAlignment="Stretch">
     <Grid x:Name="grid">
         <Grid.RowDefinitions>
-            <RowDefinition Height="50"/>
+            <RowDefinition Height="38"/>
             <RowDefinition Height="85*"/>
             <RowDefinition Height="15*"/>
         </Grid.RowDefinitions>
         <Image Grid.Row="1" VerticalAlignment="Stretch" HorizontalAlignment="Stretch" Name="pictureBox" MouseWheel="Image_MouseWheel"/>
         <Label Content="PLACE_HOLDER" HorizontalAlignment="Left" Margin="30,0,0,0" VerticalAlignment="Center" Foreground="Gainsboro" FontSize="16" Name="infoLabel"/>
-        
+        <Image HorizontalAlignment="Center" VerticalAlignment="Center" Height="30" Width="30" Name="rotateBtn" Source="pack://application:,,,/Resources/rotate.png" MouseLeftButtonDown="RotateClickHandler"/>
+        <Image HorizontalAlignment="Left" VerticalAlignment="Center" Height="30" Width="30" Name="deleteBtn" Source="pack://application:,,,/Resources/trashimg.png" MouseLeftButtonDown="DeleteClickHandler" Margin="350,0,0,0"/>
+
     </Grid>
 </Window>

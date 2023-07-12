@@ -1,8 +1,11 @@
 {
   "version": 2,
-  "dgSpecHash": "Q0SJ6CGxgltEgrN4mQYAdK+UNLGADL9hh6wFDqdKEFnOXpU9oxmRtbQGi2WXi9srjuN+M9T/wDEucfEGR9Ljgg==",
+  "dgSpecHash": "FcEihM6zIuPRWNfMtpdGfR7cc3S3V9LSQ3T0xbtCKDJgwCJVMQhEkpJzV9eX0dXWp77SsYIdKRDUWEWCES53/g==",
   "success": true,
   "projectFilePath": "C:\\Users\\akula\\Desktop\\optimized-photo-viewer\\OptimizedPhotoViewer.csproj",
-  "expectedPackageFiles": [],
+  "expectedPackageFiles": [
+    "C:\\Users\\akula\\.nuget\\packages\\microsoft.win32.systemevents\\7.0.0\\microsoft.win32.systemevents.7.0.0.nupkg.sha512",
+    "C:\\Users\\akula\\.nuget\\packages\\system.drawing.common\\7.0.0\\system.drawing.common.7.0.0.nupkg.sha512"
+  ],
   "logs": []
 }
