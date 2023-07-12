@@ -1,9 +1,9 @@
 Add Zoom Features
 Add Focus Button
-Add Rotate Button
-Add Delete Button
+Fix Rotate Button layout
 Fix Exiting FullScreen doesn't add the PhotoList
 Fix Double Clicking not opening the app
+Add automatic caching algorithm to background worker
 Add white border to currently viewed image
 Modularize the PhotoList Functional
 Add buttons hover effect

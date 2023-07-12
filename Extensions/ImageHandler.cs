@@ -2,14 +2,13 @@
 using System;
 using System.Collections.Concurrent;
 using System.Collections.Generic;
-using System.Drawing.Imaging;
 using System.Drawing;
+using System.Drawing.Imaging;
 using System.IO;
 using System.Linq;
 using System.Threading.Tasks;
 using System.Windows;
 using System.Windows.Controls;
-using System.Windows.Media;
 using System.Windows.Media.Imaging;
 using Image = System.Windows.Controls.Image;
 
@@ -17,15 +16,11 @@ namespace OptimizedPhotoViewer.Extensions
 {
     public static class ImageHandler
     {
-        public static Dictionary<string, BitmapImage> imageCache = new Dictionary<string, BitmapImage>();
-
+        private static Dictionary<string, BitmapImage> imageCache = new Dictionary<string, BitmapImage>();
 
         public static void RemoveEntry(string key)
         {
-            if (imageCache.ContainsKey(key))
-            {
-                imageCache.Remove(key);
-            }
+            imageCache.Remove(key);
         }
 
         public static void RotateOnDisk()
@@ -43,21 +38,11 @@ namespace OptimizedPhotoViewer.Extensions
                     originalImage.Save(TempSettings.CurrentImage, GetImageCodecInfo(ImageFormat.Jpeg), encoderParameters);
                 }
             }
-
-
         }
 
         private static ImageCodecInfo GetImageCodecInfo(ImageFormat format)
         {
-            ImageCodecInfo[] codecs = ImageCodecInfo.GetImageEncoders();
-            foreach (ImageCodecInfo codec in codecs)
-            {
-                if (codec.FormatID == format.Guid)
-                {
-                    return codec;
-                }
-            }
-            return null;
+            return ImageCodecInfo.GetImageEncoders().FirstOrDefault(codec => codec.FormatID == format.Guid);
         }
 
         public static void LoadImage(string path, Image pictureBox, Label info)
@@ -100,7 +85,7 @@ namespace OptimizedPhotoViewer.Extensions
             {
                 // Handle file access error
             }
-            
+
         }
 
         public static void quickLoadImage(string path, Image pictureBox)
@@ -157,45 +142,13 @@ namespace OptimizedPhotoViewer.Extensions
             TempSettings.CurrentImage = newPath;
         }
 
-        public static void Dispose(Image pictureBox, Grid grid)
-        {
-            var width = 1;
-            var height = 1;
-
-            var pixelFormat = PixelFormats.Bgra32;
-            var stride = (width * pixelFormat.BitsPerPixel + 7) / 8;
-            var pixels = new byte[height * stride];
-
-            // Set the single pixel value to black
-            int index = 0;
-            pixels[index] = 0;       // Blue
-            pixels[index + 1] = 0;   // Green
-            pixels[index + 2] = 0;   // Red
-            pixels[index + 3] = 255; // Alpha
-
-            var bitmap = BitmapSource.Create(width, height, 96, 96, pixelFormat, null, pixels, stride);
-            pictureBox.Source = null;
-
-            for (int i = grid.Children.Count - 1; i >= 0; i--)
-            {
-                UIElement element = grid.Children[i];
-                if (Grid.GetRow(element) == 2)
-                {
-                    grid.Children.Remove(element);
-                }
-            }
-
-
-            GC.Collect();
-        }
-
         public static void GetImages()
         {
             string directoryPath = Path.GetDirectoryName(TempSettings.DefaultPath);
             string[] imageExtensions = { ".png", ".jpg", ".jpeg", ".bmp", ".ico", ".tiff" };
 
-            HashSet<string> imageExtensionsSet = new(imageExtensions, StringComparer.OrdinalIgnoreCase);
-            ConcurrentBag<string> filesBag = new();
+            var imageExtensionsSet = new HashSet<string>(imageExtensions, StringComparer.OrdinalIgnoreCase);
+            ConcurrentBag<string> filesBag = new ConcurrentBag<string>();
 
             Parallel.ForEach(Directory.EnumerateFiles(directoryPath), file =>
             {

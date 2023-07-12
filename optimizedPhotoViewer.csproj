@@ -9,6 +9,9 @@
 
   <ItemGroup>
     <None Remove="Resources\defaultBg.jpg" />
+    <None Remove="Resources\fav.png" />
+    <None Remove="Resources\focus.png" />
+    <None Remove="Resources\list.png" />
     <None Remove="Resources\rotate.png" />
     <None Remove="Resources\trashimg.png" />
   </ItemGroup>
@@ -19,6 +22,15 @@
 
   <ItemGroup>
     <Resource Include="Resources\defaultBg.jpg" />
+    <Resource Include="Resources\fav.png">
+      <CopyToOutputDirectory>PreserveNewest</CopyToOutputDirectory>
+    </Resource>
+    <Resource Include="Resources\focus.png">
+      <CopyToOutputDirectory>PreserveNewest</CopyToOutputDirectory>
+    </Resource>
+    <Resource Include="Resources\list.png">
+      <CopyToOutputDirectory>PreserveNewest</CopyToOutputDirectory>
+    </Resource>
     <Resource Include="Resources\rotate.png">
       <CopyToOutputDirectory>PreserveNewest</CopyToOutputDirectory>
     </Resource>

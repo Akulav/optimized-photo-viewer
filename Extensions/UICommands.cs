@@ -19,17 +19,17 @@ namespace OptimizedPhotoViewer.Extensions
             switch (Key)
             {
                 case Key.F11:
-                    UICommands.ToggleFullScreen(window, grid, pictureBox, infoLabel);
+                    ToggleFullScreen(window, grid, pictureBox, infoLabel);
                     break;
                 case Key.D:
                 case Key.Right:
-                    UICommands.ScrollImage(pictureBox, infoLabel, true);
-                    UICommands.AddImagesToGrid(grid, 15, pictureBox, infoLabel);
+                    ScrollImage(pictureBox, infoLabel, true);
+                    AddImagesToGrid(grid, 15, pictureBox, infoLabel);
                     break;
                 case Key.A:
                 case Key.Left:
-                    UICommands.ScrollImage(pictureBox, infoLabel, false);
-                    UICommands.AddImagesToGrid(grid, 15, pictureBox, infoLabel);
+                    ScrollImage(pictureBox, infoLabel, false);
+                    AddImagesToGrid(grid, 15, pictureBox, infoLabel);
                     break;
             }
         }
@@ -179,6 +179,27 @@ namespace OptimizedPhotoViewer.Extensions
             Grid.SetZIndex(image, int.MinValue);
 
             return image;
+        }
+
+        public static void resetImage(Image pictureBox, double initialWidth, double initialHeight, Thickness initialMargin)
+        {
+            pictureBox.Width = initialWidth;
+            pictureBox.Height = initialHeight;
+            pictureBox.Margin = initialMargin;
+        }
+
+        public static void moveButtons(Image[] images, double availableWidth)
+        {
+            double totalImagesWidth = (images.Length * 30) + ((images.Length - 1) * 10); // Calculate the total width of the images and spacing
+            double startX = (availableWidth - totalImagesWidth) / 2; // Calculate the starting X position
+
+            for (int i = 0; i < images.Length; i++)
+            {
+                Image image = images[i];
+                image.Margin = new Thickness(startX, 0, 0, 0); // Set the margin to position the image
+
+                startX += 40; // Increment startX by 40 (30 for the image width + 10 for the spacing)
+            }
         }
 
     }
