@@ -20,7 +20,7 @@ namespace OptimizedPhotoViewer
             if (File.Exists(path))
             {
                 TempSettings.DefaultPath = path;
-                ImageHandler.LoadImage(path, pictureBox, infoLabel);
+                ImageLoader.LoadImage(path, pictureBox, infoLabel);
                 BackgroundProcesser worker = new();
                 worker.StartFunction();
             }
@@ -52,8 +52,6 @@ namespace OptimizedPhotoViewer
         {
 
         }
-
-
 
         private void Image_MouseWheel(object sender, MouseWheelEventArgs e)
         {
@@ -137,15 +135,15 @@ namespace OptimizedPhotoViewer
 
         private void DeleteClickHandler(object sender, MouseButtonEventArgs e)
         {
-            ImageHandler.DeleteImages(pictureBox, infoLabel);
+            ImageDeleter.DeleteImages(pictureBox, infoLabel);
             UICommands.AddImagesToGrid(grid, 15, pictureBox, infoLabel);
         }
 
         private void RotateClickHandler(object sender, MouseButtonEventArgs e)
         {
-            ImageHandler.RotateOnDisk();
-            ImageHandler.RemoveEntry(TempSettings.CurrentImage);
-            ImageHandler.LoadImage(TempSettings.CurrentImage, pictureBox, infoLabel);
+            ImageRotater.RotateOnDisk();
+            CacheOperator.RemoveEntry(TempSettings.CurrentImage);
+            ImageLoader.LoadImage(TempSettings.CurrentImage, pictureBox, infoLabel);
             UICommands.AddImagesToGrid(grid, 15, pictureBox, infoLabel);
         }
     }

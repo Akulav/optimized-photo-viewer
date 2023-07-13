@@ -14,7 +14,7 @@
 
         private void TimerCallback(object state)
         {
-            ImageHandler.GetImages();
+            DataProber.GetImages();
         }
     }
 }

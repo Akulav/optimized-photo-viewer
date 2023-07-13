@@ -94,16 +94,16 @@ namespace OptimizedPhotoViewer.Extensions
 
         public static void ScrollImage(Image pictureBox, Label info, bool next)
         {
-            ImageHandler.GetImages();
+            DataProber.GetImages();
             int imagesLength = TempSettings.AllPaths.Length;
             TempSettings.CurrentIndex = next ? (TempSettings.CurrentIndex + 1) % imagesLength : (TempSettings.CurrentIndex - 1 + imagesLength) % imagesLength;
-            ImageHandler.LoadImage(TempSettings.AllPaths[TempSettings.CurrentIndex], pictureBox, info);
+            ImageLoader.LoadImage(TempSettings.AllPaths[TempSettings.CurrentIndex], pictureBox, info);
             TempSettings.CurrentImage = TempSettings.AllPaths[TempSettings.CurrentIndex];
         }
 
         public static void AddImagesToGrid(Grid grid, double spacing, Image mainPictureBox, Label infoLabel)
         {
-            List<string> imagePaths = ImageHandler.GetStringsInRange();
+            List<string> imagePaths = DataProber.GetStringsInRange();
             int imageCount = imagePaths.Count;
 
             // Remove existing content in the third row
@@ -145,7 +145,7 @@ namespace OptimizedPhotoViewer.Extensions
 
                 image.MouseUp += (sender, e) =>
                 {
-                    ImageHandler.LoadImage(image.Tag.ToString(), mainPictureBox, infoLabel);
+                    ImageLoader.LoadImage(image.Tag.ToString(), mainPictureBox, infoLabel);
                     AddImagesToGrid(grid, spacing, mainPictureBox, infoLabel);
                 };
 
@@ -169,7 +169,7 @@ namespace OptimizedPhotoViewer.Extensions
                 Tag = imagePath
             };
 
-            ImageHandler.quickLoadImage(imagePath, image);
+            ImageLoader.LoadImage(imagePath, image, null);
 
             Grid.SetRow(image, 2);
             Grid.SetColumn(image, grid.Children.Count);

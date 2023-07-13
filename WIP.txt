@@ -1,9 +1,30 @@
-Add Zoom Features
-Add Focus Button
-Fix Rotate Button layout
+-------OPTIMIZATIONS-------
+Move UICommands Functions to separate classes
+Modularize all functions (separate functions into different functions)
+Move Zoom Operations to separate class
+Clean ALL classes
+
+-------FIXES-------
+Fix app not launching when an image is not openable
 Fix Exiting FullScreen doesn't add the PhotoList
-Fix Double Clicking not opening the app
-Add automatic caching algorithm to background worker
-Add white border to currently viewed image
-Modularize the PhotoList Functional
+
+-------EXTENSIONS------
+Add .gif support
+Add .webp support
+
+
+-------UI-------
 Add buttons hover effect
+Add white border to currently viewed image
+
+
+-------NEW-FEATURES-------
+Add Automatic Cache Cleanup (Remove rotated/deleted images from cache) (Add automatic lazy loading for non-added images on separate thread) (Add automatic cleanup)
+Add DB creation
+Add Favorite Functionality
+Make Favorite Button to change depending if the image is favorited or not
+Add Tag adding functionality
+Add Tag search
+Add Favorite/Tag Gallery
+Add Automatic DB Cleanup (removes any entry not found on disk)
+Add image dragging 
