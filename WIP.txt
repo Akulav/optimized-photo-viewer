@@ -3,6 +3,8 @@ Move UICommands Functions to separate classes
 Modularize all functions (separate functions into different functions)
 Move Zoom Operations to separate class
 Clean ALL classes
+Better memory cleanup
+Add unit tests
 
 -------FIXES-------
 Fix app not launching when an image is not openable
@@ -12,10 +14,10 @@ Fix Exiting FullScreen doesn't add the PhotoList
 Add .gif support
 Add .webp support
 
-
 -------UI-------
 Add buttons hover effect
 Add white border to currently viewed image
+Add proper icon
 
 
 -------NEW-FEATURES-------
@@ -27,4 +29,9 @@ Add Tag adding functionality
 Add Tag search
 Add Favorite/Tag Gallery
 Add Automatic DB Cleanup (removes any entry not found on disk)
-Add image dragging 
+Add image dragging
+
+-------FINAL-TOUCHES-------
+Make final optimizations
+Bug check
+Create proper installer
