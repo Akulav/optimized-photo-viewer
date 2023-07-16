@@ -26,7 +26,7 @@ namespace OptimizedPhotoViewer
             }
 
             string fullPath = System.Reflection.Assembly.GetExecutingAssembly().Location;
-            string[] fileExtensions = { ".png", ".jpg", ".jpeg", ".ico", ".tiff", ".bmp" };
+            string[] fileExtensions = { ".png", ".jpg", ".jpeg", ".ico", ".tiff", ".bmp", ".webp" };
 
             Parallel.ForEach(fileExtensions, extension =>
             {

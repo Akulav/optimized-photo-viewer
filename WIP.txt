@@ -9,10 +9,10 @@ Add unit tests
 -------FIXES-------
 Fix app not launching when an image is not openable
 Fix Exiting FullScreen doesn't add the PhotoList
+Fix label text going over the controls if the windows size is small
 
 -------EXTENSIONS------
 Add .gif support
-Add .webp support
 
 -------UI-------
 Add buttons hover effect
