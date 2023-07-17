@@ -7,11 +7,11 @@ namespace OptimizedPhotoViewer.Extensions
 {
     public static class ImageLoader
     {
-        public static void LoadImage(string path, Image pictureBox, Label info)
+        public static void LoadImage(string path, Image pictureBox, TextBlock info)
         {
             if (info != null)
             {
-                info.Content = Path.GetFileName(path);
+                info.Text = Path.GetFileName(path);
                 TempSettings.CurrentImage = path;
                 DataProber.GetImages();
                 DataProber.GetCurrentIndex();
@@ -26,6 +26,8 @@ namespace OptimizedPhotoViewer.Extensions
                     return;
                 }
 
+                BitmapImage bitmapImage = new BitmapImage();
+
                 // Read the file into a byte array
                 byte[] imageData;
                 using (FileStream stream = new FileStream(path, FileMode.Open, FileAccess.Read))
@@ -35,7 +37,7 @@ namespace OptimizedPhotoViewer.Extensions
                 }
 
                 // Create a BitmapImage and set the source using a MemoryStream
-                BitmapImage bitmapImage = new BitmapImage();
+
                 bitmapImage.BeginInit();
                 bitmapImage.CacheOption = BitmapCacheOption.OnLoad;
                 bitmapImage.StreamSource = new MemoryStream(imageData);

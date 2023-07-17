@@ -14,12 +14,7 @@ Fix label text going over the controls if the windows size is small
 -------EXTENSIONS------
 Add .gif support
 
--------UI-------
-Add proper icon
-
-
 -------NEW-FEATURES-------
-Add Automatic Cache Cleanup (Remove rotated/deleted images from cache) (Add automatic lazy loading for non-added images on separate thread) (Add automatic cleanup)
 Add DB creation
 Add Favorite Functionality
 Make Favorite Button to change depending if the image is favorited or not

@@ -1,4 +1,6 @@
-﻿namespace OptimizedPhotoViewer.DataStructures
+﻿using OptimizedPhotoViewer.Settings;
+
+namespace OptimizedPhotoViewer.DataStructures
 {
     public static class TempSettings
     {
@@ -7,5 +9,6 @@
         public static string[] AllPaths { get; set; }
         public static int CurrentIndex { get; set; }
         public static string DefaultPath { get; set; }
+        public static AppSettings settings { get; set; }
     }
 }

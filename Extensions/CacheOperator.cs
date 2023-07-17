@@ -14,7 +14,7 @@ namespace OptimizedPhotoViewer.Extensions
 
         public static void RemoveMissingKeys(Dictionary<string, BitmapImage> dictionary, string[] array)
         {
-            List<string> keysToRemove = new List<string>();
+            List<string> keysToRemove = new();
 
             foreach (string key in dictionary.Keys.ToList())
             {

@@ -1,7 +1,9 @@
 ﻿using OptimizedPhotoViewer.DataStructures;
 using System;
 using System.Collections.Generic;
+using System.IO;
 using System.Linq;
+using System.Runtime.InteropServices;
 using System.Windows;
 using System.Windows.Controls;
 using System.Windows.Input;
@@ -14,7 +16,9 @@ namespace OptimizedPhotoViewer.Extensions
 {
     public static class UICommands
     {
-        public static void KeySwitcher(Key Key, Window window, Grid grid, Image pictureBox, Label infoLabel)
+        [DllImport("shell32.dll")]
+        private static extern int ShellExecute(IntPtr hwnd, string lpOperation, string lpFile, string lpParameters, string lpDirectory, int nShowCmd);
+        public static void KeySwitcher(Key Key, Window window, Grid grid, Image pictureBox, TextBlock infoLabel)
         {
             switch (Key)
             {
@@ -32,6 +36,11 @@ namespace OptimizedPhotoViewer.Extensions
                     AddImagesToGrid(grid, 15, pictureBox, infoLabel);
                     break;
             }
+        }
+
+        public static void OpenFolder()
+        {
+            ShellExecute(IntPtr.Zero, "open", Path.GetDirectoryName(TempSettings.CurrentImage), null, null, 1);
         }
 
         public static void zoom(object sender, MouseWheelEventArgs e, Grid grid)
@@ -86,7 +95,7 @@ namespace OptimizedPhotoViewer.Extensions
             previousDelta = e.Delta;
         }
 
-        public static void ToggleFullScreen(Window window, Grid grid, Image pictureBox, Label infoLabel)
+        public static void ToggleFullScreen(Window window, Grid grid, Image pictureBox, TextBlock infoLabel)
         {
             RowDefinitionCollection rowDefinitions = grid.RowDefinitions;
             if (TempSettings.IsFullscreen)
@@ -146,7 +155,7 @@ namespace OptimizedPhotoViewer.Extensions
             TempSettings.IsFullscreen = !TempSettings.IsFullscreen;
         }
 
-        public static void ScrollImage(Image pictureBox, Label info, bool next)
+        public static void ScrollImage(Image pictureBox, TextBlock info, bool next)
         {
             DataProber.GetImages();
             int imagesLength = TempSettings.AllPaths.Length;
@@ -155,59 +164,85 @@ namespace OptimizedPhotoViewer.Extensions
             TempSettings.CurrentImage = TempSettings.AllPaths[TempSettings.CurrentIndex];
         }
 
-        public static void AddImagesToGrid(Grid grid, double spacing, Image mainPictureBox, Label infoLabel)
+        public static void AddImagesToGrid(Grid grid, double spacing, Image mainPictureBox, TextBlock infoLabel)
         {
-            List<string> imagePaths = DataProber.GetStringsInRange();
-            int imageCount = imagePaths.Count;
-
-            // Remove existing content in the third row
             var elementsToRemove = grid.Children.Cast<UIElement>()
-                                               .Where(element => Grid.GetRow(element) == 2)
-                                               .ToList();
+                                                   .Where(element => Grid.GetRow(element) == 2)
+                                                   .ToList();
 
             foreach (var element in elementsToRemove)
             {
                 grid.Children.Remove(element);
             }
 
-            double availableHeight = grid.RowDefinitions[2].ActualHeight;
+            RowDefinitionCollection rowDefinitions = grid.RowDefinitions;
 
-            double totalImagesWidth = 0;
-            double maxHeight = 0;
-
-            foreach (string imagePath in imagePaths)
+            if (TempSettings.settings.PhotoList)
             {
-                BitmapImage bitmapImage = new(new Uri(imagePath));
-                double imageHeight = availableHeight;
-                double imageWidth = bitmapImage.PixelWidth / (bitmapImage.PixelHeight / imageHeight);
 
-                totalImagesWidth += imageWidth;
-                maxHeight = Math.Max(maxHeight, imageHeight);
-            }
+                rowDefinitions[0].Height = new GridLength(45);
 
-            double totalSpacingWidth = spacing * (imageCount - 1);
-            double startX = (grid.ActualWidth - totalImagesWidth - totalSpacingWidth) / 2;
+                // Modify the height of the second row to 100% (star sizing)
+                rowDefinitions[1].Height = new GridLength(85, GridUnitType.Star);
 
-            for (int i = 0; i < imageCount; i++)
-            {
-                string imagePath = imagePaths[i];
+                // Modify the height of the third row to 0
+                rowDefinitions[2].Height = new GridLength(15, GridUnitType.Star);
 
-                double imageHeight = availableHeight;
-                double imageWidth = new BitmapImage(new Uri(imagePath)).PixelWidth / (new BitmapImage(new Uri(imagePath)).PixelHeight / imageHeight);
+                List<string> imagePaths = DataProber.GetStringsInRange();
+                int imageCount = imagePaths.Count;
+                // Remove existing content in the third row
 
-                Image image = CreateImage(imagePath, imageWidth, imageHeight, startX, grid);
 
-                image.MouseUp += (sender, e) =>
+                double availableHeight = grid.RowDefinitions[2].ActualHeight;
+
+                double totalImagesWidth = 0;
+                double maxHeight = 0;
+
+                foreach (string imagePath in imagePaths)
                 {
-                    ImageLoader.LoadImage(image.Tag.ToString(), mainPictureBox, infoLabel);
-                    AddImagesToGrid(grid, spacing, mainPictureBox, infoLabel);
-                };
+                    BitmapImage bitmapImage = new(new Uri(imagePath));
+                    double imageHeight = availableHeight;
+                    double imageWidth = bitmapImage.PixelWidth / (bitmapImage.PixelHeight / imageHeight);
 
-                grid.Children.Add(image);
-                startX += imageWidth + spacing;
+                    totalImagesWidth += imageWidth;
+                    maxHeight = Math.Max(maxHeight, imageHeight);
+                }
+
+                double totalSpacingWidth = spacing * (imageCount - 1);
+                double startX = (grid.ActualWidth - totalImagesWidth - totalSpacingWidth) / 2;
+
+                for (int i = 0; i < imageCount; i++)
+                {
+                    string imagePath = imagePaths[i];
+
+                    double imageHeight = availableHeight;
+                    double imageWidth = new BitmapImage(new Uri(imagePath)).PixelWidth / (new BitmapImage(new Uri(imagePath)).PixelHeight / imageHeight);
+
+                    Image image = CreateImage(imagePath, imageWidth, imageHeight, startX, grid);
+
+                    image.MouseUp += (sender, e) =>
+                    {
+                        ImageLoader.LoadImage(image.Tag.ToString(), mainPictureBox, infoLabel);
+                        AddImagesToGrid(grid, spacing, mainPictureBox, infoLabel);
+                    };
+
+                    grid.Children.Add(image);
+                    startX += imageWidth + spacing;
+                }
+
+                GC.Collect();
             }
 
-            GC.Collect();
+            else
+            {
+                rowDefinitions[0].Height = new GridLength(45);
+
+                // Modify the height of the second row to 100% (star sizing)
+                rowDefinitions[1].Height = new GridLength(1, GridUnitType.Star);
+
+                // Modify the height of the third row to 0
+                rowDefinitions[2].Height = new GridLength(0);
+            }
         }
 
         private static Image CreateImage(string imagePath, double imageWidth, double imageHeight, double startX, Grid grid)

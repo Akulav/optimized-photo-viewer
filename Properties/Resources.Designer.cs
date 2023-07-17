@@ -63,16 +63,6 @@ namespace OptimizedPhotoViewer.Properties {
         /// <summary>
         ///   Looks up a localized resource of type System.Byte[].
         /// </summary>
-        internal static byte[] defaultBg {
-            get {
-                object obj = ResourceManager.GetObject("defaultBg", resourceCulture);
-                return ((byte[])(obj));
-            }
-        }
-        
-        /// <summary>
-        ///   Looks up a localized resource of type System.Byte[].
-        /// </summary>
         internal static byte[] fav {
             get {
                 object obj = ResourceManager.GetObject("fav", resourceCulture);
@@ -107,6 +97,16 @@ namespace OptimizedPhotoViewer.Properties {
             get {
                 object obj = ResourceManager.GetObject("rotate", resourceCulture);
                 return ((byte[])(obj));
+            }
+        }
+        
+        /// <summary>
+        ///   Looks up a localized resource of type System.Drawing.Bitmap.
+        /// </summary>
+        internal static System.Drawing.Bitmap settings {
+            get {
+                object obj = ResourceManager.GetObject("settings", resourceCulture);
+                return ((System.Drawing.Bitmap)(obj));
             }
         }
         

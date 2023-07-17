@@ -7,7 +7,7 @@ namespace OptimizedPhotoViewer.Extensions
 {
     public static class ImageDeleter
     {
-        public static void DeleteImages(Image pictureBox, Label info)
+        public static void DeleteImages(Image pictureBox, TextBlock info)
         {
             int imagesLength = TempSettings.AllPaths.Length;
             string newPath = TempSettings.AllPaths[(TempSettings.CurrentIndex + 1) % imagesLength];

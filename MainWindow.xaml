@@ -14,14 +14,14 @@
             <RowDefinition Height="85*"/>
             <RowDefinition Height="15*"/>
         </Grid.RowDefinitions>
-
         <Image Grid.Row="1" VerticalAlignment="Stretch" HorizontalAlignment="Stretch" Name="pictureBox" MouseWheel="Image_MouseWheel"  MouseMove="Image_MouseMove"  MouseLeftButtonDown="Image_MouseLeftButtonDown" MouseLeftButtonUp="Image_MouseLeftButtonUp"/>
-        <Label Content="PLACE_HOLDER" HorizontalAlignment="Left" Margin="30,0,0,0" VerticalAlignment="Center" Foreground="Gainsboro" FontSize="16" Name="infoLabel"/>
+
+        <TextBlock Grid.Row="0"  HorizontalAlignment="Left" Margin="10,0,0,0" VerticalAlignment="Center" Foreground="Gainsboro" FontSize="16" Name="infoText" Text="PLACE_HOLDER" MouseLeftButtonDown="FolderClickHandler" TextTrimming="CharacterEllipsis"/>
         <Image Grid.Row="0" HorizontalAlignment="Left" VerticalAlignment="Center" Height="30" Width="30" Name="rotateBtn" Source="pack://application:,,,/Resources/rotate.png" MouseLeftButtonDown="RotateClickHandler" Margin="305,0,0,0"/>
         <Image Grid.Row="0" HorizontalAlignment="Left" VerticalAlignment="Center" Height="30" Width="30" Name="deleteBtn" Source="pack://application:,,,/Resources/trashimg.png" MouseLeftButtonDown="DeleteClickHandler" Margin="345,0,0,0"/>
         <Image Grid.Row="0" HorizontalAlignment="Left" VerticalAlignment="Center" Height="30" Width="30" Name="favoriteBtn" Source="pack://application:,,,/Resources/fav.png" MouseLeftButtonDown="FavoriteClickHandler" Margin="385,0,0,0"/>
         <Image Grid.Row="0" HorizontalAlignment="Left" VerticalAlignment="Center" Height="30" Width="30" Name="focusBtn" Source="pack://application:,,,/Resources/focus.png" MouseLeftButtonDown="FocusClickHandler" Margin="425,0,0,0"/>
         <Image Grid.Row="0" HorizontalAlignment="Left" VerticalAlignment="Center" Height="30" Width="30" Name="galleryBtn" Source="pack://application:,,,/Resources/list.png" MouseLeftButtonDown="GalleryClickHandler" Margin="465,0,0,0"/>
-
+        <Image Grid.Row="0" HorizontalAlignment="Left" VerticalAlignment="Center" Height="30" Width="30" Name="SettingsBtn" Source="pack://application:,,,/Resources/settings.png" MouseLeftButtonDown="SettingsClickHandler" Margin="755,0,0,0"/>
     </Grid>
 </Window>

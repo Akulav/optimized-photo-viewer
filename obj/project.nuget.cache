@@ -1,11 +1,18 @@
 {
   "version": 2,
-  "dgSpecHash": "FcEihM6zIuPRWNfMtpdGfR7cc3S3V9LSQ3T0xbtCKDJgwCJVMQhEkpJzV9eX0dXWp77SsYIdKRDUWEWCES53/g==",
+  "dgSpecHash": "PApGhD1ganHjYQb2wjY3AChMkiifRs/JPIQE1d9HJ7P4K1ARciKmYHJ+qPq91E0JU8zfk3sJnIpyZjRRrjq52A==",
   "success": true,
   "projectFilePath": "C:\\Users\\akula\\Desktop\\optimized-photo-viewer\\OptimizedPhotoViewer.csproj",
   "expectedPackageFiles": [
     "C:\\Users\\akula\\.nuget\\packages\\microsoft.win32.systemevents\\7.0.0\\microsoft.win32.systemevents.7.0.0.nupkg.sha512",
-    "C:\\Users\\akula\\.nuget\\packages\\system.drawing.common\\7.0.0\\system.drawing.common.7.0.0.nupkg.sha512"
+    "C:\\Users\\akula\\.nuget\\packages\\newtonsoft.json\\13.0.3\\newtonsoft.json.13.0.3.nupkg.sha512",
+    "C:\\Users\\akula\\.nuget\\packages\\sqlite-net-pcl\\1.8.116\\sqlite-net-pcl.1.8.116.nupkg.sha512",
+    "C:\\Users\\akula\\.nuget\\packages\\sqlitepclraw.bundle_green\\2.0.4\\sqlitepclraw.bundle_green.2.0.4.nupkg.sha512",
+    "C:\\Users\\akula\\.nuget\\packages\\sqlitepclraw.core\\2.0.4\\sqlitepclraw.core.2.0.4.nupkg.sha512",
+    "C:\\Users\\akula\\.nuget\\packages\\sqlitepclraw.lib.e_sqlite3\\2.0.4\\sqlitepclraw.lib.e_sqlite3.2.0.4.nupkg.sha512",
+    "C:\\Users\\akula\\.nuget\\packages\\sqlitepclraw.provider.dynamic_cdecl\\2.0.4\\sqlitepclraw.provider.dynamic_cdecl.2.0.4.nupkg.sha512",
+    "C:\\Users\\akula\\.nuget\\packages\\system.drawing.common\\7.0.0\\system.drawing.common.7.0.0.nupkg.sha512",
+    "C:\\Users\\akula\\.nuget\\packages\\system.memory\\4.5.3\\system.memory.4.5.3.nupkg.sha512"
   ],
   "logs": []
 }
