@@ -30,6 +30,7 @@ Add Tag search
 Add Favorite/Tag Gallery
 Add Automatic DB Cleanup (removes any entry not found on disk)
 Add image dragging
+Add settings menu (disable db, disable image caching, disable image grid, etc.)
 
 -------FINAL-TOUCHES-------
 Make final optimizations

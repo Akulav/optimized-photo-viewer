@@ -34,6 +34,58 @@ namespace OptimizedPhotoViewer.Extensions
             }
         }
 
+        public static void zoom(object sender, MouseWheelEventArgs e, Grid grid)
+        {
+            Image image = (Image)sender;
+            double zoomFactor = 1.0;
+            double zoomStep = 0.1;
+            double minZoom = 0.5;
+            double maxZoom = 2.0;
+            int previousDelta = 0;
+
+            // Get the mouse position relative to the image
+            Point mousePosition = e.GetPosition(image);
+
+            // Calculate the zoom factor based on the mouse wheel delta
+            if (previousDelta * e.Delta < 0)
+            {
+                // Reverse the zoom direction if the mouse wheel direction changes
+                zoomFactor = 1.0 + zoomStep * Math.Sign(e.Delta);
+            }
+            else
+            {
+                // Continue zooming in the same direction
+                zoomFactor += zoomStep * Math.Sign(e.Delta);
+            }
+
+            // Constrain the zoom factor within the specified range
+            zoomFactor = Math.Clamp(zoomFactor, minZoom, maxZoom);
+
+            // Calculate the new image size
+            double newImageWidth = image.ActualWidth * zoomFactor;
+            double newImageHeight = image.ActualHeight * zoomFactor;
+
+            // Calculate the new margin to keep the mouse position centered
+            double newLeftMargin = image.Margin.Left - (mousePosition.X * (newImageWidth - image.ActualWidth) / image.ActualWidth);
+            double newTopMargin = image.Margin.Top - (mousePosition.Y * (newImageHeight - image.ActualHeight) / image.ActualHeight);
+
+            // Constrain the image movement within the row
+            double rowWidth = grid.ActualWidth;
+            double rowHeight = grid.RowDefinitions[0].ActualHeight;
+            double maxLeftMargin = rowWidth - newImageWidth;
+            double maxTopMargin = rowHeight - newImageHeight;
+            newLeftMargin = Math.Max(0, Math.Min(maxLeftMargin, newLeftMargin));
+            newTopMargin = Math.Max(0, Math.Min(maxTopMargin, newTopMargin));
+
+            // Update the image's size and margin
+            image.Width = newImageWidth;
+            image.Height = newImageHeight;
+            image.Margin = new Thickness(newLeftMargin, newTopMargin, 0, 0);
+
+            // Store the current mouse wheel delta for the next iteration
+            previousDelta = e.Delta;
+        }
+
         public static void ToggleFullScreen(Window window, Grid grid, Image pictureBox, Label infoLabel)
         {
             RowDefinitionCollection rowDefinitions = grid.RowDefinitions;
@@ -87,6 +139,8 @@ namespace OptimizedPhotoViewer.Extensions
 
                 // Modify the height of the third row to 0
                 rowDefinitions[2].Height = new GridLength(15, GridUnitType.Star);
+
+                AddImagesToGrid(grid, 15, pictureBox, infoLabel);
             }
 
             TempSettings.IsFullscreen = !TempSettings.IsFullscreen;
@@ -123,7 +177,7 @@ namespace OptimizedPhotoViewer.Extensions
 
             foreach (string imagePath in imagePaths)
             {
-                BitmapImage bitmapImage = new BitmapImage(new Uri(imagePath));
+                BitmapImage bitmapImage = new(new Uri(imagePath));
                 double imageHeight = availableHeight;
                 double imageWidth = bitmapImage.PixelWidth / (bitmapImage.PixelHeight / imageHeight);
 
@@ -181,14 +235,14 @@ namespace OptimizedPhotoViewer.Extensions
             return image;
         }
 
-        public static void resetImage(Image pictureBox, double initialWidth, double initialHeight, Thickness initialMargin)
+        public static void ResetImage(Image pictureBox, double initialWidth, double initialHeight, Thickness initialMargin)
         {
             pictureBox.Width = initialWidth;
             pictureBox.Height = initialHeight;
             pictureBox.Margin = initialMargin;
         }
 
-        public static void moveButtons(Image[] images, double availableWidth)
+        public static void MoveButtons(Image[] images, double availableWidth)
         {
             double totalImagesWidth = (images.Length * 30) + ((images.Length - 1) * 10); // Calculate the total width of the images and spacing
             double startX = (availableWidth - totalImagesWidth) / 2; // Calculate the starting X position

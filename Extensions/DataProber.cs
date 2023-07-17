@@ -16,7 +16,7 @@ namespace OptimizedPhotoViewer.Extensions
             string[] imageExtensions = { ".png", ".jpg", ".jpeg", ".bmp", ".ico", ".tiff", ".webp" };
 
             var imageExtensionsSet = new HashSet<string>(imageExtensions, StringComparer.OrdinalIgnoreCase);
-            ConcurrentBag<string> filesBag = new ConcurrentBag<string>();
+            ConcurrentBag<string> filesBag = new();
 
             Parallel.ForEach(Directory.EnumerateFiles(directoryPath), file =>
             {

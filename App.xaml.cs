@@ -10,14 +10,13 @@ namespace OptimizedPhotoViewer
             if (e.Args.Length > 0)
             {
                 string filePath = e.Args[0];
-                MainWindow mainWindow = new MainWindow(filePath);
+                MainWindow mainWindow = new(filePath);
                 mainWindow.Show();
             }
 
             else
             {
-                MainWindow mainWindow = new MainWindow("C:\\Users\\akula\\Desktop\\TEST - Copy\\def.jpg");
-                mainWindow.Show();
+
             }
         }
     }
