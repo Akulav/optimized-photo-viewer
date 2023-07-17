@@ -15,8 +15,6 @@ Fix label text going over the controls if the windows size is small
 Add .gif support
 
 -------UI-------
-Add buttons hover effect
-Add white border to currently viewed image
 Add proper icon
 
 

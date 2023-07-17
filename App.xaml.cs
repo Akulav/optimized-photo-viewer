@@ -16,7 +16,8 @@ namespace OptimizedPhotoViewer
 
             else
             {
-
+                MainWindow mainWindow = new("C:\\Users\\akula\\Desktop\\TEST - Copy\\def2.png");
+                mainWindow.Show();
             }
         }
     }

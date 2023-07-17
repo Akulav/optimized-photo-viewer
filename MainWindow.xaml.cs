@@ -5,6 +5,7 @@ using System.Threading.Tasks;
 using System.Windows;
 using System.Windows.Controls;
 using System.Windows.Input;
+using System.Windows.Media;
 
 namespace OptimizedPhotoViewer
 {
@@ -25,9 +26,8 @@ namespace OptimizedPhotoViewer
             }
 
             string fullPath = System.Reflection.Assembly.GetExecutingAssembly().Location;
-            string[] fileExtensions = { ".png", ".jpg", ".jpeg", ".bmp", ".ico", ".tiff", ".webp" };
 
-            Parallel.ForEach(fileExtensions, extension =>
+            Parallel.ForEach(ImageExtensions.extension_list, extension =>
             {
                 FileAssociations.SetAssociation(extension, "optimizedViewer", "Image File", fullPath);
             });

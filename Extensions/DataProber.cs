@@ -13,9 +13,8 @@ namespace OptimizedPhotoViewer.Extensions
         public static void GetImages()
         {
             string directoryPath = Path.GetDirectoryName(TempSettings.DefaultPath);
-            string[] imageExtensions = { ".png", ".jpg", ".jpeg", ".bmp", ".ico", ".tiff", ".webp" };
 
-            var imageExtensionsSet = new HashSet<string>(imageExtensions, StringComparer.OrdinalIgnoreCase);
+            var imageExtensionsSet = new HashSet<string>(ImageExtensions.extension_list, StringComparer.OrdinalIgnoreCase);
             ConcurrentBag<string> filesBag = new();
 
             Parallel.ForEach(Directory.EnumerateFiles(directoryPath), file =>
