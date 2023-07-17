@@ -44,7 +44,10 @@ namespace OptimizedPhotoViewer.Extensions
                 bitmapImage.EndInit();
 
                 // Add the image to the cache
-                ImageCache.imageCache[path] = bitmapImage;
+                if (TempSettings.settings.CacheLevel != 0)
+                {
+                    ImageCache.imageCache[path] = bitmapImage;
+                }
 
                 // Set the BitmapImage as the source of the Image control
                 pictureBox.Source = bitmapImage;

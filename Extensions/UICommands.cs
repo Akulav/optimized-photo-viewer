@@ -166,6 +166,8 @@ namespace OptimizedPhotoViewer.Extensions
 
         public static void AddImagesToGrid(Grid grid, double spacing, Image mainPictureBox, TextBlock infoLabel)
         {
+            RowDefinitionCollection rowDefinitions = grid.RowDefinitions;
+
             var elementsToRemove = grid.Children.Cast<UIElement>()
                                                    .Where(element => Grid.GetRow(element) == 2)
                                                    .ToList();
@@ -174,8 +176,6 @@ namespace OptimizedPhotoViewer.Extensions
             {
                 grid.Children.Remove(element);
             }
-
-            RowDefinitionCollection rowDefinitions = grid.RowDefinitions;
 
             if (TempSettings.settings.PhotoList)
             {
@@ -192,6 +192,10 @@ namespace OptimizedPhotoViewer.Extensions
                 int imageCount = imagePaths.Count;
                 // Remove existing content in the third row
 
+                if(TempSettings.settings.CacheLevel==1)
+                {
+                    CacheOperator.RemoveMissingKeys(ImageCache.imageCache, imagePaths.ToArray());
+                }
 
                 double availableHeight = grid.RowDefinitions[2].ActualHeight;
 
@@ -229,7 +233,6 @@ namespace OptimizedPhotoViewer.Extensions
                     grid.Children.Add(image);
                     startX += imageWidth + spacing;
                 }
-
                 GC.Collect();
             }
 

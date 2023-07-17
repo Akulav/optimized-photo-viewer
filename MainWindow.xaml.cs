@@ -20,12 +20,12 @@ namespace OptimizedPhotoViewer
             if (File.Exists(path))
             {
                 TempSettings.DefaultPath = path;
-                ImageLoader.LoadImage(path, pictureBox, infoText);
-                BackgroundProcesser worker = new();
-                worker.StartFunction();
                 SettingsManager settingsManager = new SettingsManager();
                 settingsManager.EnsureSettingsFileExists();
                 TempSettings.settings = settingsManager.ReadSettings();
+                ImageLoader.LoadImage(path, pictureBox, infoText);
+                BackgroundProcesser worker = new();
+                worker.StartFunction();
             }
 
             string fullPath = System.Reflection.Assembly.GetExecutingAssembly().Location;
