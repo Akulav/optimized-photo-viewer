@@ -12,12 +12,10 @@ namespace OptimizedPhotoViewer.Extensions
     {
         public static void GetImages()
         {
-            string directoryPath = Path.GetDirectoryName(TempSettings.DefaultPath);
-
             var imageExtensionsSet = new HashSet<string>(ImageExtensions.extension_list, StringComparer.OrdinalIgnoreCase);
             ConcurrentBag<string> filesBag = new();
 
-            Parallel.ForEach(Directory.EnumerateFiles(directoryPath), file =>
+            Parallel.ForEach(Directory.EnumerateFiles(Path.GetDirectoryName(TempSettings.DefaultPath)), file =>
             {
                 if (imageExtensionsSet.Contains(Path.GetExtension(file)))
                 {

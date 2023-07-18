@@ -95,7 +95,7 @@ namespace OptimizedPhotoViewer.Extensions
             previousDelta = e.Delta;
         }
 
-        public static void ToggleFullScreen(Window window, Grid grid, Image pictureBox, TextBlock infoLabel)
+        private static void ToggleFullScreen(Window window, Grid grid, Image pictureBox, TextBlock infoLabel)
         {
             RowDefinitionCollection rowDefinitions = grid.RowDefinitions;
             if (TempSettings.IsFullscreen)
@@ -168,31 +168,14 @@ namespace OptimizedPhotoViewer.Extensions
         {
             RowDefinitionCollection rowDefinitions = grid.RowDefinitions;
 
-            var elementsToRemove = grid.Children.Cast<UIElement>()
-                                                   .Where(element => Grid.GetRow(element) == 2)
-                                                   .ToList();
-
-            foreach (var element in elementsToRemove)
-            {
-                grid.Children.Remove(element);
-            }
+            RemoveImagesFromGrid(grid);
 
             if (TempSettings.settings.PhotoList)
             {
-
-                rowDefinitions[0].Height = new GridLength(45);
-
-                // Modify the height of the second row to 100% (star sizing)
-                rowDefinitions[1].Height = new GridLength(85, GridUnitType.Star);
-
-                // Modify the height of the third row to 0
-                rowDefinitions[2].Height = new GridLength(15, GridUnitType.Star);
+                SetupGridForPhotoList(rowDefinitions);
 
                 List<string> imagePaths = DataProber.GetStringsInRange();
-                int imageCount = imagePaths.Count;
-                // Remove existing content in the third row
-
-                if(TempSettings.settings.CacheLevel==1)
+                if (TempSettings.settings.CacheLevel == 1)
                 {
                     CacheOperator.RemoveMissingKeys(ImageCache.imageCache, imagePaths.ToArray());
                 }
@@ -204,23 +187,21 @@ namespace OptimizedPhotoViewer.Extensions
 
                 foreach (string imagePath in imagePaths)
                 {
-                    BitmapImage bitmapImage = new(new Uri(imagePath));
-                    double imageHeight = availableHeight;
-                    double imageWidth = bitmapImage.PixelWidth / (bitmapImage.PixelHeight / imageHeight);
-
+                    double imageWidth, imageHeight;
+                    CalculateImageSize(imagePath, availableHeight, out imageWidth, out imageHeight);
                     totalImagesWidth += imageWidth;
                     maxHeight = Math.Max(maxHeight, imageHeight);
                 }
 
-                double totalSpacingWidth = spacing * (imageCount - 1);
-                double startX = (grid.ActualWidth - totalImagesWidth - totalSpacingWidth) / 2;
+                double totalSpacingWidth = spacing * (imagePaths.Count - 1);
+                double startX = CalculateStartX(grid.ActualWidth, totalImagesWidth, totalSpacingWidth);
 
-                for (int i = 0; i < imageCount; i++)
+                for (int i = 0; i < imagePaths.Count; i++)
                 {
                     string imagePath = imagePaths[i];
 
-                    double imageHeight = availableHeight;
-                    double imageWidth = new BitmapImage(new Uri(imagePath)).PixelWidth / (new BitmapImage(new Uri(imagePath)).PixelHeight / imageHeight);
+                    double imageWidth, imageHeight;
+                    CalculateImageSize(imagePath, availableHeight, out imageWidth, out imageHeight);
 
                     Image image = CreateImage(imagePath, imageWidth, imageHeight, startX, grid);
 
@@ -233,19 +214,48 @@ namespace OptimizedPhotoViewer.Extensions
                     grid.Children.Add(image);
                     startX += imageWidth + spacing;
                 }
+
                 GC.Collect();
             }
-
             else
             {
-                rowDefinitions[0].Height = new GridLength(45);
-
-                // Modify the height of the second row to 100% (star sizing)
-                rowDefinitions[1].Height = new GridLength(1, GridUnitType.Star);
-
-                // Modify the height of the third row to 0
-                rowDefinitions[2].Height = new GridLength(0);
+                SetupGridForNonPhotoList(rowDefinitions);
             }
+        }
+
+        private static void RemoveImagesFromGrid(Grid grid)
+        {
+            var imagesToRemove = grid.Children.Cast<UIElement>().Where(element => Grid.GetRow(element) == 2).ToList();
+            foreach (var image in imagesToRemove)
+            {
+                grid.Children.Remove(image);
+            }
+        }
+
+        private static void SetupGridForPhotoList(RowDefinitionCollection rowDefinitions)
+        {
+            rowDefinitions[0].Height = new GridLength(45);
+            rowDefinitions[1].Height = new GridLength(85, GridUnitType.Star);
+            rowDefinitions[2].Height = new GridLength(15, GridUnitType.Star);
+        }
+
+        private static void SetupGridForNonPhotoList(RowDefinitionCollection rowDefinitions)
+        {
+            rowDefinitions[0].Height = new GridLength(45);
+            rowDefinitions[1].Height = new GridLength(1, GridUnitType.Star);
+            rowDefinitions[2].Height = new GridLength(0);
+        }
+
+        private static void CalculateImageSize(string imagePath, double availableHeight, out double imageWidth, out double imageHeight)
+        {
+            BitmapImage bitmapImage = new BitmapImage(new Uri(imagePath));
+            imageHeight = availableHeight;
+            imageWidth = bitmapImage.PixelWidth / (bitmapImage.PixelHeight / imageHeight);
+        }
+
+        private static double CalculateStartX(double gridWidth, double totalImagesWidth, double totalSpacingWidth)
+        {
+            return (gridWidth - totalImagesWidth - totalSpacingWidth) / 2;
         }
 
         private static Image CreateImage(string imagePath, double imageWidth, double imageHeight, double startX, Grid grid)

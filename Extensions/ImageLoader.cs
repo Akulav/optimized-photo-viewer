@@ -1,4 +1,5 @@
 ﻿using OptimizedPhotoViewer.DataStructures;
+using System;
 using System.IO;
 using System.Windows.Controls;
 using System.Windows.Media.Imaging;
@@ -17,18 +18,15 @@ namespace OptimizedPhotoViewer.Extensions
                 DataProber.GetCurrentIndex();
             }
 
+            // Check if the image is already in the cache
+            if (ImageCache.imageCache.TryGetValue(path, out BitmapImage cachedImage))
+            {
+                pictureBox.Source = cachedImage;
+                return;
+            }
+
             try
             {
-                // Check if the image is already in the cache
-                if (ImageCache.imageCache.ContainsKey(path))
-                {
-                    pictureBox.Source = ImageCache.imageCache[path];
-                    return;
-                }
-
-                BitmapImage bitmapImage = new BitmapImage();
-
-                // Read the file into a byte array
                 byte[] imageData;
                 using (FileStream stream = new FileStream(path, FileMode.Open, FileAccess.Read))
                 {
@@ -36,27 +34,36 @@ namespace OptimizedPhotoViewer.Extensions
                     stream.Read(imageData, 0, (int)stream.Length);
                 }
 
-                // Create a BitmapImage and set the source using a MemoryStream
-
-                bitmapImage.BeginInit();
-                bitmapImage.CacheOption = BitmapCacheOption.OnLoad;
-                bitmapImage.StreamSource = new MemoryStream(imageData);
-                bitmapImage.EndInit();
+                BitmapImage bitmapImage = CreateBitmapImageFromData(imageData);
 
                 // Add the image to the cache
                 if (TempSettings.settings.CacheLevel != 0)
                 {
-                    ImageCache.imageCache[path] = bitmapImage;
+                    CacheImage(path, bitmapImage);
                 }
 
-                // Set the BitmapImage as the source of the Image control
                 pictureBox.Source = bitmapImage;
             }
-            catch (IOException ex)
+            catch (Exception ex)
             {
-                // Handle file access error
+                // Handle or log the exception
             }
-
         }
+
+        private static BitmapImage CreateBitmapImageFromData(byte[] imageData)
+        {
+            BitmapImage bitmapImage = new BitmapImage();
+            bitmapImage.BeginInit();
+            bitmapImage.CacheOption = BitmapCacheOption.OnLoad;
+            bitmapImage.StreamSource = new MemoryStream(imageData);
+            bitmapImage.EndInit();
+            return bitmapImage;
+        }
+
+        private static void CacheImage(string path, BitmapImage bitmapImage)
+        {
+            ImageCache.imageCache[path] = bitmapImage;
+        }
+
     }
 }

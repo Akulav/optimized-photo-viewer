@@ -15,7 +15,7 @@ namespace OptimizedPhotoViewer.Extensions
             File.Delete(TempSettings.CurrentImage);
             ImageLoader.LoadImage(newPath, pictureBox, info);
 
-            if (imagesLength == 1)
+            if (TempSettings.AllPaths.Length == 1)
             {
                 Application.Current.Shutdown();
             }

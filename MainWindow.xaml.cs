@@ -108,7 +108,6 @@ namespace OptimizedPhotoViewer
 
         private void DeleteClickHandler(object sender, MouseButtonEventArgs e)
         {
-            CacheOperator.RemoveEntry(TempSettings.CurrentImage);
             ImageDeleter.DeleteImages(pictureBox, infoText);
             UICommands.AddImagesToGrid(grid, 15, pictureBox, infoText);
         }

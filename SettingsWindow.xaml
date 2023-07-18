@@ -5,7 +5,7 @@
         xmlns:mc="http://schemas.openxmlformats.org/markup-compatibility/2006"
         xmlns:local="clr-namespace:OptimizedPhotoViewer"
         mc:Ignorable="d"
-        Title="Settings" Height="230" Width="300" Background="Black" Closing="Window_Closing" ResizeMode="NoResize">
+        Title="Settings" Height="200" Width="300" Background="Black" Closing="Window_Closing" ResizeMode="NoResize">
     <Grid>
         <Grid.RowDefinitions>
             <RowDefinition Height="50"/>
@@ -16,7 +16,6 @@
         <TextBlock Grid.Row="0" HorizontalAlignment="Left" Foreground="Gainsboro" Margin="30,0,0,0" TextWrapping="Wrap" Text="PhotoList" VerticalAlignment="Center"/>
         <TextBlock Grid.Row="1" HorizontalAlignment="Left" Foreground="Gainsboro" Margin="30,0,0,0" TextWrapping="Wrap" Text="MaxCache" VerticalAlignment="Center"/>
         <TextBlock Grid.Row="2" HorizontalAlignment="Left" Foreground="Gainsboro" Margin="30,0,0,0" TextWrapping="Wrap" Text="PhotoListSize" VerticalAlignment="Center"/>
-        <Button Grid.Row="3" HorizontalAlignment="Center" Width="80" Height="20" VerticalAlignment="Center" Content="Save" Click="SaveHandler"/>
         <Button Grid.Row="0"  Width="50" Height="20" VerticalAlignment="Center" Content="Enable" Margin="-30,0,0,0" Click="EnablePhotoListHandler"/>
         <Button Grid.Row="0"  Width="50" Height="20" VerticalAlignment="Center" Content="Disable" Margin="90,0,0,0" Click="DisablePhotoListHandler"/>
         <Button Grid.Row="1"  Width="50" Height="20" VerticalAlignment="Center" Content="0" Margin="-30,0,0,0" Click="CacheLevelZeroHandler"/>

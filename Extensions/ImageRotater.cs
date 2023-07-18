@@ -25,7 +25,7 @@ namespace OptimizedPhotoViewer.Extensions
                 using (var encoderParameters = new EncoderParameters(1))
                 {
                     encoderParameters.Param[0] = new EncoderParameter(Encoder.Quality, 100L); // Set the desired image quality (100% in this case)
-                    originalImage.Save(TempSettings.CurrentImage, GetImageCodecInfo(ImageFormat.Png), encoderParameters);
+                    originalImage.Save(TempSettings.CurrentImage, GetImageCodecInfo(ImageFormat.Bmp), encoderParameters);
                 }
             }
         }

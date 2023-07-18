@@ -1,6 +1,5 @@
 ﻿using OptimizedPhotoViewer.DataStructures;
 using System.Collections.Generic;
-using System.Linq;
 using System.Windows.Media.Imaging;
 
 namespace OptimizedPhotoViewer.Extensions
@@ -14,20 +13,33 @@ namespace OptimizedPhotoViewer.Extensions
 
         public static void RemoveMissingKeys(Dictionary<string, BitmapImage> dictionary, string[] array)
         {
-            List<string> keysToRemove = new();
+            List<string> keysToRemove = GetKeysToRemove(dictionary, array);
+            RemoveKeys(keysToRemove);
+        }
 
-            foreach (string key in dictionary.Keys.ToList())
+        private static List<string> GetKeysToRemove(Dictionary<string, BitmapImage> dictionary, string[] array)
+        {
+            HashSet<string> keySet = new HashSet<string>(array);
+            List<string> keysToRemove = new List<string>();
+
+            foreach (var kvp in dictionary)
             {
-                if (!array.Contains(key))
+                if (!keySet.Contains(kvp.Key))
                 {
-                    keysToRemove.Add(key);
+                    keysToRemove.Add(kvp.Key);
                 }
             }
 
+            return keysToRemove;
+        }
+
+        private static void RemoveKeys(List<string> keysToRemove)
+        {
             foreach (string key in keysToRemove)
             {
                 RemoveEntry(key);
             }
         }
+
     }
 }

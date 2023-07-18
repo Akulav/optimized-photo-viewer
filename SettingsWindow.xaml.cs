@@ -23,57 +23,65 @@ namespace OptimizedPhotoViewer
         private void EnablePhotoListHandler(object sender, RoutedEventArgs e)
         {
             settings.PhotoList = true;
-        }
-
-        private void SaveHandler(object sender, RoutedEventArgs e)
-        {
             settingsManager.WriteSettings(settings);
             TempSettings.settings = settings;
-            mainWindow.IsEnabled = true;
-            Close();
         }
 
         private void Window_Closing(object sender, System.ComponentModel.CancelEventArgs e)
         {
             mainWindow.IsEnabled = true;
+            settingsManager.WriteSettings(settings);
+            TempSettings.settings = settings;
         }
 
         private void DisablePhotoListHandler(object sender, RoutedEventArgs e)
         {
             settings.PhotoList = false;
+            settingsManager.WriteSettings(settings);
+            TempSettings.settings = settings;
         }
 
         private void CacheLevelZeroHandler(object sender, RoutedEventArgs e)
         {
             settings.CacheLevel = 0;
+            settingsManager.WriteSettings(settings);
+            TempSettings.settings = settings;
         }
 
         private void CacheLevelLimitedHandler(object sender, RoutedEventArgs e)
         {
             settings.CacheLevel = 1;
+            settingsManager.WriteSettings(settings);
+            TempSettings.settings = settings;
         }
 
         private void CacheLevelUnlimitedHandler(object sender, RoutedEventArgs e)
         {
             settings.CacheLevel = 2;
+            settingsManager.WriteSettings(settings);
+            TempSettings.settings = settings;
         }
 
         private void PhotoListSizeSmallHandler(object sender, RoutedEventArgs e)
         {
             settings.ListSize = 3;
+            settingsManager.WriteSettings(settings);
+            TempSettings.settings = settings;
         }
 
         private void PhotoListSizeMediumHandler(object sender, RoutedEventArgs e)
         {
             settings.ListSize = 5;
+            settingsManager.WriteSettings(settings);
+            TempSettings.settings = settings;
         }
 
         private void PhotoListSizeLargeHandler(object sender, RoutedEventArgs e)
         {
             settings.ListSize = 7;
+            settingsManager.WriteSettings(settings);
+            TempSettings.settings = settings;
         }
 
     }
-
-
 }

@@ -1,14 +1,13 @@
--------OPTIMIZATIONS-------
-Move UICommands Functions to separate classes
-Modularize all functions (separate functions into different functions)
-Move Zoom Operations to separate class
-Clean ALL classes
-Better memory cleanup
-Add unit tests
+-------CLEANUP-------
+Separate TextBlock code from the LoadImage Function
+Try to remove DataProber functions from LoadImage
+Separate UICommands into multiple small classes
+SettingClickHandler move to a function (separate class)
+
 
 -------FIXES-------
 Fix app not launching when an image is not openable
-Fix Exiting FullScreen doesn't add the PhotoList
+Fix Exiting FullScreen doesn't add the PhotoList 
 Fix label text going over the controls if the windows size is small
 
 -------EXTENSIONS------
@@ -23,9 +22,6 @@ Add Tag search
 Add Favorite/Tag Gallery
 Add Automatic DB Cleanup (removes any entry not found on disk)
 Add image dragging
-Add settings menu (disable db, disable image caching, disable image grid, etc.)
 
 -------FINAL-TOUCHES-------
-Make final optimizations
-Bug check
 Create proper installer
