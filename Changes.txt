@@ -1,0 +1,10 @@
+Made CacheOperator more modular
+Removed redundant assign in DataProber
+Removed redundant assign in ImageDeleter
+Made ImageLoader more modular
+ImageRotater now uses BMP (still no compression applied, but possibly faster than png)
+Made AddImagesToGrid more modular
+Removed CacheOperator.RemoveEntry on Image Deletion (it is done in background anyway every 200ms)
+Removed saved button from Settings Window
+Any change is saved the moment the button is pressed in the settings window
+Updated RoadMap

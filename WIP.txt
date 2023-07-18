@@ -22,6 +22,7 @@ Add Tag search
 Add Favorite/Tag Gallery
 Add Automatic DB Cleanup (removes any entry not found on disk)
 Add image dragging
+Add show which setting is currently in use on the buttons (Settings Window)
 
 -------FINAL-TOUCHES-------
 Create proper installer
