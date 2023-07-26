@@ -4,11 +4,11 @@ Try to remove DataProber functions from LoadImage
 Separate UICommands into multiple small classes
 SettingClickHandler move to a function (separate class)
 
-
 -------FIXES-------
 Fix app not launching when an image is not openable
 Fix Exiting FullScreen doesn't add the PhotoList 
 Fix label text going over the controls if the windows size is small
+Fix Rotate .webp crashes
 
 -------EXTENSIONS------
 Add .gif support
@@ -16,13 +16,17 @@ Add .gif support
 -------NEW-FEATURES-------
 Add DB creation
 Add Favorite Functionality
-Make Favorite Button to change depending if the image is favorited or not
+Add Favorite Button to change depending if the image is favorited or not
 Add Tag adding functionality
 Add Tag search
 Add Favorite/Tag Gallery
 Add Automatic DB Cleanup (removes any entry not found on disk)
 Add image dragging
 Add show which setting is currently in use on the buttons (Settings Window)
+Add Image Conversion
+Add Image Compression
+Add Image Crop
+Add Copy Image to buffer
 
 -------FINAL-TOUCHES-------
 Create proper installer
