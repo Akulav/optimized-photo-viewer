@@ -5,10 +5,6 @@ namespace optimizedPhotoViewer
 {
     public partial class MainForm : Form
     {
-        private string[] imagePaths;
-        private int currentIndex;
-        private bool isFullscreen;
-
         [DllImport("user32.DLL", EntryPoint = "ReleaseCapture")]
         private extern static void ReleaseCapture();
         [DllImport("user32.DLL", EntryPoint = "SendMessage")]
@@ -17,60 +13,118 @@ namespace optimizedPhotoViewer
         public MainForm(string args)
         {
             InitializeComponent();
-            DoubleBuffered = true;
             if (args != null && File.Exists(args))
             {
-                pictureBox.Image = new Bitmap(args);
-                imagePaths = ImageHandler.getImages(args);
-                currentIndex = ImageHandler.getCurrentIndex(args);
+                TempSettings.DefaultPath = args;
+                ImageHandler.LoadImage(args, pictureBox, infoLabel);
+                ImageHandler.GetImages();
+                ImageHandler.GetCurrentIndex();
+
+                string fullPath = Environment.ProcessPath;
+
+                string[] fileExtensions = { ".png", ".jpg", ".jpeg", ".ico", ".tiff", ".bmp" };
+
+                Parallel.ForEach(fileExtensions, extension =>
+                {
+                    FileAssociations.SetAssociation(extension, "optimizedViewer", "Image File", fullPath);
+                });
+
+                UICommands.DisplayImages(lowerPanel, pictureBox, infoLabel);
+                BackgroundProcesser worker = new();
+                worker.StartFunction();
             }
-            string fullPath = System.Diagnostics.Process.GetCurrentProcess().MainModule.FileName;
-
-            FileAssociations.SetAssociation(".png", "optimizedViewer", "Image File", fullPath);
-            FileAssociations.SetAssociation(".jpg", "optimizedViewer", "Image File", fullPath);
-            FileAssociations.SetAssociation(".jpeg", "optimizedViewer", "Image File", fullPath);
-            FileAssociations.SetAssociation(".gif", "optimizedViewer", "Image File", fullPath);
-            FileAssociations.SetAssociation(".ico", "optimizedViewer", "Image File", fullPath);
-            FileAssociations.SetAssociation(".webp", "optimizedViewer", "Image File", fullPath);
         }
 
-        private void delete_button_Click(object sender, EventArgs e)
+
+        private void MainForm_ResizeEnd(object sender, EventArgs e)
         {
-            currentIndex = ImageHandler.deleteImages(imagePaths[currentIndex], pictureBox);
+            UICommands.DisplayImages(lowerPanel, pictureBox, infoLabel);
         }
 
-        private void rotateButton_Click(object sender, EventArgs e)
-        {
-            ImageHandler.RotateImageClockwise(pictureBox, currentIndex, imagePaths[0]);
-        }
 
         protected override bool ProcessCmdKey(ref Message msg, Keys keyData)
         {
             switch (keyData)
             {
                 case Keys.F11:
-                    isFullscreen = UICommands.toggleFullscreen(this, isFullscreen, MainTable);
+                    UICommands.ToggleFullscreen(this, MainTable, lowerPanel, pictureBox, infoLabel, true);
                     break;
                 case Keys.D:
-                    currentIndex = ImageHandler.LoadNextImage(currentIndex, pictureBox, imagePaths[0]);
-                    break;
                 case Keys.Right:
-                    currentIndex = ImageHandler.LoadNextImage(currentIndex, pictureBox, imagePaths[0]);
+                    UICommands.ScrollImage(pictureBox, infoLabel, true);
+                    UICommands.DisplayImages(lowerPanel, pictureBox, infoLabel);
                     break;
                 case Keys.A:
-                    currentIndex = ImageHandler.LoadPreviousImage(currentIndex, pictureBox, imagePaths[0]);
-                    break;
                 case Keys.Left:
-                    currentIndex = ImageHandler.LoadPreviousImage(currentIndex, pictureBox, imagePaths[0]);
+                    UICommands.ScrollImage(pictureBox, infoLabel, false);
+                    UICommands.DisplayImages(lowerPanel, pictureBox, infoLabel);
                     break;
             }
             return base.ProcessCmdKey(ref msg, keyData);
         }
 
-        private void MainTable_MouseDown(object sender, MouseEventArgs e)
+        private void TopPanel_MouseDown(object sender, MouseEventArgs e)
         {
             ReleaseCapture();
             SendMessage(Handle, 0x112, 0xf012, 0);
+        }
+
+        private void ExitBox_Click(object sender, EventArgs e)
+        {
+            Application.Exit();
+        }
+
+        private void MaximizeBox_Click(object sender, EventArgs e)
+        {
+            UICommands.ToggleFullscreen(this, MainTable, lowerPanel, pictureBox, infoLabel, false);
+        }
+
+        private void DeleteBox_Click(object sender, EventArgs e)
+        {
+            ImageHandler.DeleteImages(pictureBox, infoLabel);
+            UICommands.DisplayImages(lowerPanel, pictureBox, infoLabel);
+        }
+
+        private void RotateBox_Click(object sender, EventArgs e)
+        {
+            ImageHandler.RotateImageClockwise(pictureBox);
+            UICommands.DisplayImages(lowerPanel, pictureBox, infoLabel);
+        }
+
+        private void FavBox_Click(object sender, EventArgs e)
+        {
+
+        }
+
+        private void ExitBox_MouseEnter(object sender, EventArgs e)
+        {
+            if (sender is PictureBox pictureBox)
+            {
+                pictureBox.BorderStyle = BorderStyle.FixedSingle;
+            }
+        }
+
+        private void ExitBox_MouseLeave(object sender, EventArgs e)
+        {
+            if (sender is PictureBox pictureBox)
+            {
+                pictureBox.BorderStyle = BorderStyle.None;
+            }
+        }
+
+        private void MinimizeBox_Click(object sender, EventArgs e)
+        {
+            WindowState = FormWindowState.Minimized;
+        }
+
+        private void FocusBox_Click(object sender, EventArgs e)
+        {
+            ImageHandler.LoadImage(TempSettings.CurrentImage, pictureBox, infoLabel);
+        }
+
+        private void ListFavorites_Click(object sender, EventArgs e)
+        {
+
         }
     }
 }
