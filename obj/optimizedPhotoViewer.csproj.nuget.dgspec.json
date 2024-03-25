@@ -1,15 +1,15 @@
 {
   "format": 1,
   "restore": {
-    "C:\\Users\\akula\\Desktop\\optimized-photo-viewer\\optimizedPhotoViewer.csproj": {}
+    "C:\\Users\\akula\\Desktop\\optimized-photo-viewer\\OptimizedPhotoViewer.csproj": {}
   },
   "projects": {
-    "C:\\Users\\akula\\Desktop\\optimized-photo-viewer\\optimizedPhotoViewer.csproj": {
+    "C:\\Users\\akula\\Desktop\\optimized-photo-viewer\\OptimizedPhotoViewer.csproj": {
       "version": "1.0.0",
       "restore": {
-        "projectUniqueName": "C:\\Users\\akula\\Desktop\\optimized-photo-viewer\\optimizedPhotoViewer.csproj",
-        "projectName": "optimizedPhotoViewer",
-        "projectPath": "C:\\Users\\akula\\Desktop\\optimized-photo-viewer\\optimizedPhotoViewer.csproj",
+        "projectUniqueName": "C:\\Users\\akula\\Desktop\\optimized-photo-viewer\\OptimizedPhotoViewer.csproj",
+        "projectName": "OptimizedPhotoViewer",
+        "projectPath": "C:\\Users\\akula\\Desktop\\optimized-photo-viewer\\OptimizedPhotoViewer.csproj",
         "packagesPath": "C:\\Users\\akula\\.nuget\\packages\\",
         "outputPath": "C:\\Users\\akula\\Desktop\\optimized-photo-viewer\\obj\\",
         "projectStyle": "PackageReference",
@@ -40,9 +40,17 @@
         "net6.0-windows7.0": {
           "targetAlias": "net6.0-windows",
           "dependencies": {
-            "SQPhoto": {
+            "Newtonsoft.Json": {
               "target": "Package",
-              "version": "[1.0.2, )"
+              "version": "[13.0.3, )"
+            },
+            "System.Drawing.Common": {
+              "target": "Package",
+              "version": "[7.0.0, )"
+            },
+            "sqlite-net-pcl": {
+              "target": "Package",
+              "version": "[1.8.116, )"
             }
           },
           "imports": [
@@ -60,7 +68,7 @@
             "Microsoft.NETCore.App": {
               "privateAssets": "all"
             },
-            "Microsoft.WindowsDesktop.App.WindowsForms": {
+            "Microsoft.WindowsDesktop.App.WPF": {
               "privateAssets": "none"
             }
           },
